@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "website",
+      "runtimeExecutable": "C:\\Users\\abdul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": ["-m", "http.server", "7432", "--directory", "website"],
+      "port": 7432
+    },
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "C:\\Users\\abdul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "runtimeArgs": ["-c", "import time; time.sleep(999999)"],
+      "port": 8005
+    }
+  ]
+}

@@ -1,0 +1,3680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xarex — Autonomous Penetration Testing Platform</title>
+  <meta name="description" content="Xarex runs continuous, elite-level penetration tests autonomously — CVE intelligence matched to your assets, APT threat simulation, crown jewel analysis, and AI reports. Self-hosted. $49/month." />
+  <meta name="theme-color" content="#060810" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Xarex — Autonomous Penetration Testing Platform" />
+  <meta property="og:description" content="Continuous pentest automation: CVE intelligence, APT simulation, crown jewel analysis, AI reports. Self-hosted. From $49/month." />
+  <meta property="og:image" content="/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Xarex — Autonomous Penetration Testing Platform" />
+  <meta name="twitter:description" content="Continuous pentest automation: CVE intelligence, APT simulation, crown jewel analysis, AI reports. Self-hosted. From $49/month." />
+  <meta name="twitter:image" content="/og-image.png" />
+
+  <!-- Favicon (inline SVG data URI) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%237c6af7'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='20' fill='white'>X</text></svg>" />
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Xarex Security",
+        "url": "https://xarex.io",
+        "logo": "https://xarex.io/logo.png",
+        "description": "Autonomous penetration testing platform with CVE intelligence, APT simulation, and AI-powered reports."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Xarex",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Linux",
+        "description": "Self-hosted autonomous penetration testing platform. Continuous CVE matching, threat actor simulation, crown jewel analysis, AI reports.",
+        "offers": {
+          "@type": "Offer",
+          "price": "49",
+          "priceCurrency": "USD",
+          "priceSpecification": { "@type": "UnitPriceSpecification", "unitCode": "MON" }
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Analytics placeholder — add your key here before going live -->
+  <!-- <script async src="https://..."></script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #060810;
+      --bg2:      #0b0e18;
+      --surface:  #101422;
+      --surface2: #1c2238;
+      --bdr:      rgba(124,106,247,0.10);
+      --accent:   #7c6af7;
+      --accent2:  #4fc9f0;
+      --crit:     #f04f59;
+      --high:     #f0853a;
+      --warn:     #f0c93a;
+      --good:     #3dd68c;
+      --success:  #3dd68c;
+      --info:     #4fc9f0;
+      --t1:       #e8eaf6;
+      --t2:       #9ba3c4;
+      --t3:       #7a82a8;
+      --grad:     linear-gradient(135deg,#7c6af7 0%, #6253d6 50%, #4fc9f0 100%);
+      --grad-warm:linear-gradient(135deg,#7c6af7 0%, #f04f59 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 100px 0; }
+    .section-sm { padding: 60px 0; }
+
+    .gradient-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(124,106,247,0.12);
+      border: 1px solid rgba(124,106,247,0.3);
+      color: var(--accent);
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 12px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; border: none;
+      transition: all 0.2s; white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(124,106,247,0.45);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,106,247,0.6); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.05);
+      color: var(--t1);
+      border: 1px solid var(--bdr);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+    .btn-lg { padding: 18px 36px; font-size: 17px; border-radius: 14px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    @media (max-width: 900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } .btn-lg { padding: 14px 24px; font-size: 15px; } }
+
+    /* ── Background Orbs ─────────────────────────────────────── */
+    .orb-wrap {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.15;
+    }
+
+    .orb-1 { width: 600px; height: 600px; background: #7c6af7; top: -200px; right: -100px; animation: orbFloat 18s ease-in-out infinite; }
+    .orb-2 { width: 400px; height: 400px; background: #4fc9f0; opacity: 0.12; bottom: 20%; left: -100px; animation: orbFloat 24s ease-in-out infinite reverse; }
+    .orb-3 { width: 300px; height: 300px; background: #f04f59; bottom: -100px; right: 30%; animation: orbFloat 20s ease-in-out infinite 6s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(40px, -30px) scale(1.05); }
+      66%       { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 0;
+      background: rgba(5,3,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--bdr);
+      transition: all 0.3s;
+    }
+
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1180px; margin: 0 auto; padding: 0 24px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 20px; font-weight: 900; letter-spacing: -0.5px;
+    }
+
+    .nav-logo-mark {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--t2);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--t1); }
+
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+    /* ── Hamburger (mobile nav) ──────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 8px; border-radius: 8px;
+      color: var(--t1);
+      transition: background 0.15s;
+      position: relative; z-index: 102;
+    }
+    .nav-hamburger:hover { background: rgba(255,255,255,0.07); }
+    .nav-hamburger svg { display: block; }
+
+    .nav-mobile-panel {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 99;
+      background: rgba(6,8,16,0.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 90px 32px 40px;
+      gap: 8px;
+      overflow-y: auto;
+    }
+    .nav-mobile-panel.open { display: flex; }
+
+    .nav-mobile-panel a {
+      display: block; padding: 14px 16px;
+      font-size: 18px; font-weight: 600; color: var(--t2);
+      border-radius: 10px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-mobile-panel a:hover { background: rgba(124,106,247,0.1); color: var(--t1); }
+    .nav-mobile-panel .mobile-cta {
+      margin-top: 16px; text-align: center;
+      background: var(--grad); color: #fff; font-weight: 700;
+      padding: 16px; border-radius: 12px;
+    }
+    .nav-mobile-close {
+      position: absolute; top: 20px; right: 20px;
+      background: none; border: none; cursor: pointer;
+      color: var(--t2); font-size: 28px; line-height: 1;
+      padding: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta .btn:not(.nav-cta-signup) { display: none; }
+      .nav-hamburger { display: flex; align-items: center; justify-content: center; }
+    }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 160px 0 100px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      display: flex; justify-content: center; margin-bottom: 28px;
+    }
+
+    .hero-headline {
+      font-size: clamp(40px, 6vw, 76px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -2px; margin-bottom: 24px;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--t2); max-width: 640px;
+      margin: 0 auto 40px; line-height: 1.7;
+    }
+
+    .hero-ctas {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+
+    .hero-note {
+      font-size: 13px; color: var(--t3);
+      display: flex; align-items: center; gap: 6px; justify-content: center;
+    }
+
+    .hero-note .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+
+    /* ── Live Scan Demo ─────────────────────────────────────── */
+    .demo-section { position: relative; z-index: 1; padding: 80px 0; }
+    .demo-terminal {
+      background: #0a0c14;
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 60px rgba(124,106,247,0.07);
+      max-width: 820px; margin: 0 auto;
+    }
+    .demo-titlebar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(124,106,247,0.12);
+    }
+    .demo-titlebar .tb-title { font-size: 12px; color: var(--t3); font-family: 'JetBrains Mono',monospace; margin-left: 8px; }
+    .demo-body {
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px; line-height: 1.75;
+      min-height: 280px;
+      color: var(--t2);
+    }
+    .demo-body .dl-prompt { color: var(--accent); }
+    .demo-body .dl-ok     { color: var(--good); }
+    .demo-body .dl-warn   { color: var(--warn); }
+    .demo-body .dl-crit   { color: var(--crit); }
+    .demo-body .dl-info   { color: var(--info); }
+    .demo-body .dl-dim    { color: var(--t3); }
+    .demo-body .dl-cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: var(--accent); vertical-align: middle;
+      animation: blink 1s infinite;
+    }
+    .demo-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px;
+      border-top: 1px solid rgba(124,106,247,0.10);
+      background: rgba(255,255,255,0.02);
+    }
+    .demo-status { font-size: 12px; color: var(--t3); font-family: 'JetBrains Mono',monospace; }
+    .demo-replay {
+      font-size: 12px; font-weight: 700; color: var(--accent);
+      background: rgba(124,106,247,0.1); border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 8px; padding: 6px 14px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .demo-replay:hover { background: rgba(124,106,247,0.2); }
+
+    /* ── App Preview ─────────────────────────────────────────── */
+    .preview-wrap {
+      position: relative; z-index: 1;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .preview-glow {
+      position: absolute; inset: -40px;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(124,106,247,0.15), transparent);
+      pointer-events: none;
+    }
+
+    .preview-frame {
+      border-radius: 20px;
+      border: 1px solid rgba(124,106,247,0.25);
+      background: rgba(10,5,32,0.95);
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.8), 0 0 80px rgba(124,106,247,0.1);
+    }
+
+    .preview-titlebar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--bdr);
+    }
+
+    .tb-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .tb-red    { background: #ff5f57; }
+    .tb-yellow { background: #febc2e; }
+    .tb-green  { background: #28c840; }
+    .tb-title  { font-size: 12px; color: var(--t3); font-family: 'JetBrains Mono',monospace; margin-left: 8px; }
+
+    .preview-content {
+      display: grid; grid-template-columns: 200px 1fr;
+      min-height: 440px;
+    }
+
+    .preview-sidebar {
+      background: rgba(255,255,255,0.02);
+      border-right: 1px solid var(--bdr);
+      padding: 20px 0;
+    }
+
+    .ps-logo {
+      padding: 0 16px 20px;
+      font-size: 14px; font-weight: 900; color: var(--t1);
+      border-bottom: 1px solid var(--bdr); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .ps-logo-dot { font-size: 18px; }
+
+    .ps-group { margin-bottom: 16px; padding: 0 8px; }
+    .ps-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--t3); padding: 0 8px; margin-bottom: 6px; }
+
+    .ps-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 8px; border-radius: 8px;
+      font-size: 12px; color: var(--t2);
+      cursor: pointer;
+    }
+
+    .ps-item.active { background: rgba(124,106,247,0.15); color: var(--t1); }
+    .ps-item-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--t3); }
+    .ps-item.active .ps-item-dot { background: var(--accent); }
+
+    .preview-main { padding: 20px; }
+
+    .pm-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px;
+    }
+
+    .pm-stat {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--bdr);
+      border-radius: 10px; padding: 12px;
+    }
+
+    .pm-stat-val { font-size: 22px; font-weight: 900; color: var(--t1); }
+    .pm-stat-lbl { font-size: 10px; color: var(--t3); margin-top: 2px; }
+    .pm-stat-val.crit { color: var(--crit); }
+    .pm-stat-val.good { color: var(--success); }
+
+    .pm-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .pm-card {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--bdr);
+      border-radius: 10px; padding: 14px;
+    }
+
+    .pm-card-header { font-size: 11px; font-weight: 700; color: var(--t3); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.07em; }
+
+    .pm-finding {
+      display: flex; gap: 8px; align-items: center;
+      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 11px; color: var(--t2);
+    }
+
+    .pm-finding:last-child { border: none; }
+
+    .sev-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .sev-c { background: var(--crit); }
+    .sev-h { background: #f0853a; }
+    .sev-m { background: var(--warn); }
+
+    .pm-threat {
+      display: flex; gap: 8px; align-items: center;
+      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 11px;
+    }
+
+    .pm-threat:last-child { border: none; }
+    .threat-flag { font-size: 14px; }
+    .threat-name { color: var(--t1); font-weight: 600; flex: 1; }
+    .threat-score { font-family: 'JetBrains Mono',monospace; font-size: 11px; }
+    .score-high { color: var(--crit); }
+    .score-med  { color: var(--warn); }
+    .score-low  { color: var(--success); }
+
+    .pm-live-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 800; color: #ff4d4d;
+      letter-spacing: 0.08em;
+    }
+
+    .pm-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff4d4d; animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── Stats Bar ───────────────────────────────────────────── */
+    .stats-bar {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--bdr);
+      border-bottom: 1px solid var(--bdr);
+      background: rgba(255,255,255,0.02);
+      padding: 36px 0;
+    }
+
+    .stats-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+    }
+
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 36px; font-weight: 900; letter-spacing: -1px;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-desc { font-size: 13px; color: var(--t3); margin-top: 4px; }
+
+    /* ── Problem Section ─────────────────────────────────────── */
+    .problem-section { position: relative; z-index: 1; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    /* Modern type: `text-wrap: balance` keeps short titles balanced across lines
+       (no orphan word on its own row), `pretty` does similar but for body copy. */
+    .section-title { font-size: clamp(28px, 4vw, 48px); font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 20px; text-wrap: balance; }
+    .section-sub { font-size: 17px; color: var(--t2); line-height: 1.7; max-width: 640px; text-wrap: pretty; }
+
+    .pain-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 60px; }
+
+    .pain-card {
+      background: rgba(240,79,89,0.04);
+      border: 1px solid rgba(240,79,89,0.15);
+      border-radius: 16px; padding: 28px;
+    }
+
+    .pain-icon { font-size: 32px; margin-bottom: 14px; }
+    .pain-title { font-size: 18px; font-weight: 800; color: var(--t1); margin-bottom: 8px; }
+    .pain-desc  { font-size: 14px; color: var(--t2); line-height: 1.6; }
+    .pain-cost  { margin-top: 14px; font-size: 13px; font-weight: 700; color: var(--crit); }
+
+    @media (max-width: 700px) { .pain-cards { grid-template-columns: 1fr; } }
+
+    /* ── Features ────────────────────────────────────────────── */
+    .features-section { position: relative; z-index: 1; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 550px) { .features-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 18px; padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative; overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--grad); opacity: 0; transition: opacity 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      border-color: rgba(124,106,247,0.3);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 18px;
+      background: rgba(124,106,247,0.1);
+      border: 1px solid rgba(124,106,247,0.2);
+    }
+
+    .feature-title { font-size: 18px; font-weight: 800; color: var(--t1); margin-bottom: 8px; text-wrap: balance; }
+    .feature-desc  { font-size: 14px; color: var(--t2); line-height: 1.65; text-wrap: pretty; hyphens: auto; }
+    .feature-tag   {
+      display: inline-block; margin-top: 14px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 6px;
+      background: rgba(124,106,247,0.1); color: var(--accent);
+      border: 1px solid rgba(124,106,247,0.2);
+    }
+
+    .feature-tag.new-tag {
+      background: rgba(240,79,89,0.1); color: var(--crit);
+      border-color: rgba(240,79,89,0.25);
+    }
+
+    /* ── Feature Deep-Dive (alternating) ─────────────────────── */
+    .deep-section { position: relative; z-index: 1; }
+
+    .deep-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      margin-bottom: 100px;
+    }
+
+    .deep-item.reverse { direction: rtl; }
+    .deep-item.reverse > * { direction: ltr; }
+
+    @media (max-width: 768px) { .deep-item, .deep-item.reverse { grid-template-columns: 1fr; gap: 40px; direction: ltr; } }
+
+    .deep-label   { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .deep-title   { font-size: clamp(24px, 3vw, 38px); font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    .deep-desc    { font-size: 16px; color: var(--t2); line-height: 1.7; margin-bottom: 24px; }
+
+    .deep-bullets { display: flex; flex-direction: column; gap: 10px; }
+
+    .deep-bullet {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 14px; color: var(--t2);
+    }
+
+    .deep-bullet-icon {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: rgba(124,106,247,0.15); border: 1px solid rgba(124,106,247,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; flex-shrink: 0; margin-top: 1px;
+      color: var(--accent);
+    }
+
+    /* Visual mockups for deep-dives */
+    .deep-visual {
+      border-radius: 18px;
+      background: rgba(10,5,32,0.95);
+      border: 1px solid rgba(124,106,247,0.2);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(124,106,247,0.06);
+    }
+
+    .dv-header {
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--bdr);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--t3); font-weight: 700;
+    }
+
+    .dv-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+    .dv-body { padding: 20px; }
+
+    /* Threat actor visual */
+    .ta-exposure-bar { margin: 12px 0; }
+    .ta-eb-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--t3); margin-bottom: 5px; }
+    .ta-eb-track { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .ta-eb-fill { height: 100%; border-radius: 4px; background: linear-gradient(to right, #4fc9f0, #7c6af7, #f04f59); }
+
+    .ta-actor-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 8px;
+      margin-bottom: 5px; cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .ta-actor-row.selected { background: rgba(124,106,247,0.12); border: 1px solid rgba(124,106,247,0.25); }
+    .ta-actor-row:not(.selected) { background: rgba(255,255,255,0.02); border: 1px solid transparent; }
+
+    .ta-actor-name { font-size: 12px; font-weight: 700; color: var(--t1); flex: 1; }
+    .ta-score-bar { width: 60px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); }
+    .ta-score-fill { height: 100%; border-radius: 3px; }
+
+    /* CVE visual */
+    .cve-row-mini {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 8px;
+      margin-bottom: 5px; font-size: 11px;
+    }
+
+    .cve-id-mini { font-family: 'JetBrains Mono',monospace; color: #4fc9f0; font-weight: 700; flex-shrink: 0; width: 140px; }
+    .cve-pill { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; }
+    .cve-pill.c { background: rgba(240,79,89,0.2); color: var(--crit); }
+    .cve-pill.h { background: rgba(240,133,58,0.2); color: #f0853a; }
+    .cve-tag-your { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: rgba(240,79,89,0.15); color: var(--crit); border: 1px solid rgba(240,79,89,0.4); flex-shrink: 0; }
+
+    /* Crown jewel visual */
+    .jewel-mini {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+
+    .jm-card {
+      background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px;
+      border: 1px solid var(--bdr); border-top: 2px solid;
+    }
+
+    .jm-card.red   { border-top-color: var(--crit); }
+    .jm-card.blue  { border-top-color: #4fc9f0; }
+    .jm-card.gold  { border-top-color: var(--warn); }
+    .jm-card.purple{ border-top-color: var(--accent); }
+
+    .jm-icon  { font-size: 18px; margin-bottom: 6px; }
+    .jm-name  { font-size: 11px; font-weight: 700; color: var(--t1); margin-bottom: 4px; }
+    .jm-paths { font-size: 10px; color: var(--t3); }
+    .jm-warn  { font-size: 11px; color: var(--crit); margin-top: 6px; font-weight: 700; }
+    .jm-ok    { font-size: 11px; color: var(--success); margin-top: 6px; font-weight: 700; }
+
+    /* ── CVE Ticker ─────────────────────────────────────────── */
+    .cve-ticker-section {
+      position: relative; z-index: 1;
+      padding: 28px 0;
+      border-top: 1px solid var(--bdr);
+      border-bottom: 1px solid var(--bdr);
+      background: rgba(79,201,240,0.03);
+      overflow: hidden;
+    }
+    .cve-ticker-label {
+      text-align: center; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--info); margin-bottom: 14px;
+    }
+    .cve-ticker-track {
+      overflow: hidden; position: relative;
+    }
+    .cve-ticker-track::before,
+    .cve-ticker-track::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2;
+      pointer-events: none;
+    }
+    .cve-ticker-track::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+    .cve-ticker-track::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+
+    .cve-ticker-inner {
+      display: flex; gap: 16px; width: max-content;
+      animation: scroll-x 60s linear infinite;
+    }
+    .cve-ticker-track:hover .cve-ticker-inner { animation-play-state: paused; }
+
+    @keyframes scroll-x {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .cve-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px; border-radius: 10px;
+      border: 1px solid var(--bdr);
+      background: rgba(255,255,255,0.03);
+      font-size: 12px; white-space: nowrap; flex-shrink: 0;
+    }
+    .cve-chip-id { font-family: 'JetBrains Mono',monospace; color: var(--info); font-weight: 700; }
+    .cve-chip-score {
+      font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 5px;
+    }
+    .cve-chip-score.c { background: rgba(240,79,89,0.18); color: var(--crit); }
+    .cve-chip-score.h { background: rgba(240,133,58,0.18); color: var(--high); }
+    .cve-chip-score.m { background: rgba(240,201,58,0.18); color: var(--warn); }
+    .cve-chip-prod { color: var(--t2); }
+    .cve-chip-epss { color: var(--t3); font-size: 11px; }
+
+    /* ── Exposure tooltip ────────────────────────────────────── */
+    .exposure-tip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; color: var(--t3); cursor: help;
+      border-bottom: 1px dashed var(--t3);
+      position: relative;
+    }
+    .exposure-tip:hover::after {
+      content: attr(data-tip);
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      background: var(--surface2); border: 1px solid var(--bdr);
+      border-radius: 8px; padding: 8px 12px;
+      font-size: 11px; color: var(--t2); line-height: 1.5;
+      width: 220px; text-align: left; z-index: 10;
+      pointer-events: none;
+      margin-bottom: 6px;
+    }
+
+    /* ── Comparison Table ────────────────────────────────────── */
+    .comparison-section { position: relative; z-index: 1; }
+
+    .comp-table-wrap {
+      border-radius: 20px;
+      border: 1px solid var(--bdr);
+      overflow: hidden;
+      background: rgba(10,5,32,0.7);
+      backdrop-filter: blur(20px);
+    }
+
+    .comp-table { width: 100%; border-collapse: collapse; }
+
+    .comp-table th {
+      padding: 20px 18px;
+      font-size: 13px; font-weight: 800;
+      text-align: left;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--bdr);
+    }
+
+    .comp-table th.xarex-col {
+      background: rgba(124,106,247,0.1);
+      border-bottom-color: rgba(124,106,247,0.3);
+    }
+
+    .comp-table td {
+      padding: 14px 18px;
+      font-size: 13px; color: var(--t2);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .comp-table tr:last-child td { border-bottom: none; }
+
+    .comp-table td.xarex-col {
+      background: rgba(124,106,247,0.05);
+      font-weight: 700; color: var(--t1);
+    }
+
+    .comp-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .comp-table tr:hover td.xarex-col { background: rgba(124,106,247,0.08); }
+
+    .check { color: var(--success); font-size: 16px; }
+    .cross { color: rgba(255,255,255,0.2); font-size: 16px; }
+    .partial { color: var(--warn); font-size: 13px; }
+    .price-tag { font-size: 14px; font-weight: 900; }
+    .price-red  { color: var(--crit); }
+    .price-green{ color: var(--success); }
+
+    .col-feature { font-size: 13px; color: var(--t2); }
+
+    @media (max-width: 700px) {
+      .comp-table th:not(:first-child):not(.xarex-col),
+      .comp-table td:not(:first-child):not(.xarex-col) { display: none; }
+    }
+
+    /* ── ROI Calculator ──────────────────────────────────────── */
+    .roi-section { position: relative; z-index: 1; }
+
+    .roi-card {
+      background: rgba(10,5,32,0.8);
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 24px; padding: 48px;
+      backdrop-filter: blur(20px);
+    }
+
+    .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+
+    @media (max-width: 768px) { .roi-grid { grid-template-columns: 1fr; gap: 40px; } .roi-card { padding: 32px 24px; } }
+
+    .roi-inputs { display: flex; flex-direction: column; gap: 28px; }
+
+    .roi-field label {
+      display: block; font-size: 13px; font-weight: 700; color: var(--t2);
+      margin-bottom: 10px;
+    }
+
+    .roi-slider {
+      width: 100%; height: 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.1);
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .roi-slider-val {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: var(--t3); margin-top: 6px;
+    }
+
+    .roi-slider-cur {
+      font-size: 22px; font-weight: 900;
+      color: var(--t1); margin-top: 4px;
+    }
+
+    .roi-results { display: flex; flex-direction: column; gap: 16px; }
+
+    .roi-result-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--bdr);
+      border-radius: 14px; padding: 20px;
+    }
+
+    .roi-result-label { font-size: 12px; color: var(--t3); margin-bottom: 6px; }
+
+    .roi-result-val {
+      font-size: 28px; font-weight: 900; letter-spacing: -1px;
+    }
+
+    .roi-result-val.green { color: var(--success); }
+    .roi-result-val.purple { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .roi-result-sub { font-size: 12px; color: var(--t3); margin-top: 4px; }
+
+    /* ── How It Works ────────────────────────────────────────── */
+    .how-section { position: relative; z-index: 1; }
+
+    .how-steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; position: relative;
+    }
+
+    @media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } }
+
+    .how-step {
+      padding: 40px 32px;
+      position: relative; text-align: center;
+    }
+
+    .how-step:not(:last-child)::after {
+      content: '→';
+      position: absolute; top: 50%; right: -12px;
+      transform: translateY(-50%);
+      font-size: 24px; color: rgba(124,106,247,0.4);
+      z-index: 2;
+    }
+
+    @media (max-width: 700px) {
+      .how-step:not(:last-child)::after { content: '↓'; right: 50%; top: auto; bottom: -12px; transform: translateX(50%); }
+    }
+
+    .how-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 900; color: #fff;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px rgba(124,106,247,0.4);
+    }
+
+    .how-icon-big { font-size: 40px; margin-bottom: 16px; }
+    .how-title    { font-size: 20px; font-weight: 800; color: var(--t1); margin-bottom: 10px; }
+    .how-desc     { font-size: 14px; color: var(--t2); line-height: 1.65; }
+
+    /* ── Pricing ─────────────────────────────────────────────── */
+    .pricing-section { position: relative; z-index: 1; }
+
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 20px; align-items: center; }
+
+    @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 20px; padding: 36px 32px;
+    }
+
+    .pricing-card.featured {
+      background: rgba(10,5,32,0.95);
+      border-color: rgba(124,106,247,0.5);
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 24px 60px rgba(0,0,0,0.5), 0 0 80px rgba(124,106,247,0.1);
+      position: relative; overflow: hidden;
+    }
+
+    .pricing-card.featured::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad);
+    }
+
+    .pricing-badge {
+      display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+      background: var(--grad); color: #fff; margin-bottom: 20px;
+    }
+
+    .pricing-plan { font-size: 13px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+
+    .pricing-price {
+      font-size: 52px; font-weight: 900; letter-spacing: -2px;
+      line-height: 1; margin-bottom: 4px;
+    }
+
+    .pricing-price sup { font-size: 28px; vertical-align: super; letter-spacing: 0; }
+    .pricing-price sub { font-size: 18px; color: var(--t3); font-weight: 500; }
+
+    .pricing-per { font-size: 13px; color: var(--t3); margin-bottom: 8px; }
+
+    .pricing-compare {
+      font-size: 13px; color: var(--success); margin-bottom: 28px;
+      font-weight: 700;
+    }
+
+    .pricing-divider { height: 1px; background: var(--bdr); margin: 24px 0; }
+
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--t2);
+    }
+
+    .pf-check { color: var(--success); flex-shrink: 0; margin-top: 1px; }
+
+    .pricing-alt { text-align: center; padding: 20px 0; }
+    .pricing-alt-price { font-size: 18px; font-weight: 800; color: var(--crit); margin-bottom: 6px; }
+    .pricing-alt-name  { font-size: 13px; color: var(--t3); margin-bottom: 12px; }
+    .pricing-alt-list  { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .pricing-alt-list li { font-size: 13px; color: var(--t3); display: flex; align-items: center; gap: 8px; }
+    .pricing-alt-list .x  { color: rgba(255,255,255,0.2); }
+
+    .guarantee {
+      text-align: center; margin-top: 24px;
+      font-size: 13px; color: var(--t3);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    /* ── Pricing toggle ──────────────────────────────────────── */
+    .pricing-toggle-wrap {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 44px;
+    }
+
+    .pricing-toggle {
+      display: inline-flex; align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 40px; padding: 4px;
+      gap: 4px;
+      position: relative;
+    }
+
+    .pricing-toggle-btn {
+      position: relative; z-index: 2;
+      padding: 10px 22px; border-radius: 36px;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      background: transparent;
+      color: var(--t3);
+      transition: color 0.22s;
+      white-space: nowrap;
+    }
+
+    .pricing-toggle-btn[aria-checked="true"] {
+      color: #fff;
+    }
+
+    .pricing-toggle-pill {
+      position: absolute; top: 4px; bottom: 4px;
+      border-radius: 36px;
+      background: var(--grad);
+      box-shadow: 0 2px 12px rgba(124,106,247,0.45);
+      transition: left 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+    }
+
+    .pricing-per-month-equiv {
+      font-size: 12px; color: var(--t3); margin-top: 4px; min-height: 18px;
+      transition: opacity 0.2s;
+    }
+
+    /* ── Checkout dialog ────────────────────────────────────── */
+    dialog#checkout-dialog {
+      background: var(--surface);
+      border: 1px solid rgba(124,106,247,0.35);
+      border-radius: 20px;
+      padding: 0;
+      max-width: 440px; width: calc(100% - 32px);
+      color: var(--t1);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+
+    dialog#checkout-dialog::backdrop {
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+    }
+
+    .checkout-dlg-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--bdr);
+    }
+
+    .checkout-dlg-title {
+      font-size: 18px; font-weight: 800; margin-bottom: 6px;
+    }
+
+    .checkout-dlg-sub {
+      font-size: 13px; color: var(--t3);
+    }
+
+    .checkout-dlg-body {
+      padding: 24px 28px;
+    }
+
+    .checkout-dlg-label {
+      display: block; font-size: 13px; font-weight: 600; color: var(--t2); margin-bottom: 8px;
+    }
+
+    .checkout-dlg-input {
+      width: 100%; padding: 12px 16px;
+      background: var(--bg2);
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      font-size: 15px; color: var(--t1);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .checkout-dlg-input:focus {
+      border-color: rgba(124,106,247,0.6);
+    }
+
+    .checkout-dlg-error {
+      margin-top: 12px; padding: 12px 14px;
+      background: rgba(240,79,89,0.1);
+      border: 1px solid rgba(240,79,89,0.3);
+      border-radius: 10px;
+      font-size: 13px; color: var(--crit);
+      display: none;
+    }
+
+    .checkout-dlg-error a { color: var(--accent); text-decoration: underline; }
+
+    .checkout-dlg-footer {
+      padding: 0 28px 28px;
+      display: flex; gap: 12px;
+    }
+
+    .checkout-dlg-footer .btn { flex: 1; justify-content: center; }
+
+    /* ── Case Study ─────────────────────────────────────────── */
+    .case-study-section { position: relative; z-index: 1; }
+    .case-study-banner {
+      display: inline-block; font-size: 11px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 6px;
+      background: rgba(240,201,58,0.15); color: var(--warn);
+      border: 1px solid rgba(240,201,58,0.35);
+      margin-bottom: 24px;
+    }
+    .case-study-card {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 20px; padding: 40px;
+      position: relative; overflow: hidden;
+    }
+    .case-study-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad-warm);
+    }
+    .case-study-metrics {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-top: 32px;
+    }
+    @media (max-width: 768px) { .case-study-metrics { grid-template-columns: 1fr 1fr; } }
+    .cs-metric {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--bdr);
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .cs-metric-val { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+    .cs-metric-val.green { color: var(--good); }
+    .cs-metric-val.red   { color: var(--crit); }
+    .cs-metric-val.blue  { color: var(--info); }
+    .cs-metric-val.purple{ background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .cs-metric-lbl { font-size: 11px; color: var(--t3); margin-top: 4px; }
+
+    /* ── Testimonials ────────────────────────────────────────── */
+    .testimonials-section { position: relative; z-index: 1; }
+
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    @media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 18px; padding: 28px;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .testimonial-card:hover { transform: translateY(-3px); border-color: rgba(124,106,247,0.3); }
+
+    .testimonial-stars { color: var(--warn); font-size: 15px; letter-spacing: 2px; }
+
+    .testimonial-quote {
+      font-size: 15px; color: var(--t1); line-height: 1.7;
+      flex: 1; font-style: italic;
+    }
+
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+
+    .testimonial-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+
+    .testimonial-name  { font-size: 14px; font-weight: 700; color: var(--t1); }
+    .testimonial-role  { font-size: 12px; color: var(--t3); }
+
+    .saving-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
+      background: rgba(46,213,115,0.12); color: var(--success);
+      border: 1px solid rgba(46,213,115,0.25);
+    }
+
+    /* ── FAQ ─────────────────────────────────────────────────── */
+    .faq-section { position: relative; z-index: 1; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 760px; margin: 0 auto; }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 14px; overflow: hidden;
+    }
+
+    .faq-q {
+      padding: 20px 24px;
+      font-size: 15px; font-weight: 700; color: var(--t1);
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px;
+      transition: background 0.15s;
+      user-select: none;
+      width: 100%; text-align: left;
+      background: none; border: none; font-family: inherit;
+    }
+
+    .faq-q:hover { background: rgba(255,255,255,0.03); }
+    .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 14px; }
+    .faq-chevron { font-size: 14px; color: var(--t3); transition: transform 0.25s; flex-shrink: 0; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+    .faq-a {
+      padding: 0 24px; max-height: 0; overflow: hidden;
+      font-size: 14px; color: var(--t2); line-height: 1.7;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
+
+    /* ── Final CTA ───────────────────────────────────────────── */
+    .final-cta {
+      position: relative; z-index: 1;
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .final-cta-card {
+      background: rgba(124,106,247,0.08);
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 28px; padding: 80px 40px;
+      position: relative; overflow: hidden;
+    }
+
+    .final-cta-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(124,106,247,0.15), transparent);
+      pointer-events: none;
+    }
+
+    .cta-headline { font-size: clamp(32px, 4vw, 54px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .cta-sub      { font-size: 18px; color: var(--t2); margin-bottom: 40px; }
+    .cta-btns     { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--bdr);
+      padding: 64px 0 0;
+    }
+
+    .footer-grid {
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 40px; padding-bottom: 48px;
+    }
+    @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+    .footer-brand { display: flex; flex-direction: column; gap: 14px; }
+    .footer-logo {
+      font-size: 18px; font-weight: 900;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer-tagline { font-size: 13px; color: var(--t3); line-height: 1.6; max-width: 220px; }
+
+    .footer-col-title {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--t2); margin-bottom: 16px;
+    }
+    .footer-col-links { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+    .footer-col-links a { font-size: 13px; color: var(--t3); transition: color 0.15s; }
+    .footer-col-links a:hover { color: var(--t1); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--bdr);
+      padding: 20px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 12px; color: var(--t3); }
+    .footer-legal-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-legal-links a { font-size: 12px; color: var(--t3); transition: color 0.15s; }
+    .footer-legal-links a:hover { color: var(--t1); }
+
+    /* ── Legal stub sections ─────────────────────────────────── */
+    .legal-stub {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--bdr);
+    }
+    .legal-stub summary {
+      padding: 20px 24px;
+      font-size: 14px; font-weight: 700; color: var(--t2);
+      cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .legal-stub summary:hover { color: var(--t1); }
+    .legal-stub summary::marker,
+    .legal-stub summary::-webkit-details-marker { display: none; }
+    .legal-stub-body {
+      padding: 0 24px 24px;
+      font-size: 13px; color: var(--t3); line-height: 1.7;
+      max-width: 760px;
+    }
+    .legal-draft-banner {
+      display: inline-block; font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 4px;
+      background: rgba(240,201,58,0.12); color: var(--warn);
+      border: 1px solid rgba(240,201,58,0.3);
+      margin-bottom: 12px;
+    }
+
+    /* ── Animations ──────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Counter animation */
+    .counter { display: inline-block; }
+
+    /* ── Section divider ─────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--bdr), transparent);
+      margin: 0;
+    }
+
+    /* ── Trust Strip ────────────────────────────────────────── */
+    .trust-strip {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--bdr);
+      border-bottom: 1px solid var(--bdr);
+      background: rgba(124,106,247,0.04);
+      padding: 18px 0 12px;
+    }
+    .trust-inner {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 8px;
+    }
+    .trust-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 600; color: var(--t2);
+      padding: 7px 14px; border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--bdr);
+    }
+    .trust-chip svg { color: var(--accent); flex-shrink: 0; }
+    .trust-footnote {
+      text-align: center; font-size: 11px; color: var(--t3);
+    }
+    .trust-footnote a { color: var(--accent); text-decoration: underline; }
+
+    /* ── Reduced motion ─────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .orb { animation: none !important; }
+      .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── Topbar alert ────────────────────────────────────────── */
+    .topbar-alert {
+      background: var(--grad);
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 13px; font-weight: 600; color: #fff;
+      position: relative; z-index: 101;
+    }
+
+    .topbar-alert a { text-decoration: underline; font-weight: 800; }
+
+    /* ── Sample Report Lead Gate ────────────────────────────── */
+    .sample-report-section { position: relative; z-index: 1; }
+
+    .sample-report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .sample-report-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    /* Preview column */
+    .report-preview-col { display: flex; flex-direction: column; gap: 28px; }
+
+    .report-cover {
+      background: linear-gradient(145deg, #7c6af7 0%, #5a45e0 40%, #3a2ab8 70%, #1e1875 100%);
+      border-radius: 16px;
+      padding: 36px 32px 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(124,106,247,0.4);
+    }
+
+    .report-cover::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: rgba(79,201,240,0.15);
+      border-radius: 50%;
+    }
+
+    .report-cover-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .report-cover-logo-mark {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 18px; color: #7c6af7;
+    }
+
+    .report-cover-logo-text {
+      font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.5px;
+    }
+
+    .report-cover-type {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: rgba(255,255,255,0.6);
+      margin-bottom: 10px;
+    }
+
+    .report-cover-title {
+      font-size: 22px; font-weight: 900; color: #fff;
+      line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.5px;
+    }
+
+    .report-cover-meta { display: flex; flex-direction: column; gap: 6px; }
+
+    .report-cover-meta-row {
+      display: flex; gap: 10px;
+      font-size: 12px; color: rgba(255,255,255,0.65);
+    }
+
+    .report-cover-meta-row strong { color: rgba(255,255,255,0.9); }
+
+    .report-cover-watermark {
+      position: absolute;
+      bottom: 20px; right: 20px;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.18);
+      padding: 4px 10px; border-radius: 4px;
+      transform: rotate(-8deg);
+    }
+
+    .report-bullets { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .report-bullets li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--t2); line-height: 1.5;
+    }
+
+    .report-bullets li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 900;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Form column */
+    .report-form-col {
+      background: var(--surface);
+      border: 1px solid var(--bdr);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+    }
+
+    .report-form-col h2 {
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 900; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 10px;
+    }
+
+    .report-form-col .report-form-sub {
+      font-size: 15px; color: var(--t2);
+      line-height: 1.6; margin-bottom: 28px;
+    }
+
+    .rg-field { margin-bottom: 18px; }
+
+    .rg-label {
+      display: block;
+      font-size: 13px; font-weight: 600;
+      color: var(--t2); margin-bottom: 6px;
+    }
+
+    .rg-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(124,106,247,0.2);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 14px; color: var(--t1);
+      font-family: inherit;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .rg-input:focus {
+      border-color: var(--accent);
+      background: rgba(124,106,247,0.06);
+    }
+
+    .rg-input::placeholder { color: var(--t3); }
+
+    .rg-input option { background: #101422; color: var(--t1); }
+
+    .rg-submit {
+      width: 100%;
+      justify-content: center;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .rg-privacy {
+      font-size: 12px; color: var(--t3);
+      text-align: center; margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* Privacy details / why-gate explainer */
+    .rg-why {
+      margin-top: 20px;
+      border-top: 1px solid var(--bdr);
+      padding-top: 16px;
+    }
+
+    .rg-why summary {
+      font-size: 12px; color: var(--t3);
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+    }
+
+    .rg-why summary::-webkit-details-marker { display: none; }
+
+    .rg-why summary::before {
+      content: '+ ';
+      color: var(--accent);
+    }
+
+    details[open] .rg-why summary::before { content: '- '; }
+
+    .rg-why-body {
+      font-size: 12px; color: var(--t3);
+      line-height: 1.7; margin-top: 10px;
+    }
+
+    /* Honeypot — visually hidden, off-screen */
+    .rg-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      tabindex: -1;
+    }
+
+    /* Success state */
+    .rg-success {
+      display: none;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .rg-success.active { display: block; }
+
+    .rg-success-icon {
+      font-size: 40px; margin-bottom: 16px;
+    }
+
+    .rg-success h3 {
+      font-size: 22px; font-weight: 900;
+      color: var(--success);
+      margin-bottom: 10px;
+    }
+
+    .rg-success p {
+      font-size: 14px; color: var(--t2);
+      line-height: 1.6; margin-bottom: 24px;
+    }
+
+    .rg-success-dl {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--grad);
+      color: #fff;
+      padding: 14px 28px; border-radius: 12px;
+      font-size: 15px; font-weight: 700;
+      box-shadow: 0 4px 24px rgba(124,106,247,0.45);
+      transition: all 0.2s;
+      text-decoration: none;
+      margin-bottom: 14px;
+    }
+
+    .rg-success-dl:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,106,247,0.6); }
+
+    .rg-success-hint {
+      font-size: 12px; color: var(--t3);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="orb-wrap">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Topbar alert -->
+  <div class="topbar-alert">
+    2 free scans on every free signup — then from $39/mo billed annually. <a href="#pricing">See all plans →</a>
+  </div>
+
+  <!-- ── Navigation ──────────────────────────────────────────── -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-mark">⬡</div>
+        XAREX
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Features</a></li>
+        <li><a href="/demo">Demo</a></li>
+        <li><a href="#comparison">vs Competitors</a></li>
+        <li><a href="#roi">ROI</a></li>
+        <li><a href="#how">How it Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="/app" class="btn btn-ghost" style="padding:10px 20px;font-size:14px">Sign In</a>
+        <a href="/signup" class="btn btn-primary nav-cta-signup" style="padding:10px 22px;font-size:14px">Start free — 2 scans included</a>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navMobilePanel">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="2" y1="6" x2="20" y2="6"/>
+            <line x1="2" y1="11" x2="20" y2="11"/>
+            <line x1="2" y1="16" x2="20" y2="16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile nav panel -->
+  <div class="nav-mobile-panel" id="navMobilePanel" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <button class="nav-mobile-close" id="navMobileClose" aria-label="Close navigation menu">✕</button>
+    <a href="#features" class="nav-mobile-link">Features</a>
+    <a href="/demo" class="nav-mobile-link">Demo</a>
+    <a href="#comparison" class="nav-mobile-link">vs Competitors</a>
+    <a href="#roi" class="nav-mobile-link">ROI Calculator</a>
+    <a href="#how" class="nav-mobile-link">How it Works</a>
+    <a href="#sample-report" class="nav-mobile-link">Sample Report</a>
+    <a href="#pricing" class="nav-mobile-link">Pricing</a>
+    <a href="#faq" class="nav-mobile-link">FAQ</a>
+    <a href="/signup" class="mobile-cta">Start free — 2 scans included</a>
+  </div>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="hero" id="hero" aria-labelledby="hero-heading">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <div class="badge">⚡ Autonomous Penetration Testing — Self-Hosted</div>
+      </div>
+      <h1 class="hero-headline" id="hero-heading">
+        Find what attackers find.<br>
+        <span class="gradient-text">Fix it before they do.</span>
+      </h1>
+      <p class="hero-sub">
+        Xarex runs continuous penetration tests autonomously — matching live CVEs to your assets, simulating real APT attack chains, mapping paths to your crown jewels, and delivering AI-written reports your board can act on. Self-hosted. Your data never leaves your infrastructure.
+      </p>
+      <div class="hero-ctas">
+        <a href="/signup" class="btn btn-primary btn-lg">Start scanning in 60 seconds</a>
+        <a href="#live-demo" class="btn btn-ghost btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Watch Demo
+        </a>
+      </div>
+      <div class="hero-note">
+        <span class="dot"></span>
+        No credit card required &nbsp;·&nbsp; 2 free scans included &nbsp;·&nbsp; Upgrade when you need more
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust Strip ────────────────────────────────────────── -->
+  <div class="trust-strip" role="list" aria-label="Trust and compliance signals">
+    <div class="container">
+      <div class="trust-inner">
+        <div class="trust-chip" role="listitem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          SOC 2 Type II — in progress
+        </div>
+        <div class="trust-chip" role="listitem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          GDPR-ready
+        </div>
+        <div class="trust-chip" role="listitem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Self-hosted
+        </div>
+        <div class="trust-chip" role="listitem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Data stays on your infra
+        </div>
+        <div class="trust-chip" role="listitem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          ISO 27001 — roadmap
+        </div>
+      </div>
+      <p class="trust-footnote">Compliance certifications in progress. <a href="/contact-sales">Contact sales</a> for current audit status.</p>
+    </div>
+  </div>
+
+  <!-- ── Live Scan Demo ────────────────────────────────────── -->
+  <section class="demo-section" id="live-demo" aria-labelledby="demo-heading">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:36px">
+        <div class="section-label">Live Demo</div>
+        <h2 class="section-title" id="demo-heading">Watch Xarex find a critical in <span class="gradient-text">real time.</span></h2>
+        <p class="section-sub" style="margin:12px auto 0;text-align:center">This is the actual scan output — mock data, same format as a live run against your network.</p>
+      </div>
+      <div class="demo-terminal" role="region" aria-label="Animated scan terminal demo">
+        <div class="demo-titlebar">
+          <span class="tb-dot tb-red"></span>
+          <span class="tb-dot tb-yellow"></span>
+          <span class="tb-dot tb-green"></span>
+          <span class="demo-titlebar tb-title">xarex scan 10.0.0.0/24 — mock demo</span>
+        </div>
+        <div class="demo-body" id="termLines" aria-live="polite" aria-atomic="false"></div>
+        <div class="demo-footer">
+          <span class="demo-status" id="demoStatus">Initialising…</span>
+          <button class="demo-replay" id="demoReplay" aria-label="Replay scan demo">↺ Replay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Preview -->
+  <figure class="preview-wrap" style="margin-top: 20px; margin-bottom: 80px; position:relative; z-index:1;" role="img" aria-label="Xarex dashboard showing 7 critical findings, 3 active probes, threat actor exposure scores, and a live scan running">
+    <div class="preview-glow"></div>
+    <div class="preview-frame">
+      <div class="preview-titlebar">
+        <span class="tb-dot tb-red"></span>
+        <span class="tb-dot tb-yellow"></span>
+        <span class="tb-dot tb-green"></span>
+        <span class="tb-title">xarex.local — Security Overview</span>
+      </div>
+      <div class="preview-content">
+        <!-- Sidebar -->
+        <div class="preview-sidebar">
+          <div class="ps-logo"><span class="ps-logo-dot">⬡</span> XAREX</div>
+          <div class="ps-group">
+            <div class="ps-label">Monitor</div>
+            <div class="ps-item active"><span class="ps-item-dot"></span> Dashboard</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Probes</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Hosts</div>
+          </div>
+          <div class="ps-group">
+            <div class="ps-label">Analysis</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Findings</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Attack Paths</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Crown Jewels</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Network Map</div>
+          </div>
+          <div class="ps-group">
+            <div class="ps-label">Intelligence</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> AI Intel</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> Threat Actors</div>
+            <div class="ps-item"><span class="ps-item-dot"></span> CVE Watch</div>
+          </div>
+        </div>
+        <!-- Main -->
+        <div class="preview-main">
+          <div class="pm-stats">
+            <div class="pm-stat"><div class="pm-stat-val crit">7</div><div class="pm-stat-lbl">Critical Findings</div></div>
+            <div class="pm-stat"><div class="pm-stat-val">3</div><div class="pm-stat-lbl">Active Probes</div></div>
+            <div class="pm-stat"><div class="pm-stat-val">47</div><div class="pm-stat-lbl">Total Findings</div></div>
+            <div class="pm-stat"><div class="pm-stat-val good">6.2</div><div class="pm-stat-lbl">Risk Score</div></div>
+          </div>
+          <div class="pm-cards">
+            <div class="pm-card">
+              <div class="pm-card-header">
+                <span class="pm-live-badge"><span class="pm-live-dot"></span> LIVE — Scan Running</span>
+              </div>
+              <div class="pm-finding"><span class="sev-dot sev-c"></span>Redis Unauthenticated — 192.168.1.22</div>
+              <div class="pm-finding"><span class="sev-dot sev-c"></span>SMB EternalBlue — 192.168.1.15</div>
+              <div class="pm-finding"><span class="sev-dot sev-h"></span>OpenSSH 7.2 CVE-2023-38408</div>
+              <div class="pm-finding"><span class="sev-dot sev-m"></span>Self-signed TLS cert — port 443</div>
+            </div>
+            <div class="pm-card">
+              <div class="pm-card-header">Threat Actor Exposure</div>
+              <div class="pm-threat">
+                <span class="threat-flag">🇷🇺</span>
+                <span class="threat-name">APT29 / Cozy Bear</span>
+                <span class="threat-score score-high">8.4/10</span>
+              </div>
+              <div class="pm-threat">
+                <span class="threat-flag">🇰🇵</span>
+                <span class="threat-name">Lazarus Group</span>
+                <span class="threat-score score-high">7.1/10</span>
+              </div>
+              <div class="pm-threat">
+                <span class="threat-flag">🌐</span>
+                <span class="threat-name">DarkSide / BlackMatter</span>
+                <span class="threat-score score-med">4.3/10</span>
+              </div>
+              <div class="pm-threat">
+                <span class="threat-flag">🌐</span>
+                <span class="threat-name">Scattered Spider</span>
+                <span class="threat-score score-low">1.8/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption style="text-align:center;font-size:12px;color:var(--t3);margin-top:16px;padding:0 24px;">
+      Xarex dashboard — findings sorted by severity, live scan running, threat actor exposure scores. Mock data shown.
+    </figcaption>
+  </figure>
+
+  <!-- ── Stats Bar ──────────────────────────────────────────── -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <div class="stat-num"><span class="counter" data-target="89">0</span>%</div>
+          <div class="stat-desc">Cheaper than Nessus Pro</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span class="counter" data-target="11">0</span></div>
+          <div class="stat-desc">Real APT groups tracked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span class="counter" data-target="6">0</span>-phase</div>
+          <div class="stat-desc">Autonomous scan pipeline</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">&lt;<span class="counter" data-target="30">0</span>s</div>
+          <div class="stat-desc">Probe registration time</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span class="counter" data-target="25">0</span>+</div>
+          <div class="stat-desc">Mock CVEs in sample intel feed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Problem ────────────────────────────────────────────── -->
+  <section class="section problem-section" id="problem">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">The Problem</div>
+        <h2 class="section-title">Security tools are stuck in 2015.</h2>
+        <p class="section-sub">Existing vulnerability scanners tell you what's broken. They don't tell you how an attacker would exploit it, which assets are most at risk, or what to fix first to save the most money.</p>
+      </div>
+      <div class="pain-cards reveal">
+        <div class="pain-card">
+          <div class="pain-icon">💸</div>
+          <div class="pain-title">Eye-watering cost</div>
+          <div class="pain-desc">Nessus Pro: $3,990/year. Rapid7 InsightVM: $5,000+/year. Manual penetration tests: $15,000–$50,000 per engagement. Enterprise tools require enterprise budgets — even for 50-host networks.</div>
+          <div class="pain-cost">You're paying $332–$4,000+/month for tools Xarex replaces at $49.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">📋</div>
+          <div class="pain-title">No attack context</div>
+          <div class="pain-desc">Traditional scanners list CVEs. They don't model how an adversary would chain those vulnerabilities across your network, which paths lead to your crown jewels, or how real APT groups would attack you specifically.</div>
+          <div class="pain-cost">Without context, you're patching blindly and wasting remediation budget.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">🐢</div>
+          <div class="pain-title">Point-in-time, not continuous</div>
+          <div class="pain-desc">Manual pentests happen once a year. New CVEs are published daily. Infrastructure changes constantly. A finding that wasn't present at your last pentest could be exposing you right now — and you'd never know.</div>
+          <div class="pain-cost">Breaches go undetected for months on average — a new CVE introduced last week won't appear until your next scheduled scan.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Features ───────────────────────────────────────────── -->
+  <section class="section features-section" id="features">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:60px">
+        <div class="section-label">Platform Features</div>
+        <h2 class="section-title">Everything you need.<br><span class="gradient-text">Nothing you don't.</span></h2>
+        <p class="section-sub" style="margin: 16px auto 0; text-align:center">20+ purpose-built features for security professionals — from passive recon and secret-leak scanning to 9,000+ templated CVE checks and AI-written reports.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">6-Phase Autonomous Scan</div>
+          <div class="feature-desc">Host discovery → port scan → service detection → vuln assessment → attack path modeling → AI report generation. One click. Zero manual intervention.</div>
+          <span class="feature-tag">Core</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">🎭</div>
+          <div class="feature-title">Threat Actor Simulation</div>
+          <div class="feature-desc">Select from 11 real APT groups — APT29, Lazarus, Scattered Spider, DarkSide, and more. Xarex overlays their actual MITRE ATT&CK TTPs against your findings and scores your exact exposure.</div>
+          <span class="feature-tag new-tag">Unique</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">💎</div>
+          <div class="feature-title">Crown Jewel Analysis</div>
+          <div class="feature-desc">Define your most critical assets — Domain Controller, payment DB, PII store. Xarex computes how many attack paths lead to each one and the estimated breach cost if compromised.</div>
+          <span class="feature-tag new-tag">Unique</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">📡</div>
+          <div class="feature-title">Real-Time CVE Watch</div>
+          <div class="feature-desc">Xarex fetches from NIST NVD continuously and matches new CVEs to your discovered services. Know you're exposed within hours of publication — not at your next quarterly scan.</div>
+          <span class="feature-tag new-tag">Unique</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">🧠</div>
+          <div class="feature-title">Claude AI Reports</div>
+          <div class="feature-desc">Powered by Claude Opus: executive summaries for the boardroom, technical attack narratives, MITRE ATT&CK mapping, and a prioritised remediation plan with ROI in dollars per hour of effort.</div>
+          <span class="feature-tag">AI-Powered</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">🗡</div>
+          <div class="feature-title">Attack Path Modeling</div>
+          <div class="feature-desc">Xarex models how an adversary would chain vulnerabilities across your network — entry point → pivot → target. Shows hop count, risk score, and impact. Fix the entry to break the whole chain.</div>
+          <span class="feature-tag">Core</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">🗺</div>
+          <div class="feature-title">Interactive Network Map</div>
+          <div class="feature-desc">Force-directed canvas graph of all discovered hosts with attack paths rendered as directional arrows. Pan, zoom, click any node to drill into findings. See your attack surface as an adversary does.</div>
+          <span class="feature-tag">Visual</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Scan Diff & Risk Trend</div>
+          <div class="feature-desc">Compare any two scans side-by-side: new findings, fixed findings, persisting risk. Risk trend chart tracks your score over time. Proves security programme ROI to management with data.</div>
+          <span class="feature-tag">Analytics</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">🔧</div>
+          <div class="feature-title">Built-in Pentest Tools</div>
+          <div class="feature-desc">CVSS v3.1 calculator, encoder/decoder (Base64/URL/Hex/SHA-256/MD5), reverse shell generator (12 types + 4 listener commands), CIDR calculator, JWT decoder. No external tools needed.</div>
+          <span class="feature-tag">Tools</span>
+        </div>
+
+        <!-- ───────────────────────────────────────────────────────────────
+             4 NEW FEATURES (2026-05) — Recon + Scan expansion
+             ─────────────────────────────────────────────────────────── -->
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌐</div>
+          <div class="feature-title">Subdomain Enumeration</div>
+          <div class="feature-desc">Type a domain — see every subdomain your team has forgotten about. Pulls from Certificate Transparency logs, passive DNS aggregators, and DNS-over-HTTPS resolution. The single highest-leverage way to find shadow IT before an attacker does.</div>
+          <span class="feature-tag new-tag">New</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">📧</div>
+          <div class="feature-title">OSINT Email Harvest</div>
+          <div class="feature-desc">Find every employee email exposed in public certificate fields and PGP keyservers. Each is cross-checked against the HaveIBeenPwned breach database — so you see exactly which staff credentials are already in attacker hands.</div>
+          <span class="feature-tag new-tag">New</span>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">🔑</div>
+          <div class="feature-title">Secrets &amp; Git Scanner</div>
+          <div class="feature-desc">Point at any public git repo — Xarex clones it in a sandbox, scans every text file against 20+ secret patterns (AWS, Stripe, Anthropic, OpenAI, GitHub, Slack, JWTs, PEM keys), redacts matches, and reports severity. Catches the leaks your devs don't know they shipped.</div>
+          <span class="feature-tag new-tag">New</span>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">9,000+ Templated CVE Checks</div>
+          <div class="feature-desc">Every scan now runs the full Nuclei community template library against open web ports — Log4Shell, exposed admin panels, default credentials, leaked .env files, misconfigured Wordpress, Spring4Shell, you name it. New CVEs land hours after disclosure.</div>
+          <span class="feature-tag new-tag">New</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Deep Dives ──────────────────────────────────────────── -->
+  <section class="section deep-section" id="deep-features">
+    <div class="container">
+
+      <!-- Threat Actor -->
+      <div class="deep-item reveal">
+        <div class="deep-copy">
+          <div class="deep-label">Exclusive Feature</div>
+          <h3 class="deep-title">Know exactly which APT groups would target <span class="gradient-text">your environment.</span></h3>
+          <p class="deep-desc">No other scanner does this. Xarex maps your actual findings against the real MITRE ATT&CK techniques used by 11 major threat actors — giving you a 0–10 exposure score per adversary and a simulated kill chain.</p>
+          <div class="deep-bullets">
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>11 APT groups: APT28, APT29, APT41, Lazarus, Sandworm, FIN7, DarkSide, LAPSUS$, Cl0p, MuddyWater, Scattered Spider</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Real MITRE ATT&CK TTP profiles — not generic advice</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Shows exactly which of your findings give each actor a foothold</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Simulated kill chain per actor — how they'd move through your network</span>
+            </div>
+          </div>
+        </div>
+        <div class="deep-visual">
+          <div class="dv-header"><span class="dv-dot"></span> Threat Actor Simulation</div>
+          <div class="dv-body">
+            <div style="font-size:11px;color:var(--t3);margin-bottom:10px">Select an actor to see your exposure</div>
+            <div class="ta-actor-row selected">
+              <span style="font-size:16px">🇷🇺</span>
+              <span class="ta-actor-name">APT29 / Cozy Bear</span>
+              <div style="text-align:right">
+                <div style="font-size:14px;font-weight:900;color:var(--crit)">8.4</div>
+                <div style="font-size:9px;color:var(--t3)">/ 10</div>
+              </div>
+            </div>
+            <div class="ta-actor-row">
+              <span style="font-size:16px">🇰🇵</span>
+              <span class="ta-actor-name">Lazarus Group</span>
+              <div style="text-align:right">
+                <div style="font-size:14px;font-weight:900;color:#f0853a">5.1</div>
+                <div style="font-size:9px;color:var(--t3)">/ 10</div>
+              </div>
+            </div>
+            <div class="ta-actor-row">
+              <span style="font-size:16px">🌐</span>
+              <span class="ta-actor-name">DarkSide Ransomware</span>
+              <div style="text-align:right">
+                <div style="font-size:14px;font-weight:900;color:var(--warn)">3.7</div>
+                <div style="font-size:9px;color:var(--t3)">/ 10</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:rgba(240,79,89,0.06);border-radius:8px;border:1px solid rgba(240,79,89,0.15)">
+              <div style="font-size:10px;color:var(--t3);margin-bottom:6px">APT29 TTP Coverage in your environment</div>
+              <div class="ta-eb-label"><span>8 of 13 techniques matched</span><span style="color:var(--crit)">61%</span></div>
+              <div class="ta-eb-track"><div class="ta-eb-fill" style="width:61%"></div></div>
+            </div>
+            <div style="margin-top:10px;font-size:11px;color:var(--t3)">
+              <span style="color:var(--crit)">■</span> Matched finding &nbsp;
+              <span style="color:rgba(255,255,255,0.15)">■</span> Not detected
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(240,79,89,0.4);background:rgba(240,79,89,0.1);color:var(--crit);font-family:'JetBrains Mono',monospace">T1566.001</span>
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(240,79,89,0.4);background:rgba(240,79,89,0.1);color:var(--crit);font-family:'JetBrains Mono',monospace">T1190</span>
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(240,79,89,0.4);background:rgba(240,79,89,0.1);color:var(--crit);font-family:'JetBrains Mono',monospace">T1078</span>
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--t3);font-family:'JetBrains Mono',monospace">T1558.003</span>
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(240,79,89,0.4);background:rgba(240,79,89,0.1);color:var(--crit);font-family:'JetBrains Mono',monospace">T1021.001</span>
+              <span style="font-size:10px;padding:2px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--t3);font-family:'JetBrains Mono',monospace">T1041</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CVE Watch -->
+      <div class="deep-item reverse reveal">
+        <div class="deep-copy">
+          <div class="deep-label">Real-Time Intelligence</div>
+          <h3 class="deep-title">Know about new CVEs before your next scan <span class="gradient-text">even runs.</span></h3>
+          <p class="deep-desc">Every day, NIST publishes new vulnerabilities. Most scanners only catch them at the next scan cycle — days or weeks later. Xarex matches the live NVD feed against your discovered services the moment CVEs are published.</p>
+          <div class="deep-bullets">
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Live feed from NIST NVD — no waiting for the next scheduled scan</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>"YOUR ENV" flag when a new CVE matches your discovered services</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>"PoC" flag when a public exploit or Metasploit module is detected</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Configurable time windows: 7, 14, or 30 days of CVE history</span>
+            </div>
+          </div>
+        </div>
+        <div class="deep-visual">
+          <div class="dv-header"><span class="dv-dot"></span> CVE Watch — 12 matched to your assets</div>
+          <div class="dv-body">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid var(--bdr);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:20px;font-weight:900;color:var(--t1)">87</div>
+                <div style="font-size:9px;color:var(--t3)">New CVEs</div>
+              </div>
+              <div style="background:rgba(240,79,89,0.06);border:1px solid rgba(240,79,89,0.2);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:20px;font-weight:900;color:var(--crit)">12</div>
+                <div style="font-size:9px;color:var(--t3)">Match You</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid var(--bdr);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:20px;font-weight:900;color:var(--t1)">23</div>
+                <div style="font-size:9px;color:var(--t3)">Critical</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid var(--bdr);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:20px;font-weight:900;color:var(--warn)">9</div>
+                <div style="font-size:9px;color:var(--t3)">Has PoC</div>
+              </div>
+            </div>
+            <div class="cve-row-mini" style="background:rgba(240,79,89,0.05);border:1px solid rgba(240,79,89,0.2);border-radius:8px">
+              <span class="cve-id-mini">CVE-2024-49138</span>
+              <span class="cve-pill c">9.8</span>
+              <span style="flex:1;font-size:10px;color:var(--t2)">Apache HTTPd RCE via header overflow</span>
+              <span class="cve-tag-your">YOUR ENV</span>
+            </div>
+            <div class="cve-row-mini" style="background:rgba(240,79,89,0.05);border:1px solid rgba(240,79,89,0.2);border-radius:8px;margin-top:4px">
+              <span class="cve-id-mini">CVE-2024-47575</span>
+              <span class="cve-pill c">9.6</span>
+              <span style="flex:1;font-size:10px;color:var(--t2)">FortiManager auth bypass — remote code</span>
+              <span class="cve-tag-your">YOUR ENV</span>
+            </div>
+            <div class="cve-row-mini" style="background:rgba(255,255,255,0.02);border:1px solid var(--bdr);border-radius:8px;margin-top:4px">
+              <span class="cve-id-mini">CVE-2024-38812</span>
+              <span class="cve-pill h">8.8</span>
+              <span style="flex:1;font-size:10px;color:var(--t2)">VMware vCenter heap overflow pre-auth</span>
+              <span style="font-size:9px;color:var(--warn);font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(240,133,58,0.1);border:1px solid rgba(240,133,58,0.3)">PoC</span>
+            </div>
+            <div class="cve-row-mini" style="background:rgba(255,255,255,0.02);border:1px solid var(--bdr);border-radius:8px;margin-top:4px">
+              <span class="cve-id-mini">CVE-2024-50379</span>
+              <span class="cve-pill c">9.8</span>
+              <span style="flex:1;font-size:10px;color:var(--t2)">Apache Tomcat partial PUT — RCE</span>
+              <span style="font-size:9px;color:var(--t3)">2024-12-20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  </section>
+
+  <!-- ── CVE Feed Ticker ───────────────────────────────────── -->
+  <div class="cve-ticker-section" id="cve-ticker">
+    <div class="cve-ticker-label">Sample CVE intel — Xarex matches live NVD against your assets in product</div>
+    <div class="cve-ticker-track" aria-hidden="true">
+      <div class="cve-ticker-inner" id="cveTickerInner">
+        <!-- JS duplicates this list for seamless loop -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Deep Dives (continued) ────────────────────────────── -->
+  <section class="section deep-section" style="padding-top:60px">
+    <div class="container">
+
+      <!-- Crown Jewels -->
+      <div class="deep-item reveal">
+        <div class="deep-copy">
+          <div class="deep-label">Blast Radius Analysis</div>
+          <h3 class="deep-title">Know which fix protects the most <span class="gradient-text">critical assets.</span></h3>
+          <p class="deep-desc">Crown Jewels lets you define what matters most — your Domain Controller, payment database, PII repository. Xarex then computes every attack path leading to each asset and estimates the breach cost if compromised.</p>
+          <div class="deep-bullets">
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Define critical assets in seconds — name, IP, and category</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Direct and indirect attack path counts per asset</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Estimated breach cost per asset — based on asset type, exposure, and industry breach cost benchmarks</span>
+            </div>
+            <div class="deep-bullet">
+              <div class="deep-bullet-icon">✓</div>
+              <span>Fix the entry point with most fan-out to protect all downstream jewels</span>
+            </div>
+          </div>
+        </div>
+        <div class="deep-visual">
+          <div class="dv-header"><span class="dv-dot"></span> Crown Jewel Analysis — 2 assets at risk</div>
+          <div class="dv-body">
+            <div class="jewel-mini">
+              <div class="jm-card red">
+                <div class="jm-icon">🏰</div>
+                <div class="jm-name">Domain Controller</div>
+                <div class="jm-paths">192.168.1.5</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0">
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--crit)">4</div>
+                    <div style="font-size:9px;color:var(--t3)">Direct</div>
+                  </div>
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:#f0853a">7</div>
+                    <div style="font-size:9px;color:var(--t3)">Indirect</div>
+                  </div>
+                </div>
+                <div class="jm-warn">⚠ $214K breach risk</div>
+              </div>
+              <div class="jm-card gold">
+                <div class="jm-icon">💳</div>
+                <div class="jm-name">Payment Database</div>
+                <div class="jm-paths">10.0.0.22</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0">
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:#f0853a">2</div>
+                    <div style="font-size:9px;color:var(--t3)">Direct</div>
+                  </div>
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--warn)">3</div>
+                    <div style="font-size:9px;color:var(--t3)">Indirect</div>
+                  </div>
+                </div>
+                <div class="jm-warn">⚠ $122K breach risk</div>
+              </div>
+              <div class="jm-card blue">
+                <div class="jm-icon">🗄️</div>
+                <div class="jm-name">Customer DB</div>
+                <div class="jm-paths">10.0.0.45</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0">
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--success)">0</div>
+                    <div style="font-size:9px;color:var(--t3)">Direct</div>
+                  </div>
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--success)">1</div>
+                    <div style="font-size:9px;color:var(--t3)">Indirect</div>
+                  </div>
+                </div>
+                <div class="jm-ok">✓ Low exposure</div>
+              </div>
+              <div class="jm-card purple">
+                <div class="jm-icon">💾</div>
+                <div class="jm-name">Backup System</div>
+                <div class="jm-paths">192.168.1.30</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0">
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--success)">0</div>
+                    <div style="font-size:9px;color:var(--t3)">Direct</div>
+                  </div>
+                  <div style="text-align:center;background:rgba(255,255,255,0.04);border-radius:6px;padding:6px">
+                    <div style="font-size:18px;font-weight:900;color:var(--success)">0</div>
+                    <div style="font-size:9px;color:var(--t3)">Indirect</div>
+                  </div>
+                </div>
+                <div class="jm-ok">✓ No paths found</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Comparison ─────────────────────────────────────────── -->
+  <section class="section comparison-section" id="comparison">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:50px">
+        <div class="section-label">vs The Competition</div>
+        <h2 class="section-title">More capability. A fraction<br><span class="gradient-text">of the price.</span></h2>
+        <p class="section-sub" style="margin:16px auto 0; text-align:center">Xarex does things no other security tool does — at a price that doesn't require a CFO sign-off.</p>
+      </div>
+
+      <div class="comp-table-wrap reveal">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th style="width:260px">Feature</th>
+              <th class="xarex-col" style="min-width:150px">⬡ Xarex<br><span style="font-weight:400;color:var(--success)">$49/month</span></th>
+              <th>Nessus Pro<br><span style="font-weight:400;color:var(--t3)">$332/month</span></th>
+              <th>Rapid7 InsightVM<br><span style="font-weight:400;color:var(--t3)">$417/month</span></th>
+              <th>Manual Pentest<br><span style="font-weight:400;color:var(--t3)">$1,250+/month</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Autonomous vulnerability scanning</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Attack path / kill chain modeling</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="partial">Limited</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">AI-generated executive reports (Claude)</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="partial">Manual</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Real-time CVE matching to your assets</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Threat actor simulation (APT groups)</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="partial">Limited</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Crown jewel blast radius analysis</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Interactive network topology map</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Remediation ROI ($ per hour of effort)</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Built-in pentest tools (CVSS, shells, JWT)</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="partial">Separate tools</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Continuous automated scheduling</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Self-hosted / on-premise option</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Reporting templates aligned to OWASP / PCI-DSS / NIST <sup style="font-size:10px;color:var(--t3)">†</sup></td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="partial">Limited</span></td>
+              <td><span class="check">✓</span></td>
+              <td><span class="partial">Manual</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Context-aware AI assistant</td>
+              <td class="xarex-col"><span class="check">✓</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature" style="font-weight:800;color:var(--t1)">Monthly Cost</td>
+              <td class="xarex-col"><span class="price-tag price-green">$49</span></td>
+              <td><span class="price-tag price-red">$332</span></td>
+              <td><span class="price-tag price-red">$417</span></td>
+              <td><span class="price-tag price-red">$1,250+</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="text-align:center; margin-top:24px; font-size:12px; color:var(--t3); max-width:680px; margin-left:auto; margin-right:auto;">
+        Prices sourced from published list prices as of Jan 2025. Actual enterprise pricing may vary. † Reporting templates are aligned to OWASP Top 10, PCI-DSS, and NIST CSF frameworks; Xarex does not claim certification or compliance attestation.
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── ROI Calculator ─────────────────────────────────────── -->
+  <section class="section roi-section" id="roi" aria-labelledby="roi-heading">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:50px">
+        <div class="section-label">ROI Calculator</div>
+        <h2 class="section-title" id="roi-heading">See what your current<br><span class="gradient-text">stack actually costs.</span></h2>
+        <p class="section-sub" style="margin:12px auto 0;text-align:center">Adjust to match your setup. Zero out anything you don't have.</p>
+      </div>
+      <div class="roi-card reveal">
+        <div class="roi-grid">
+          <div class="roi-inputs">
+            <h3 style="font-size:18px;font-weight:800;margin-bottom:20px">Your current security spend</h3>
+
+            <div class="roi-field">
+              <label for="pentestSlider">
+                Manual pentests per year
+                <span style="color:var(--t3);font-weight:400">($18,000 avg each)</span>
+                &nbsp;<label style="font-size:12px;color:var(--t3);font-weight:400;cursor:pointer"><input type="checkbox" id="pentestCheck" style="margin-right:4px;accent-color:var(--accent)">I don't have this</label>
+              </label>
+              <input type="range" class="roi-slider" id="pentestSlider" min="0" max="6" value="1" step="1" aria-label="Pentests per year" aria-valuenow="1" aria-valuemin="0" aria-valuemax="6">
+              <div class="roi-slider-val"><span>0</span><span>6/yr</span></div>
+              <div class="roi-slider-cur"><span id="pentestVal">1</span> engagement/year</div>
+            </div>
+
+            <div class="roi-field">
+              <label for="scannerSlider">
+                Vulnerability scanner subscription
+                &nbsp;<label style="font-size:12px;color:var(--t3);font-weight:400;cursor:pointer"><input type="checkbox" id="scannerCheck" style="margin-right:4px;accent-color:var(--accent)">I don't have this</label>
+              </label>
+              <input type="range" class="roi-slider" id="scannerSlider" min="0" max="5000" value="200" step="10" aria-label="Scanner cost per month" aria-valuenow="200" aria-valuemin="0" aria-valuemax="5000">
+              <div class="roi-slider-val"><span>$0</span><span>$5,000/mo</span></div>
+              <div class="roi-slider-cur">$<span id="scannerVal">200</span>/month</div>
+            </div>
+
+            <div class="roi-field">
+              <label for="hoursSlider">
+                Analyst hours per assessment
+                <span style="color:var(--t3);font-weight:400">($85/hr)</span>
+                &nbsp;<label style="font-size:12px;color:var(--t3);font-weight:400;cursor:pointer"><input type="checkbox" id="hoursCheck" style="margin-right:4px;accent-color:var(--accent)">I don't have this</label>
+              </label>
+              <input type="range" class="roi-slider" id="hoursSlider" min="0" max="100" value="20" step="5" aria-label="Analyst hours per assessment" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+              <div class="roi-slider-val"><span>0 hrs</span><span>100 hrs</span></div>
+              <div class="roi-slider-cur"><span id="hoursVal">20</span> hours/assessment</div>
+            </div>
+
+            <details style="margin-top:16px;font-size:12px;color:var(--t3);">
+              <summary style="cursor:pointer;color:var(--accent);font-weight:600;">Assumptions &amp; methodology</summary>
+              <div style="margin-top:10px;line-height:1.7;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid var(--bdr);">
+                Pentest cost: $18,000/engagement (industry mid-range; varies $10K–$50K). Scanner cost: monthly figure annualised. Analyst time: hours × $85/hr × pentest count. Xarex cost: Starter plan at $49/mo × 12. This calculator is for illustrative purposes; actual savings depend on your specific pricing and usage. Xarex does not replace all manual pentest scenarios.
+              </div>
+            </details>
+          </div>
+
+          <div class="roi-results">
+            <div class="roi-result-item">
+              <div class="roi-result-label">Current annual spend (estimated)</div>
+              <div class="roi-result-val purple" id="currentSpend" aria-live="polite">$22,400</div>
+              <div class="roi-result-sub">Pentests + scanner + analyst time</div>
+            </div>
+            <div class="roi-result-item">
+              <div class="roi-result-label">Annual cost with Xarex Starter</div>
+              <div class="roi-result-val" id="xarexCost" style="color:var(--t1)">$588</div>
+              <div class="roi-result-sub">$49/month × 12</div>
+            </div>
+            <div class="roi-result-item" id="savingsBox" style="border-color:rgba(61,214,140,0.3);background:rgba(61,214,140,0.05)">
+              <div class="roi-result-label" id="savingsLabel">Estimated annual savings</div>
+              <div class="roi-result-val green" id="annualSaving" aria-live="polite">$21,812</div>
+              <div class="roi-result-sub" id="savingPct">97.4% cost reduction</div>
+            </div>
+            <div style="text-align:center;padding:16px 0">
+              <a href="#pricing" class="btn btn-primary">See plans →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── How It Works ───────────────────────────────────────── -->
+  <section class="section how-section" id="how">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:60px">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Up and running in <span class="gradient-text">under 5 minutes.</span></h2>
+        <p class="section-sub" style="margin: 16px auto 0;text-align:center">Xarex is designed to go from zero to full intelligence in a single afternoon — no professional services required.</p>
+      </div>
+
+      <div class="how-steps reveal">
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <div class="how-icon-big">📡</div>
+          <div class="how-title">Deploy a Probe</div>
+          <div class="how-desc">Download the statically compiled Go binary, run <code style="font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:4px;font-size:12px">sudo ./xarex-probe</code> inside your network. It registers with the Cloud Brain automatically in under 30 seconds.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <div class="how-icon-big">⚡</div>
+          <div class="how-title">Launch a Scan</div>
+          <div class="how-desc">Enter a target subnet, hit Launch. The 6-phase autonomous pipeline runs: host discovery → port scan → service detection → vuln assessment → attack path modeling. Watch it live.</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <div class="how-icon-big">🧠</div>
+          <div class="how-title">Get Intelligence</div>
+          <div class="how-desc">Receive a Claude-powered executive report, attack narrative, MITRE mapping, crown jewel blast radius, threat actor exposure scores, and a prioritised remediation plan with dollar ROI per fix.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Testimonials ───────────────────────────────────────── -->
+  <section class="section testimonials-section">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:50px">
+        <div class="section-label">What Security Teams Say</div>
+        <h2 class="section-title">Trusted by professionals<br><span class="gradient-text">who've tried everything else.</span></h2>
+      </div>
+
+      <p class="reveal" style="text-align:center;font-size:12px;color:var(--t3);margin-bottom:32px;">Beta customers, names withheld by request. Quotes reflect individual experiences during early access.</p>
+      <div class="testimonials-grid reveal">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"The threat actor simulation is unlike anything I've seen in a scanner. Seeing exactly which of our findings give APT29 a foothold changed how I brief the board. That framing alone justified the tool."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" aria-hidden="true" style="font-size:12px;font-weight:700">CISO</div>
+            <div>
+              <div class="testimonial-name">CISO</div>
+              <div class="testimonial-role">Series B fintech · beta customer, name withheld</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"CVE Watch flagged a critical Apache vulnerability matched to our assets within an hour of NIST publishing it — on a Friday evening. We patched over the weekend. Our previous scanner would have caught it on Tuesday."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" aria-hidden="true" style="font-size:11px;font-weight:700">SEC</div>
+            <div>
+              <div class="testimonial-name">Head of Security</div>
+              <div class="testimonial-role">SaaS company · beta customer, name withheld</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-quote">"As a solo consultant, the AI reports and crown jewel analysis doubled the quality of what I deliver to clients. The built-in pentest tools mean I'm not switching between six utilities mid-engagement."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" aria-hidden="true" style="font-size:11px;font-weight:700">PEN</div>
+            <div>
+              <div class="testimonial-name">Independent Pentester</div>
+              <div class="testimonial-role">Security consultant · beta customer, name withheld</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Case Study ────────────────────────────────────────── -->
+  <section class="section case-study-section" id="case-study" aria-labelledby="case-study-heading">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:44px">
+        <div class="section-label">Results</div>
+        <h2 class="section-title" id="case-study-heading">What a real deployment<br><span class="gradient-text">looks like.</span></h2>
+      </div>
+      <div class="case-study-card reveal">
+        <!-- EXAMPLE SCENARIO — illustrative, not a real customer. Replace with a design-partner case study post-launch. -->
+        <div class="case-study-banner">EXAMPLE SCENARIO — illustrative, not a real customer</div>
+        <div class="grid-2" style="gap:48px; align-items:start;">
+          <div>
+            <h3 style="font-size:22px;font-weight:800;margin-bottom:12px;line-height:1.2;">Mid-market fintech replaces $24K/yr security stack in one afternoon</h3>
+            <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:16px;">A 200-person payments company was running one manual pentest per year ($20K) and a SaaS vulnerability scanner ($4K/yr). Neither caught a configuration issue introduced during a Kubernetes migration three months prior.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:16px;">Their engineer deployed the Xarex probe, pointed it at the internal subnet, and hit launch. The 6-phase scan completed in under 15 minutes.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:16px;"><strong style="color:var(--t1)">What it found:</strong> 14 critical findings, including an unauthenticated Redis instance accessible from the DMZ. The attack-path graph chained a public-facing Jenkins server through the Redis pivot directly to the customer database — two hops, no credentials needed.</p>
+            <p style="font-size:14px;color:var(--t2);line-height:1.75;"><strong style="color:var(--t1)">What happened next:</strong> The AI report produced an executive summary and step-by-step remediation plan. The engineering team patched the critical findings in 72 hours. The board received a one-page brief the same day.</p>
+          </div>
+          <div>
+            <div class="case-study-metrics">
+              <div class="cs-metric">
+                <div class="cs-metric-val red">14</div>
+                <div class="cs-metric-lbl">Criticals found on first scan</div>
+              </div>
+              <div class="cs-metric">
+                <div class="cs-metric-val blue">2</div>
+                <div class="cs-metric-lbl">Hops: Jenkins → Redis → Customer DB</div>
+              </div>
+              <div class="cs-metric">
+                <div class="cs-metric-val green">72h</div>
+                <div class="cs-metric-lbl">Time to patch all criticals</div>
+              </div>
+              <div class="cs-metric">
+                <div class="cs-metric-val purple">$24K</div>
+                <div class="cs-metric-lbl">Annual stack replaced</div>
+              </div>
+            </div>
+            <div style="margin-top:20px;padding:16px;background:rgba(240,201,58,0.06);border:1px solid rgba(240,201,58,0.2);border-radius:12px;font-size:12px;color:var(--t3);line-height:1.6;">
+              This is an illustrative scenario based on common deployment patterns. Metrics are representative, not from a specific customer. Contact us to become a design partner and share your real results.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Sample Report Lead Gate ──────────────────────────── -->
+  <section class="section sample-report-section" id="sample-report" aria-labelledby="sample-report-heading">
+    <div class="container">
+
+      <div class="reveal" style="text-align:center; margin-bottom:50px">
+        <div class="section-label">Sample Report</div>
+        <h2 class="section-title" id="sample-report-heading">See what a Xarex AI report<br><span class="gradient-text">actually looks like.</span></h2>
+        <p class="section-sub" style="margin:12px auto 0;text-align:center">Real format, real AI narrative — using representative data from a fictional company.</p>
+      </div>
+
+      <div class="sample-report-grid reveal">
+
+        <!-- Left: visual preview -->
+        <div class="report-preview-col">
+
+          <!-- Faux report cover -->
+          <div class="report-cover" aria-hidden="true">
+            <div class="report-cover-logo">
+              <div class="report-cover-logo-mark">X</div>
+              <div class="report-cover-logo-text">Xarex</div>
+            </div>
+            <div class="report-cover-type">Autonomous Penetration Test Report</div>
+            <div class="report-cover-title">Sample Xarex AI Report</div>
+            <div class="report-cover-meta">
+              <div class="report-cover-meta-row"><strong>Subject:</strong> Northwind Fintech Inc.</div>
+              <div class="report-cover-meta-row"><strong>Scope:</strong> 192.168.10.0/24 · 47 hosts</div>
+              <div class="report-cover-meta-row"><strong>Generated:</strong> 2026-05-14 · Claude AI</div>
+              <div class="report-cover-meta-row"><strong>Classification:</strong> Confidential</div>
+            </div>
+            <div class="report-cover-watermark">Sample</div>
+          </div>
+
+          <!-- Bullet points: what's inside -->
+          <ul class="report-bullets" aria-label="What the sample report includes">
+            <li>Executive summary written by Claude AI — plain English, no jargon</li>
+            <li>11 APT threat actor exposure scores with MITRE ATT&amp;CK mapping</li>
+            <li>Crown jewels and attack-path narrative for each critical asset</li>
+            <li>OWASP / PCI-DSS / NIST compliance mapping for every finding</li>
+          </ul>
+        </div>
+
+        <!-- Right: gated form -->
+        <div class="report-form-col">
+
+          <!-- Success state (hidden until form submitted) -->
+          <div class="rg-success" id="rg-success-state" aria-live="polite" role="status">
+            <div class="rg-success-icon">&#10003;</div>
+            <h3>Your sample report is ready</h3>
+            <p id="rg-success-msg">Check your inbox — we've also linked it below so you don't have to wait.</p>
+            <a href="./sample-report.html" class="rg-success-dl" target="_blank" rel="noopener">
+              Download the sample report (HTML)
+            </a>
+            <p class="rg-success-hint">Tip: open it, then File &rarr; Print &rarr; Save as PDF for a printable copy.</p>
+          </div>
+
+          <!-- Form (shown by default) -->
+          <div id="rg-form-wrap">
+            <h2>See what a Xarex AI report looks like</h2>
+            <p class="report-form-sub">Get the same auto-generated, AI-narrated assessment our customers get after every scan.</p>
+
+            <form id="rg-form" novalidate>
+
+              <!-- Honeypot — bots fill this, humans don't see it -->
+              <div class="rg-honeypot" aria-hidden="true">
+                <input name="website" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <div class="rg-field">
+                <label class="rg-label" for="rg-email">Work email <span style="color:var(--crit)">*</span></label>
+                <input
+                  class="rg-input"
+                  type="email"
+                  id="rg-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  placeholder="you@company.com"
+                  aria-label="Work email address (required)"
+                  aria-required="true"
+                />
+              </div>
+
+              <div class="rg-field">
+                <label class="rg-label" for="rg-name">Name</label>
+                <input
+                  class="rg-input"
+                  type="text"
+                  id="rg-name"
+                  name="name"
+                  autocomplete="name"
+                  placeholder="Alex Kim"
+                  aria-label="Your name (optional)"
+                />
+              </div>
+
+              <div class="rg-field">
+                <label class="rg-label" for="rg-company">Company</label>
+                <input
+                  class="rg-input"
+                  type="text"
+                  id="rg-company"
+                  name="company"
+                  autocomplete="organization"
+                  placeholder="Acme Corp"
+                  aria-label="Your company name (optional)"
+                />
+              </div>
+
+              <div class="rg-field">
+                <label class="rg-label" for="rg-size">Company size</label>
+                <select
+                  class="rg-input"
+                  id="rg-size"
+                  name="size"
+                  aria-label="Company size (optional)"
+                >
+                  <option value="">Select size...</option>
+                  <option value="1">Just me</option>
+                  <option value="2-10">2&ndash;10</option>
+                  <option value="11-50">11&ndash;50</option>
+                  <option value="51-200">51&ndash;200</option>
+                  <option value="201-1000">201&ndash;1,000</option>
+                  <option value="1000+">1,000+</option>
+                </select>
+              </div>
+
+              <!-- Cloudflare Turnstile mount point. Empty in dev; the boot
+                   script below injects the widget only when
+                   window.XAREX_TURNSTILE_SITE_KEY is set at deploy time. -->
+              <div id="rg-turnstile" class="rg-turnstile" aria-hidden="true"></div>
+
+              <button type="submit" class="btn btn-primary rg-submit">
+                Email me the sample report
+              </button>
+
+              <p class="rg-privacy">
+                We'll send the report and may follow up about Xarex. Unsubscribe anytime. Submissions are protected by Cloudflare Turnstile when enabled.
+              </p>
+
+              <details class="rg-why">
+                <summary>Why are you asking for my email?</summary>
+                <p class="rg-why-body">
+                  Your details go to Xarex Security (xarex.io) only — we don't sell or share them with third parties, ever. We use your email to send the report link and, occasionally, relevant product updates. Reply STOP to any email to opt out immediately. This is a security product; your privacy is our baseline, not a checkbox.
+                </p>
+              </details>
+
+            </form>
+          </div><!-- /#rg-form-wrap -->
+
+        </div><!-- /.report-form-col -->
+
+      </div><!-- /.sample-report-grid -->
+    </div><!-- /.container -->
+  </section>
+
+  <!-- POSTs to XAREX_API_BASE + /api/v1/leads. Set window.XAREX_API_BASE in a deploy-time inline script tag to point at the API host if different from the site origin.
+       Optional anti-bot: set window.XAREX_TURNSTILE_SITE_KEY to enable the Cloudflare Turnstile widget on the form. Pair with TURNSTILE_SECRET_KEY env var on the API. -->
+  <script>
+  /* Deploy-time config:
+     - window.XAREX_API_BASE              — API origin if different from this page's origin.
+     - window.XAREX_TURNSTILE_SITE_KEY    — public Turnstile site key; pairs with the API's TURNSTILE_SECRET_KEY. */
+  // Dev convenience: when the marketing site is opened via file:// (no http origin),
+  // relative API paths can't resolve. Fall back to localhost:8005 unless the deployer
+  // already set window.XAREX_API_BASE. Production hosting on http(s) keeps the empty
+  // default (= same-origin), which is the right choice when API and site share a host.
+  if (!window.XAREX_API_BASE && location.protocol === "file:") {
+    window.XAREX_API_BASE = "http://localhost:8005";
+  }
+  var XAREX_API_BASE = window.XAREX_API_BASE || "";
+  var XAREX_TURNSTILE_SITE_KEY = window.XAREX_TURNSTILE_SITE_KEY || "";
+
+  (function () {
+    var form       = document.getElementById("rg-form");
+    var formWrap   = document.getElementById("rg-form-wrap");
+    var success    = document.getElementById("rg-success-state");
+    var successMsg = document.getElementById("rg-success-msg");
+    var turnMount  = document.getElementById("rg-turnstile");
+    var LEAD_KEY   = "xarex_lead_queue";
+
+    if (!form) return;
+
+    // ── Cloudflare Turnstile bootstrap (only when a site key is set) ──
+    // We inject the script and the widget div lazily so the page works
+    // unchanged in dev. The widget itself populates a hidden input named
+    // `cf-turnstile-response` inside the form once the challenge is solved.
+    if (XAREX_TURNSTILE_SITE_KEY && turnMount) {
+      var widgetDiv = document.createElement("div");
+      widgetDiv.className = "cf-turnstile";
+      widgetDiv.setAttribute("data-sitekey", XAREX_TURNSTILE_SITE_KEY);
+      widgetDiv.setAttribute("data-theme", "dark");
+      widgetDiv.setAttribute("data-size", "flexible");
+      turnMount.appendChild(widgetDiv);
+      turnMount.removeAttribute("aria-hidden");
+
+      var s = document.createElement("script");
+      s.src   = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      s.async = true;
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+
+    function showSuccess(email) {
+      formWrap.style.display = "none";
+      success.classList.add("active");
+      successMsg.textContent =
+        "Check your inbox at " + email + " — we’ve also linked it below so you don’t have to wait.";
+    }
+
+    function persistLead(entry) {
+      try {
+        var existing = JSON.parse(localStorage.getItem(LEAD_KEY) || "[]");
+        existing.push(entry);
+        localStorage.setItem(LEAD_KEY, JSON.stringify(existing));
+      } catch (e) { /* storage unavailable */ }
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var emailEl  = document.getElementById("rg-email");
+      var honeypot = form.querySelector("input[name=\"website\"]");
+
+      // Basic email validation
+      var email = emailEl.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailEl.focus();
+        emailEl.style.borderColor = "var(--crit)";
+        setTimeout(function () { emailEl.style.borderColor = ""; }, 2000);
+        return;
+      }
+
+      // Honeypot check: bot filled it — silently succeed, no network call, no localStorage write
+      if (honeypot && honeypot.value) {
+        showSuccess(email);
+        return;
+      }
+
+      // Turnstile token (if widget is mounted); will be empty in dev mode.
+      var turnstileEl = form.querySelector("input[name='cf-turnstile-response']");
+      var turnstileToken = turnstileEl ? turnstileEl.value : "";
+
+      // Server payload — must match the backend's LeadCreate schema exactly
+      // (extra="forbid"). Client-only metadata like `ts` lives on the
+      // localStorage entry, not on the wire.
+      var clientTs = new Date().toISOString();
+      var payload = {
+        email:   email,
+        name:    ((document.getElementById("rg-name")    || {}).value || "").trim() || null,
+        company: ((document.getElementById("rg-company") || {}).value || "").trim() || null,
+        size:    ((document.getElementById("rg-size")    || {}).value || "").trim() || null,
+        source:  "sample-report-gate"
+      };
+      if (turnstileToken) payload.turnstile_token = turnstileToken;
+
+      // Show success immediately — prospect is never blocked by network state
+      showSuccess(email);
+
+      // POST to /api/v1/leads; on success tag entry as delivered, on failure tag as queued
+      fetch(XAREX_API_BASE + "/api/v1/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function (res) {
+        if (!res.ok) { throw new Error("HTTP " + res.status); }
+        return res.json().catch(function () { return {}; });
+      }).then(function (data) {
+        // 2xx: persist with delivery confirmation. `ts` is client-side only —
+        // server-side timestamp is `server_ts` below.
+        persistLead(Object.assign({}, payload, {
+          ts:         clientTs,
+          delivered:  true,
+          server_id:  data.id         || null,
+          server_ts:  data.created_at || null
+        }));
+      }).catch(function (err) {
+        // Network error or non-2xx: preserve lead locally for later reconciliation
+        persistLead(Object.assign({}, payload, {
+          ts:        clientTs,
+          delivered: false,
+          error:     (err && err.message) ? err.message.slice(0, 120) : "unknown"
+        }));
+      });
+    });
+  })();
+  </script>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Pricing ────────────────────────────────────────────── -->
+  <section class="section pricing-section" id="pricing" aria-labelledby="pricing-heading" data-cadence="annual">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:40px">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title" id="pricing-heading">Try free with 2 scans included.<br><span class="gradient-text">Upgrade when you need more.</span></h2>
+        <p class="section-sub" style="margin: 16px auto 0;text-align:center">Self-serve from $39/mo billed annually. Enterprise teams get dedicated support, SSO, and full compliance docs.</p>
+      </div>
+
+      <!-- Monthly / Annual toggle -->
+      <div class="pricing-toggle-wrap reveal" aria-label="Billing cadence">
+        <div class="pricing-toggle" role="radiogroup" aria-label="Select billing period" id="pricingToggle">
+          <div class="pricing-toggle-pill" id="togglePill" aria-hidden="true"></div>
+          <button class="pricing-toggle-btn" role="radio" aria-checked="false" data-cadence-btn="monthly" id="toggleMonthly">Monthly</button>
+          <button class="pricing-toggle-btn" role="radio" aria-checked="true"  data-cadence-btn="annual"  id="toggleAnnual">Annual — save 20%</button>
+        </div>
+      </div>
+
+      <div class="pricing-grid reveal">
+
+        <!-- Starter -->
+        <div class="pricing-card">
+          <div class="pricing-plan">Starter</div>
+          <div class="pricing-price">
+            <sup>$</sup><span class="price-val" data-price-monthly="49" data-price-annual="470">470</span><sub class="price-cadence-label">/yr</sub>
+          </div>
+          <div class="pricing-per-month-equiv" id="starter-equiv">$39/mo billed annually</div>
+          <div class="pricing-per">Per organisation</div>
+          <div class="pricing-compare" style="color:var(--t3)">2 free scans — no credit card</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pf-check">✓</span> Unlimited scans &amp; probes</li>
+            <li><span class="pf-check">✓</span> Standard threat-actor library (5 of 11 APTs)</li>
+            <li><span class="pf-check">✓</span> AI reports — bring your own Anthropic key</li>
+            <li><span class="pf-check">✓</span> Crown jewel blast radius analysis</li>
+            <li><span class="pf-check">✓</span> Real-time CVE Watch (NIST NVD)</li>
+            <li><span class="pf-check">✓</span> Attack path modeling &amp; kill chains</li>
+            <li><span class="pf-check">✓</span> Basic audit logs</li>
+            <li><span class="pf-check">✓</span> Community support</li>
+            <li><span class="pf-check">✓</span> Self-hosted — your data, your control</li>
+          </ul>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:15px" data-checkout-tier="starter">Start Starter</button>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="pricing-card featured">
+          <span class="pricing-badge">✦ Most Popular</span>
+          <div class="pricing-plan">Pro</div>
+          <div class="pricing-price">
+            <sup>$</sup><span class="price-val" data-price-monthly="199" data-price-annual="1900">1900</span><sub class="price-cadence-label">/yr</sub>
+          </div>
+          <div class="pricing-per-month-equiv" id="pro-equiv">$158/mo billed annually</div>
+          <div class="pricing-per">Per organisation</div>
+          <div class="pricing-compare">Claude Opus AI reports included</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pf-check">✓</span> Everything in Starter</li>
+            <li><span class="pf-check">✓</span> All 11 APTs + custom threat playbooks</li>
+            <li><span class="pf-check">✓</span> Claude Opus AI reports — no key needed</li>
+            <li><span class="pf-check">✓</span> Priority probe queue</li>
+            <li><span class="pf-check">✓</span> Email support · 1 business-day SLA</li>
+            <li><span class="pf-check">✓</span> Extended audit logs</li>
+            <li><span class="pf-check">✓</span> Reporting templates: OWASP / PCI-DSS / NIST</li>
+            <li><span class="pf-check">✓</span> Interactive network topology map</li>
+            <li><span class="pf-check">✓</span> Scan diff &amp; risk trend charts</li>
+            <li><span class="pf-check">✓</span> Automated scheduling (cron)</li>
+          </ul>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:16px" data-checkout-tier="pro">Start Pro</button>
+          <div class="guarantee" style="margin-top:16px">30-day money-back guarantee</div>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <div class="pricing-plan">Enterprise</div>
+          <div class="pricing-price" style="font-size:38px;letter-spacing:-1px">Contact</div>
+          <div class="pricing-per-month-equiv" style="visibility:hidden">—</div>
+          <div class="pricing-per">Custom contract · volume pricing</div>
+          <div class="pricing-compare" style="color:var(--t3)">For teams with compliance requirements</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li><span class="pf-check">✓</span> Everything in Pro</li>
+            <li><span class="pf-check">✓</span> SSO / SAML</li>
+            <li><span class="pf-check">✓</span> SOC 2 report on request, DPA &amp; MSA</li>
+            <li><span class="pf-check">✓</span> Full audit logs + SIEM export</li>
+            <li><span class="pf-check">✓</span> Dedicated CSM</li>
+            <li><span class="pf-check">✓</span> Custom adversary modeling</li>
+            <li><span class="pf-check">✓</span> Claude Opus + dedicated quota</li>
+            <li><span class="pf-check">✓</span> On-prem / air-gap deployment</li>
+            <li><span class="pf-check">✓</span> Priority feature requests</li>
+          </ul>
+          <a href="mailto:sales@xarexsec.io?subject=Xarex%20Enterprise%20inquiry" class="btn btn-ghost" style="width:100%;justify-content:center;font-size:15px">Talk to sales</a>
+        </div>
+
+      </div>
+
+      <p class="reveal" style="text-align:center;margin-top:20px;font-size:12px;color:var(--t3);max-width:640px;margin-left:auto;margin-right:auto;">
+        * Starter AI reports require your own <a href="https://console.anthropic.com" style="color:var(--accent)">Anthropic API key</a> — billed separately by Anthropic at their standard rates. Pro includes a shared Claude Opus quota sufficient for most teams. Compliance certifications in progress; contact sales for current audit status.
+      </p>
+
+      <div class="guarantee reveal" style="margin-top:24px; font-size:14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        No credit card required to start · Cancel anytime · Your data stays on your infrastructure
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Checkout dialog ──────────────────────────────────────── -->
+  <dialog id="checkout-dialog" aria-modal="true" aria-labelledby="checkout-dlg-title">
+    <div class="checkout-dlg-header">
+      <div class="checkout-dlg-title" id="checkout-dlg-title">Continue to checkout</div>
+      <div class="checkout-dlg-sub" id="checkout-dlg-sub">Starter · Annual · $470/yr</div>
+    </div>
+    <div class="checkout-dlg-body">
+      <label class="checkout-dlg-label" for="checkout-email">Work email</label>
+      <input class="checkout-dlg-input" type="email" id="checkout-email" placeholder="you@company.com" autocomplete="email" required />
+      <div class="checkout-dlg-error" id="checkout-error" role="alert"></div>
+    </div>
+    <div class="checkout-dlg-footer">
+      <button class="btn btn-ghost" id="checkout-cancel">Cancel</button>
+      <button class="btn btn-primary" id="checkout-submit">Continue to checkout</button>
+    </div>
+  </dialog>
+
+  <div class="section-divider"></div>
+
+  <!-- ── FAQ ───────────────────────────────────────────────── -->
+  <section class="section-sm faq-section" id="faq">
+    <div class="container">
+      <div class="reveal" style="text-align:center; margin-bottom:40px">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title" style="font-size:clamp(24px,3vw,40px)">Common questions</h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1" id="faq-q-1">How is Xarex different from Nessus or Qualys? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-1" role="region" aria-labelledby="faq-q-1">Nessus and Qualys are vulnerability scanners — they find CVEs and report them. Xarex is an autonomous penetration testing platform. It models how an adversary would actually exploit those vulnerabilities, simulates real APT group attack chains, computes blast radius to your critical assets, matches live CVEs to your environment in real-time, and delivers AI-powered executive reports with dollar-ROI for each fix.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2" id="faq-q-2">Is my data safe? Where does it go? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-2" role="region" aria-labelledby="faq-q-2">Xarex is fully self-hosted. The Cloud Brain runs on your own infrastructure (or a VPS you control). Your scan data, findings, and reports never leave your environment. The only external call is to the NIST NVD API for CVE Watch (read-only, no data sent) and optionally to the Anthropic API for AI report generation (only finding metadata, no IPs or hostnames sent).</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3" id="faq-q-3">What does the Anthropic / Claude API cost? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3">On the Starter plan, AI reports use your own Anthropic API key — billed directly by Anthropic at their published rates (typically a few cents to a few dollars per report, depending on finding count). Pro includes a shared Claude Opus quota sufficient for most teams with no additional Anthropic bill. Enterprise gets a dedicated quota. You can always start without an API key — the built-in rules engine generates risk scores, MITRE mapping, and remediation plans without Claude.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4" id="faq-q-4">How many probes and scans can I run? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-4" role="region" aria-labelledby="faq-q-4">Unlimited. You can deploy as many probes as you need across different network segments and run concurrent scans. There are no per-host, per-IP, or per-scan charges. Every plan covers the full platform with no usage caps.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5" id="faq-q-5">What technical requirements does Xarex have? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-5" role="region" aria-labelledby="faq-q-5">Cloud Brain: Python 3.11+ with Docker Compose (or a VPS with 2 GB RAM). Probes: any Linux host — statically compiled Go binary, no runtime dependencies. The probe needs network access to your scan targets and outbound access to the Cloud Brain on port 8005. Root or CAP_NET_RAW for ICMP/raw socket scanning.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6" id="faq-q-6">Can I use Xarex for client penetration testing engagements? <span class="faq-chevron" aria-hidden="true">▼</span></button>
+          <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6">Yes. Many consultants use Xarex for initial reconnaissance and vulnerability discovery, then use the AI reports and threat actor analysis as the foundation for their engagement deliverables. The built-in pentest tools (CVSS calculator, reverse shell generator, JWT decoder, CIDR calculator) make it a complete workflow tool. Always obtain written authorisation from your clients before scanning any network.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── Final CTA ──────────────────────────────────────────── -->
+  <section class="final-cta">
+    <div class="container">
+      <div class="final-cta-card reveal">
+        <div class="badge" style="margin: 0 auto 28px; display:inline-flex;">⚡ Start in under 5 minutes</div>
+        <h2 class="cta-headline">
+          Your infrastructure is being<br>
+          <span class="gradient-text">scanned right now.</span><br>
+          Just not by you.
+        </h2>
+        <p class="cta-sub">Breaches average millions in losses. Xarex starts at $39/mo billed annually.<br>2 free scans included — no credit card, no commitment.</p>
+        <div class="cta-btns">
+          <a href="/signup" class="btn btn-primary btn-lg">Start free — 2 scans included</a>
+          <a href="#comparison" class="btn btn-ghost btn-lg">Compare with Competitors</a>
+        </div>
+        <div style="margin-top:24px; font-size:13px; color:var(--t3); display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap">
+          <span>🛡 30-day money-back</span>
+          <span>🔒 Self-hosted, your data</span>
+          <span>✓ No usage limits</span>
+          <span>⚡ Up in under 5 minutes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="nav-logo-mark" style="width:28px;height:28px;border-radius:7px;font-size:13px">⬡</div>
+            XAREX
+          </div>
+          <p class="footer-tagline">Autonomous penetration testing for teams that can't afford to wait for the annual pentest.</p>
+          <div style="font-size:11px;color:var(--t3);">SOC 2 Type II — in progress &nbsp;·&nbsp; Self-hosted</div>
+        </div>
+        <div>
+          <div class="footer-col-title">Product</div>
+          <ul class="footer-col-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#live-demo">Live Demo</a></li>
+            <li><a href="#comparison">vs Competitors</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="/app">Launch App</a></li>
+            <li><a href="/signup">Start free — 2 scans included</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-col-links">
+            <li><a href="/about">About</a></li>
+            <li><a href="/enterprise">Enterprise</a></li>
+            <li><a href="/contact-sales">Contact Sales</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/changelog">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Legal</div>
+          <ul class="footer-col-links">
+            <li><a href="#legal-privacy">Privacy Policy</a></li>
+            <li><a href="#legal-terms">Terms of Service</a></li>
+            <li><a href="#legal-dpa">Data Processing Agreement</a></li>
+            <li><a href="#legal-security">Security</a></li>
+            <li><a href="#legal-cookies">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2026 Xarex Security. All rights reserved.</div>
+        <div class="footer-legal-links">
+          <a href="#legal-privacy">Privacy</a>
+          <a href="#legal-terms">Terms</a>
+          <a href="#legal-dpa">DPA</a>
+          <a href="#legal-security">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Legal stub sections ────────────────────────────────── -->
+  <div style="background:var(--bg2);position:relative;z-index:1;">
+    <div class="container" style="padding-top:0;padding-bottom:40px;">
+
+      <details class="legal-stub" id="legal-privacy">
+        <summary><span style="color:var(--accent)">▶</span> Privacy Policy</summary>
+        <div class="legal-stub-body">
+          <div class="legal-draft-banner">DRAFT — pending legal review</div>
+          <p>Xarex Security ("Xarex", "we", "us") is committed to protecting your personal data. This policy describes what data we collect, how we use it, and your rights under applicable privacy law including GDPR and CCPA.</p>
+          <p style="margin-top:10px;">Because Xarex is self-hosted, your scan data, findings, IP addresses, and network topology never leave your own infrastructure. The only data transmitted to Xarex servers is account management information (email, billing). Full policy to be published before general availability.</p>
+          <p style="margin-top:10px;"><a href="/contact-sales" style="color:var(--accent)">Contact us</a> for current privacy documentation.</p>
+        </div>
+      </details>
+
+      <details class="legal-stub" id="legal-terms">
+        <summary><span style="color:var(--accent)">▶</span> Terms of Service</summary>
+        <div class="legal-stub-body">
+          <div class="legal-draft-banner">DRAFT — pending legal review</div>
+          <p>By using Xarex you agree to use it only against networks and systems you own or have explicit written authorisation to test. Unauthorized scanning of third-party systems is illegal and prohibited. Full terms to be published before general availability.</p>
+          <p style="margin-top:10px;"><a href="/contact-sales" style="color:var(--accent)">Contact us</a> for current terms documentation.</p>
+        </div>
+      </details>
+
+      <details class="legal-stub" id="legal-dpa">
+        <summary><span style="color:var(--accent)">▶</span> Data Processing Agreement</summary>
+        <div class="legal-stub-body">
+          <div class="legal-draft-banner">DRAFT — pending legal review</div>
+          <p>A Data Processing Agreement (DPA) is available for Enterprise customers and GDPR-regulated organisations. Because Xarex is self-hosted, Xarex does not act as a data processor for your scan data. The DPA covers account and billing data only.</p>
+          <p style="margin-top:10px;"><a href="/contact-sales" style="color:var(--accent)">Request the DPA</a> from our sales team.</p>
+        </div>
+      </details>
+
+      <details class="legal-stub" id="legal-security">
+        <summary><span style="color:var(--accent)">▶</span> Security</summary>
+        <div class="legal-stub-body">
+          <div class="legal-draft-banner">DRAFT — pending legal review</div>
+          <p>Xarex is pursuing SOC 2 Type II certification. Our security programme includes: access controls, encryption in transit (TLS 1.3), dependency scanning, and responsible disclosure. Full security page to be published before general availability.</p>
+          <p style="margin-top:10px;">To report a vulnerability, email <a href="mailto:security@xarex.io" style="color:var(--accent)">security@xarex.io</a>.</p>
+        </div>
+      </details>
+
+      <details class="legal-stub" id="legal-cookies">
+        <summary><span style="color:var(--accent)">▶</span> Cookie Policy</summary>
+        <div class="legal-stub-body">
+          <div class="legal-draft-banner">DRAFT — pending legal review</div>
+          <p>The Xarex marketing site uses only strictly necessary cookies for session management. No third-party analytics or advertising cookies are loaded without your explicit consent. Full cookie policy to be published before general availability.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <script>
+    // ── Mobile nav hamburger ─────────────────────────────────
+    (function() {
+      const btn = document.getElementById('navHamburger');
+      const panel = document.getElementById('navMobilePanel');
+      const closeBtn = document.getElementById('navMobileClose');
+
+      function openPanel() {
+        panel.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+      function closePanel() {
+        panel.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      btn?.addEventListener('click', openPanel);
+      closeBtn?.addEventListener('click', closePanel);
+
+      // Close when a link inside is clicked
+      panel?.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', closePanel);
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+      });
+    })();
+
+    // ── Sticky nav shadow ────────────────────────────────────
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (nav) nav.style.boxShadow = window.scrollY > 20 ? '0 4px 32px rgba(0,0,0,0.4)' : '';
+    });
+
+    // ── Scroll reveal ────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Counter animation ────────────────────────────────────
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      const duration = 1500;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.round(current);
+        if (current >= target) clearInterval(timer);
+      }, 16);
+    }
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter(e.target);
+          counterObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+    // ── ROI Calculator ───────────────────────────────────────
+    function updateROI() {
+      const pentestChk = document.getElementById('pentestCheck')?.checked;
+      const scannerChk = document.getElementById('scannerCheck')?.checked;
+      const hoursChk   = document.getElementById('hoursCheck')?.checked;
+
+      const pentestSlider = document.getElementById('pentestSlider');
+      const scannerSlider = document.getElementById('scannerSlider');
+      const hoursSlider   = document.getElementById('hoursSlider');
+
+      const pentests = pentestChk ? 0 : parseInt(pentestSlider?.value || 1);
+      const scanner  = scannerChk ? 0 : parseInt(scannerSlider?.value || 200);
+      const hours    = hoursChk   ? 0 : parseInt(hoursSlider?.value   || 20);
+
+      if (pentestSlider) pentestSlider.disabled = !!pentestChk;
+      if (scannerSlider) scannerSlider.disabled = !!scannerChk;
+      if (hoursSlider)   hoursSlider.disabled   = !!hoursChk;
+
+      document.getElementById('pentestVal').textContent = pentests;
+      document.getElementById('scannerVal').textContent = scanner.toLocaleString();
+      document.getElementById('hoursVal').textContent   = hours;
+
+      // Update ARIA valuenow
+      if (pentestSlider) pentestSlider.setAttribute('aria-valuenow', pentests);
+      if (scannerSlider) scannerSlider.setAttribute('aria-valuenow', scanner);
+      if (hoursSlider)   hoursSlider.setAttribute('aria-valuenow', hours);
+
+      const pentestCost = pentests * 18000;
+      const scannerCost = scanner * 12;
+      const analystCost = pentests * hours * 85;
+      const total = pentestCost + scannerCost + analystCost;
+      const xarex = 49 * 12;
+      const saving = total - xarex;
+
+      document.getElementById('currentSpend').textContent = '$' + total.toLocaleString();
+      document.getElementById('xarexCost').textContent    = '$' + xarex.toLocaleString();
+
+      const savingsBox   = document.getElementById('savingsBox');
+      const savingEl     = document.getElementById('annualSaving');
+      const savingPctEl  = document.getElementById('savingPct');
+      const savingLabel  = document.getElementById('savingsLabel');
+
+      if (saving > 0) {
+        const pct = ((saving / total) * 100).toFixed(1);
+        savingEl.textContent    = '$' + saving.toLocaleString();
+        savingEl.className      = 'roi-result-val green';
+        savingPctEl.textContent = pct + '% cost reduction';
+        savingLabel.textContent = 'Estimated annual savings';
+        savingsBox.style.borderColor  = 'rgba(61,214,140,0.3)';
+        savingsBox.style.background   = 'rgba(61,214,140,0.05)';
+      } else {
+        savingEl.textContent    = 'Xarex adds continuous coverage';
+        savingEl.className      = 'roi-result-val';
+        savingEl.style.fontSize = '18px';
+        savingPctEl.textContent = 'At these inputs Xarex costs more — but runs 24/7 vs point-in-time.';
+        savingLabel.textContent = 'Note';
+        savingsBox.style.borderColor = 'var(--bdr)';
+        savingsBox.style.background  = 'rgba(255,255,255,0.02)';
+      }
+    }
+
+    ['pentestSlider','scannerSlider','hoursSlider'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', updateROI);
+    });
+    ['pentestCheck','scannerCheck','hoursCheck'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', updateROI);
+    });
+    updateROI();
+
+    // ── FAQ accordion ────────────────────────────────────────
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-q')?.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          q.setAttribute('aria-expanded', 'true');
+        }
+      });
+      // Keyboard: Space and Enter already fire click on <button>; no extra handler needed
+    });
+
+    // ── CVE Ticker ───────────────────────────────────────────
+    (function() {
+      const CVE_DATA = [
+        { id:'CVE-2024-49138', prod:'Apache HTTPd 2.4.50', cvss:'9.8', epss:'0.94', sev:'c' },
+        { id:'CVE-2024-47575', prod:'FortiManager auth bypass', cvss:'9.6', epss:'0.91', sev:'c' },
+        { id:'CVE-2024-38812', prod:'VMware vCenter heap overflow', cvss:'8.8', epss:'0.87', sev:'h' },
+        { id:'CVE-2024-50379', prod:'Apache Tomcat partial PUT RCE', cvss:'9.8', epss:'0.89', sev:'c' },
+        { id:'CVE-2024-21762', prod:'FortiOS SSL-VPN OOB write', cvss:'9.6', epss:'0.93', sev:'c' },
+        { id:'CVE-2024-23897', prod:'Jenkins CLI arbitrary file read', cvss:'9.8', epss:'0.97', sev:'c' },
+        { id:'CVE-2024-27198', prod:'JetBrains TeamCity auth bypass', cvss:'9.8', epss:'0.96', sev:'c' },
+        { id:'CVE-2024-1709',  prod:'ConnectWise ScreenConnect auth bypass', cvss:'10.0', epss:'0.98', sev:'c' },
+        { id:'CVE-2024-29988', prod:'Windows SmartScreen bypass', cvss:'8.8', epss:'0.72', sev:'h' },
+        { id:'CVE-2024-30051', prod:'Windows DWM priv esc', cvss:'7.8', epss:'0.68', sev:'h' },
+        { id:'CVE-2024-38080', prod:'Windows Hyper-V priv esc', cvss:'7.8', epss:'0.55', sev:'h' },
+        { id:'CVE-2024-43461', prod:'MSHTML platform spoofing', cvss:'8.8', epss:'0.81', sev:'h' },
+        { id:'CVE-2024-20767', prod:'Adobe ColdFusion auth bypass', cvss:'9.1', epss:'0.77', sev:'c' },
+        { id:'CVE-2024-37085', prod:'VMware ESXi auth bypass', cvss:'6.8', epss:'0.61', sev:'m' },
+        { id:'CVE-2024-6387',  prod:'OpenSSH regreSSHion RCE', cvss:'8.1', epss:'0.88', sev:'h' },
+        { id:'CVE-2024-4577',  prod:'PHP CGI argument injection', cvss:'9.8', epss:'0.95', sev:'c' },
+        { id:'CVE-2024-40711', prod:'Veeam Backup RCE', cvss:'9.8', epss:'0.92', sev:'c' },
+        { id:'CVE-2024-28986', prod:'SolarWinds Web Help Desk RCE', cvss:'9.8', epss:'0.83', sev:'c' },
+        { id:'CVE-2024-23113', prod:'Fortinet FortiOS format string', cvss:'9.8', epss:'0.90', sev:'c' },
+        { id:'CVE-2024-26169', prod:'Windows Error Reporting priv esc', cvss:'7.8', epss:'0.59', sev:'h' },
+        { id:'CVE-2024-38226', prod:'Microsoft Publisher macro bypass', cvss:'7.3', epss:'0.45', sev:'m' },
+        { id:'CVE-2024-43573', prod:'Windows MSHTML platform spoofing', cvss:'6.5', epss:'0.41', sev:'m' },
+        { id:'CVE-2024-38200', prod:'Microsoft Office NTLM hash disclosure', cvss:'7.5', epss:'0.52', sev:'h' },
+        { id:'CVE-2024-20353', prod:'Cisco ASA denial of service', cvss:'8.6', epss:'0.63', sev:'h' },
+        { id:'CVE-2024-20359', prod:'Cisco ASA persistent LPE', cvss:'6.0', epss:'0.38', sev:'m' },
+      ];
+
+      const inner = document.getElementById('cveTickerInner');
+      if (!inner) return;
+
+      function makeChip(d) {
+        return `<div class="cve-chip">
+          <span class="cve-chip-id">${d.id}</span>
+          <span class="cve-chip-score ${d.sev}">CVSS ${d.cvss}</span>
+          <span class="cve-chip-prod">${d.prod}</span>
+          <span class="cve-chip-epss">EPSS ${d.epss}</span>
+        </div>`;
+      }
+
+      // Duplicate for seamless loop
+      const html = CVE_DATA.map(makeChip).join('') + CVE_DATA.map(makeChip).join('');
+      inner.innerHTML = html;
+    })();
+
+    // ── Live Scan Demo Animator ──────────────────────────────
+    (function() {
+      const LINES = [
+        { cls: 'dl-prompt', text: '$ xarex scan 10.0.0.0/24 --profile full --ai-report', delay: 400 },
+        { cls: 'dl-dim',    text: '  Xarex v2.4.1 · Cloud Brain: connected · Probe: probe-01 (10.0.0.2)', delay: 600 },
+        { cls: 'dl-dim',    text: '─────────────────────────────────────────────────────', delay: 300 },
+        { cls: 'dl-info',   text: '[Phase 1/6] Discovering hosts (10.0.0.0/24)…', delay: 800 },
+        { cls: 'dl-ok',     text: '  ✓ 12 hosts alive  (ICMP + TCP syn, 254 probed)', delay: 1200 },
+        { cls: 'dl-info',   text: '[Phase 2/6] Port scanning 12 hosts…', delay: 700 },
+        { cls: 'dl-ok',     text: '  ✓ 94 open ports discovered across 12 hosts', delay: 1400 },
+        { cls: 'dl-info',   text: '[Phase 3/6] Service & version fingerprinting…', delay: 700 },
+        { cls: 'dl-ok',     text: '  ✓ 94 services fingerprinted (Apache 2.4.50, Redis 6.2.6, OpenSSH 7.2…)', delay: 1100 },
+        { cls: 'dl-info',   text: '[Phase 4/6] Vulnerability assessment (CVE match + active checks)…', delay: 900 },
+        { cls: 'dl-crit',   text: '  !! CRITICAL  CVE-2024-49138  Apache HTTPd 2.4.50 RCE  10.0.0.8:80  CVSS 9.8', delay: 500 },
+        { cls: 'dl-crit',   text: '  !! CRITICAL  Redis unauthenticated access         10.0.0.22:6379', delay: 400 },
+        { cls: 'dl-warn',   text: '  !  HIGH      OpenSSH 7.2 CVE-2023-38408           10.0.0.5:22   CVSS 8.1', delay: 400 },
+        { cls: 'dl-warn',   text: '  !  HIGH      SMB signing disabled (EternalBlue path) 10.0.0.15:445', delay: 400 },
+        { cls: 'dl-dim',    text: '  …  29 medium / 11 low findings (see full report)', delay: 500 },
+        { cls: 'dl-info',   text: '[Phase 5/6] Attack path modeling…', delay: 800 },
+        { cls: 'dl-crit',   text: '  !! 3 paths reach Crown Jewel: Domain Controller (10.0.0.1)', delay: 700 },
+        { cls: 'dl-ok',     text: '  ✓ Shortest chain: 10.0.0.8 → Redis pivot → DC (2 hops)', delay: 500 },
+        { cls: 'dl-info',   text: '[Phase 6/6] Generating AI report (Claude Opus)…', delay: 1200 },
+        { cls: 'dl-ok',     text: '  ✓ Executive summary + remediation plan ready', delay: 800 },
+        { cls: 'dl-dim',    text: '─────────────────────────────────────────────────────', delay: 300 },
+        { cls: 'dl-ok',     text: '  Scan complete in 12.3s · 47 findings · 7 critical · 11 high · 18 medium · 11 low', delay: 0 },
+      ];
+
+      const termEl   = document.getElementById('termLines');
+      const statusEl = document.getElementById('demoStatus');
+      const replayBtn= document.getElementById('demoReplay');
+      if (!termEl) return;
+
+      let abortToken = { cancelled: false };
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function runDemo(token) {
+        termEl.innerHTML = '';
+        statusEl.textContent = 'Running…';
+        replayBtn.disabled = true;
+
+        // Reduced-motion: show final state instantly
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          LINES.forEach(l => appendLine(l.cls, l.text));
+          statusEl.textContent = 'Complete — 47 findings';
+          replayBtn.disabled = false;
+          return;
+        }
+
+        for (const line of LINES) {
+          if (token.cancelled) return;
+          await sleep(line.delay);
+          if (token.cancelled) return;
+          appendLine(line.cls, line.text);
+        }
+        statusEl.textContent = 'Complete — 47 findings · 7 critical';
+        replayBtn.disabled = false;
+      }
+
+      function appendLine(cls, text) {
+        const span = document.createElement('div');
+        span.className = cls;
+        span.textContent = text;
+        termEl.appendChild(span);
+        termEl.scrollTop = termEl.scrollHeight;
+      }
+
+      // IntersectionObserver triggers first run
+      let hasRun = false;
+      const demoObserver = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && !hasRun) {
+          hasRun = true;
+          abortToken = { cancelled: false };
+          runDemo(abortToken);
+        }
+      }, { threshold: 0.3 });
+
+      const demoSection = document.getElementById('live-demo');
+      if (demoSection) demoObserver.observe(demoSection);
+
+      // Replay button
+      replayBtn?.addEventListener('click', () => {
+        abortToken.cancelled = true;
+        abortToken = { cancelled: false };
+        runDemo(abortToken);
+      });
+    })();
+
+    // ── Pricing toggle ───────────────────────────────────────
+    (function () {
+      var section  = document.querySelector('.pricing-section');
+      var pill     = document.getElementById('togglePill');
+      var btnMo    = document.getElementById('toggleMonthly');
+      var btnAn    = document.getElementById('toggleAnnual');
+      if (!section || !pill || !btnMo || !btnAn) return;
+
+      function positionPill(activeBtn) {
+        var parent = activeBtn.parentElement;
+        var parentRect = parent.getBoundingClientRect();
+        var btnRect    = activeBtn.getBoundingClientRect();
+        pill.style.left  = (activeBtn.offsetLeft) + 'px';
+        pill.style.width = activeBtn.offsetWidth + 'px';
+      }
+
+      function setCadence(cadence) {
+        section.dataset.cadence = cadence;
+        var isAnnual = cadence === 'annual';
+
+        btnMo.setAttribute('aria-checked', isAnnual ? 'false' : 'true');
+        btnAn.setAttribute('aria-checked', isAnnual ? 'true'  : 'false');
+        positionPill(isAnnual ? btnAn : btnMo);
+
+        // Update all price spans
+        document.querySelectorAll('.price-val').forEach(function (span) {
+          var price = isAnnual ? span.dataset.priceAnnual : span.dataset.priceMonthly;
+          span.textContent = price;
+        });
+        // Update cadence label (sub tag)
+        document.querySelectorAll('.price-cadence-label').forEach(function (sub) {
+          sub.textContent = isAnnual ? '/yr' : '/mo';
+        });
+        // Per-month equivalents
+        var starterEquiv = document.getElementById('starter-equiv');
+        var proEquiv     = document.getElementById('pro-equiv');
+        if (starterEquiv) starterEquiv.textContent = isAnnual ? '$39/mo billed annually' : '';
+        if (proEquiv)     proEquiv.textContent     = isAnnual ? '$158/mo billed annually' : '';
+      }
+
+      btnMo.addEventListener('click', function () { setCadence('monthly'); });
+      btnAn.addEventListener('click', function () { setCadence('annual');  });
+
+      // Keyboard support for radiogroup
+      [btnMo, btnAn].forEach(function (btn) {
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            setCadence(btn === btnMo ? 'annual' : 'monthly');
+            (btn === btnMo ? btnAn : btnMo).focus();
+          }
+        });
+      });
+
+      // Init after fonts/layout settle so pill width is correct
+      requestAnimationFrame(function () {
+        setTimeout(function () { setCadence('annual'); }, 50);
+      });
+    })();
+
+    // ── Checkout flow ────────────────────────────────────────
+    (function () {
+      var dialog      = document.getElementById('checkout-dialog');
+      var dlgSub      = document.getElementById('checkout-dlg-sub');
+      var emailInput  = document.getElementById('checkout-email');
+      var errorBox    = document.getElementById('checkout-error');
+      var submitBtn   = document.getElementById('checkout-submit');
+      var cancelBtn   = document.getElementById('checkout-cancel');
+      if (!dialog) return;
+
+      var _tier = '', _cadence = '';
+
+      var PRICE_LABELS = {
+        starter: { monthly: '$49/mo', annual: '$470/yr' },
+        pro:     { monthly: '$199/mo', annual: '$1,900/yr' }
+      };
+      var TIER_NAMES = { starter: 'Starter', pro: 'Pro' };
+
+      function openDialog(tier, cadence) {
+        _tier = tier; _cadence = cadence;
+        var label = PRICE_LABELS[tier] && PRICE_LABELS[tier][cadence] ? PRICE_LABELS[tier][cadence] : '';
+        dlgSub.textContent = TIER_NAMES[tier] + ' · ' + (cadence === 'annual' ? 'Annual' : 'Monthly') + ' · ' + label;
+        emailInput.value = '';
+        errorBox.style.display = 'none';
+        errorBox.innerHTML = '';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Continue to checkout';
+        dialog.showModal();
+        setTimeout(function () { emailInput.focus(); }, 60);
+      }
+
+      function showError(html) {
+        errorBox.innerHTML = html;
+        errorBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Continue to checkout';
+      }
+
+      function closeDialog() {
+        dialog.close();
+      }
+
+      cancelBtn.addEventListener('click', closeDialog);
+
+      dialog.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeDialog();
+      });
+
+      submitBtn.addEventListener('click', function () {
+        var email = (emailInput.value || '').trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailInput.focus();
+          emailInput.style.borderColor = 'var(--crit)';
+          setTimeout(function () { emailInput.style.borderColor = ''; }, 2000);
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Redirecting to checkout…';
+        errorBox.style.display = 'none';
+
+        var payload = { email: email, tier: _tier, cadence: _cadence };
+        var apiBase = window.XAREX_API_BASE || XAREX_API_BASE || '';
+
+        fetch(apiBase + '/api/billing/checkout/stripe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (res) {
+          if (res.status === 400) {
+            return res.text().then(function (txt) {
+              // Tier not configured — graceful sales fallback
+              var sub = encodeURIComponent('Xarex ' + (TIER_NAMES[_tier] || _tier) + ' plan inquiry');
+              showError(
+                'This plan isn\'t available for self-serve checkout yet. ' +
+                '<a href="mailto:sales@xarexsec.io?subject=' + sub + '">Email sales@xarexsec.io</a> and we\'ll get you set up.'
+              );
+            });
+          }
+          if (!res.ok) { throw new Error('HTTP ' + res.status); }
+          return res.json().then(function (data) {
+            if (data && data.checkout_url) {
+              window.location = data.checkout_url;
+            } else {
+              throw new Error('No checkout_url in response');
+            }
+          });
+        }).catch(function () {
+          showError(
+            'Couldn\'t reach checkout — please try again or ' +
+            '<a href="mailto:sales@xarexsec.io">email sales@xarexsec.io</a>.'
+          );
+        });
+      });
+
+      // Wire all [data-checkout-tier] buttons
+      document.querySelectorAll('[data-checkout-tier]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tier = btn.dataset.checkoutTier;
+          if (tier === 'free') {
+            window.location = '/signup';
+            return;
+          }
+          var section = document.querySelector('.pricing-section');
+          var cadence = (section && section.dataset.cadence) || 'annual';
+          openDialog(tier, cadence);
+        });
+      });
+    })();
+
+    // ── Smooth nav highlight ─────────────────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--t1)' : '';
+      });
+    });
+  </script>
+</body>
+</html>

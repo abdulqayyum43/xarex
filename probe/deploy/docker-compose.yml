@@ -1,0 +1,73 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Xarex Local Probe
+#
+# Network mode: host is required so the probe can:
+#   - Open raw sockets for ARP/ICMP scanning
+#   - Send LLMNR multicast and NBT-NS broadcast packets
+#   - Reach all hosts on the local segment without NAT
+#
+# Set ORG_ID and, optionally, PROBE_ID in a .env file in this directory
+# or export them as environment variables before running docker compose up.
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  probe:
+    image: xarex-probe:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: xarex-probe
+
+    # Host networking is essential for raw socket access and correct
+    # source-IP selection when building ARP/ICMP packets.
+    network_mode: host
+
+    # The probe needs CAP_NET_RAW (ARP, ICMP) and CAP_NET_ADMIN (pcap).
+    # We drop every other capability to minimise attack surface.
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    cap_drop:
+      - ALL
+
+    # Allow setting capabilities even when the binary already has file caps.
+    security_opt:
+      - no-new-privileges:false
+
+    environment:
+      # Address of the Xarex Cloud Brain gRPC endpoint.
+      # When network_mode is host, localhost resolves to the Docker host itself.
+      CLOUD_BRAIN_ADDR: "${CLOUD_BRAIN_ADDR:-localhost:50051}"
+
+      # Organisation ID (required — must match a registered org in the Cloud Brain).
+      ORG_ID: "${ORG_ID}"
+
+      # Optional stable probe identifier.
+      # If not set the probe auto-generates a UUID on each start.
+      PROBE_ID: "${PROBE_ID:-}"
+
+      # Comma-separated CIDR subnets to include in discovery tasks.
+      # Leave blank to auto-detect from local network interfaces.
+      SCAN_SUBNETS: "${SCAN_SUBNETS:-}"
+
+      # Log verbosity: "info" (default) or "debug".
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
+
+    restart: unless-stopped
+
+    # Write probe logs to a local file for debugging.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+    # Health-check: probe is "healthy" if the binary is still running.
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -x probe || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,35 @@
+# Python virtual environment — reinstalled inside the image
+.venv/
+
+# Compiled Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environment files — injected at runtime, never baked into the image
+.env
+.env.*
+!.env.example
+
+# Development / test artefacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db

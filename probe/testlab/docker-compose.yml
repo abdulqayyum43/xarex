@@ -1,0 +1,101 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Xarex Pentest Lab — Intentionally Vulnerable Services
+#  Run: docker-compose up -d
+#  Stop: docker-compose down -v
+#
+#  Severity map:
+#    CRITICAL : Redis (no auth), MongoDB (no auth), Elasticsearch (no auth),
+#               HTTP basic-auth with default creds
+#    HIGH     : FTP anonymous, Memcached exposed, SMTP open relay,
+#               SMB signing disabled
+#    MEDIUM   : Old TLS (via ssl_audit), weak ciphers
+#    LOW      : Info-level findings (banners, wildcard certs, etc.)
+# ─────────────────────────────────────────────────────────────────────────────
+version: "3.9"
+
+services:
+
+  # ── CRITICAL: Redis with NO password ────────────────────────────────────────
+  redis-noauth:
+    image: redis:7-alpine
+    container_name: xarex_redis_noauth
+    ports:
+      - "6379:6379"
+    command: redis-server --protected-mode no
+    restart: unless-stopped
+
+  # ── CRITICAL: MongoDB with NO auth ──────────────────────────────────────────
+  mongo-noauth:
+    image: mongo:6
+    container_name: xarex_mongo_noauth
+    ports:
+      - "27017:27017"
+    command: mongod --noauth
+    restart: unless-stopped
+
+  # ── CRITICAL: Elasticsearch with security disabled ──────────────────────────
+  elasticsearch-noauth:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: xarex_elastic_noauth
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    restart: unless-stopped
+
+  # ── HIGH: FTP with anonymous access ─────────────────────────────────────────
+  ftp-anon:
+    image: garethflowers/ftp-server
+    container_name: xarex_ftp_anon
+    ports:
+      - "21:21"
+      - "20:20"
+      - "21000-21010:21000-21010"
+    environment:
+      - FTP_USER=anonymous
+      - FTP_PASS=
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=21000
+      - PASV_MAX_PORT=21010
+    restart: unless-stopped
+
+  # ── HIGH: Memcached exposed on all interfaces ────────────────────────────────
+  memcached-exposed:
+    image: memcached:alpine
+    container_name: xarex_memcached
+    ports:
+      - "11211:11211"
+    command: memcached -l 0.0.0.0
+    restart: unless-stopped
+
+  # ── HIGH: SMTP open relay ────────────────────────────────────────────────────
+  smtp-openrelay:
+    image: bytemark/smtp
+    container_name: xarex_smtp_relay
+    ports:
+      - "25:25"
+    environment:
+      - RELAY_HOST=
+      - RELAY_PORT=
+    restart: unless-stopped
+
+  # ── HIGH: Nginx with old TLS config (TLS 1.0/1.1, weak ciphers) ─────────────
+  nginx-oldtls:
+    image: nginx:1.14-alpine
+    container_name: xarex_nginx_oldtls
+    ports:
+      - "8443:443"
+    volumes:
+      - ./nginx-oldtls.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+  # ── MEDIUM/INFO: Standard nginx (modern TLS, for fingerprinting baseline) ───
+  nginx-baseline:
+    image: nginx:alpine
+    container_name: xarex_nginx_baseline
+    ports:
+      - "8080:80"
+    restart: unless-stopped

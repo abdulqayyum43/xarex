@@ -1,0 +1,112 @@
+version: '3.9'
+
+# Xarex — Cloud Brain PRODUCTION compose
+# Usage:
+#   cp .env.example .env        # fill in real values
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# This file:
+#   - Uses immutable images (no volume bind-mounts)
+#   - Requires all secrets from a .env file
+#   - Adds an Nginx reverse proxy with SSL termination
+#   - Sets restart: always on all services
+
+services:
+  # ─── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: xarex-postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-xarex}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Do NOT expose 5432 to the host in production — internal network only
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB:-xarex}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - xarex-internal
+
+  # ─── Cloud Brain ─────────────────────────────────────────────────────────────
+  cloud-brain:
+    # Build locally (default for first-time deploys):
+    build:
+      context: ./cloud-brain
+      dockerfile: Dockerfile
+    # Pull from registry instead (set REGISTRY and VERSION in .env):
+    # image: ${REGISTRY:-ghcr.io/xarex}/cloud-brain:${VERSION:-latest}
+    container_name: xarex-cloud-brain
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-xarex}
+      ENVIRONMENT: production
+    # gRPC is exposed directly (not via Nginx) so probes can connect
+    ports:
+      - "50051:50051"
+    # HTTP is exposed only internally — Nginx terminates TLS
+    expose:
+      - "8005"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # No volume bind-mounts — image is immutable in production
+    command: >
+      uvicorn main:app
+      --host 0.0.0.0
+      --port 8005
+      --workers 2
+      --log-level warning
+      --no-access-log
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8005/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - xarex-internal
+      - xarex-external
+
+  # ─── Nginx Reverse Proxy ─────────────────────────────────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: xarex-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_cache:/var/cache/nginx
+    depends_on:
+      cloud-brain:
+        condition: service_healthy
+    networks:
+      - xarex-internal
+      - xarex-external
+
+volumes:
+  postgres_data:
+    driver: local
+  nginx_cache:
+    driver: local
+
+networks:
+  xarex-internal:
+    driver: bridge
+    internal: true
+  xarex-external:
+    driver: bridge

@@ -1,0 +1,79 @@
+version: '3.9'
+
+# Xarex — Cloud Brain development compose
+# Use docker-compose.prod.yml for production deployments
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: xarex-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: xarex
+      POSTGRES_PASSWORD: xarex
+      POSTGRES_DB: xarex
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U xarex -d xarex"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  cloud-brain:
+    build:
+      context: ./cloud-brain
+      dockerfile: Dockerfile
+    container_name: xarex-cloud-brain
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://xarex:xarex@postgres:5432/xarex
+      SECRET_KEY: ${SECRET_KEY:-dev-insecure-secret-change-me}
+      ADMIN_SECRET: ${ADMIN_SECRET:-xarex-admin-secret}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+      NVD_API_KEY: ${NVD_API_KEY:-}
+      AUTO_ENRICH_CVE: ${AUTO_ENRICH_CVE:-true}
+      AUTO_GENERATE_REPORT: ${AUTO_GENERATE_REPORT:-true}
+      AUTO_AI_ANALYSIS: ${AUTO_AI_ANALYSIS:-false}
+      NOTIFY_ON_SCAN_COMPLETE: ${NOTIFY_ON_SCAN_COMPLETE:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      ENVIRONMENT: development
+    # Hot-reload volume mount — dev only. Also mount the dashboard frontend
+    # at /frontend so main.py's StaticFiles mount at "/" can serve it (the
+    # main.py block at lines ~395-405 looks for Path(__file__).parent.parent / "frontend"
+    # which resolves to /frontend inside the container).
+    volumes:
+      - ./cloud-brain:/app
+      - ./frontend:/frontend:ro
+      - ./website:/website:ro
+    # SECURITY: uvicorn here is implicitly single-worker via --reload, and it
+    # MUST stay that way. The reveal_token store in
+    # `cloud-brain/services/billing.py::_REVEAL_TOKENS` is a process-local
+    # dict, so adding --workers N>1 would break post-checkout credential
+    # reveal for ~(N-1)/N of customers (random 404s on /session-status).
+    # Move the store to Redis (see RATE_LIMIT_STORAGE_URI pattern) BEFORE
+    # raising the worker count here.
+    command: >
+      uvicorn main:app
+      --host 0.0.0.0
+      --port 8005
+      --log-level info
+    # Healthcheck disabled — Docker's healthcheck was somehow triggering
+    # SIGTERM cycles even with curl replaced by Python urllib. Cloud-brain's
+    # own /health endpoint can be polled by UptimeRobot in production.
+    healthcheck:
+      disable: true
+
+volumes:
+  postgres_data:
+    driver: local

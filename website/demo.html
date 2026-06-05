@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#060810" />
+
+<title>Xarex — See it in action · Live feature demos</title>
+<meta name="description" content="See every Xarex feature in action with sample findings, real scenarios, and side-by-side outputs. Subdomain enumeration, secrets scanning, Nuclei templated checks, attack-path modelling — all explained." />
+<link rel="canonical" href="https://xarex.com/demo" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%237c6af7'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='20' fill='white'>X</text></svg>" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Xarex — See every feature in action" />
+<meta property="og:description" content="Pick a feature. Watch how Xarex finds the issue your team can't see. Subdomain discovery, secrets scanning, 9,000+ templated CVE checks, attack-path modelling." />
+<meta property="og:image" content="https://xarex.com/og-image.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:       #060810;
+  --bg2:      #0b0e18;
+  --bg3:      #11162a;
+  --panel:    rgba(255,255,255,0.04);
+  --panel-bd: rgba(255,255,255,0.08);
+  --accent:   #7c6af7;
+  --accent2:  #4fc9f0;
+  --accent3:  #f573b1;
+  --success:  #3dd68c;
+  --warn:     #f0c93a;
+  --high:     #f0853a;
+  --crit:     #f04f59;
+  --t1:       #f3f5fc;
+  --t2:       #a5acc8;
+  --t3:       #6b7290;
+  --r-sm:     8px;
+  --r:        14px;
+  --r-lg:     22px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--t1);
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 1200px 600px at 20% 0%, rgba(124,106,247,0.10), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 100% 30%, rgba(79,201,240,0.06), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Top nav ──────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(6,8,16,0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--panel-bd);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 900; font-size: 17px; letter-spacing: 0.5px;
+  color: var(--t1); text-decoration: none;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 7px;
+  display: grid; place-items: center;
+  font-size: 14px; color: white; font-weight: 900;
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  color: var(--t2); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--t1); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--accent), #5b4ed8);
+  color: white; text-decoration: none;
+  padding: 10px 20px; border-radius: 999px;
+  font-weight: 600; font-size: 14px;
+  box-shadow: 0 8px 24px rgba(124,106,247,0.25);
+  transition: transform .12s, box-shadow .12s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(124,106,247,0.35); }
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero { padding: 100px 28px 60px; max-width: 1100px; margin: 0 auto; text-align: center; }
+.eyebrow {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent);
+  background: rgba(124,106,247,0.10);
+  border: 1px solid rgba(124,106,247,0.25);
+  padding: 7px 16px; border-radius: 999px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900; letter-spacing: -1.5px; line-height: 1.05;
+  margin-bottom: 24px;
+  text-wrap: balance;
+}
+.hero h1 .grad {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p {
+  font-size: 19px; line-height: 1.6; color: var(--t2);
+  max-width: 720px; margin: 0 auto 36px;
+  text-wrap: pretty;
+}
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: 999px;
+  font-weight: 600; font-size: 15px;
+  text-decoration: none; transition: transform .12s, box-shadow .12s;
+  cursor: pointer; border: 0;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #5b4ed8);
+  color: white;
+  box-shadow: 0 10px 28px rgba(124,106,247,0.30);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(124,106,247,0.40); }
+.btn-ghost {
+  background: transparent; color: var(--t1);
+  border: 1px solid var(--panel-bd);
+}
+.btn-ghost:hover { background: var(--panel); border-color: rgba(255,255,255,0.18); }
+
+/* ── Layout: sticky TOC + main column ─────────────────── */
+.layout {
+  max-width: 1200px; margin: 0 auto;
+  padding: 40px 28px 120px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 56px;
+}
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; gap: 30px; }
+  .toc { position: static !important; max-height: none !important; }
+}
+
+.toc {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  font-size: 14px;
+}
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--t3);
+  margin-bottom: 14px;
+}
+.toc ol { list-style: none; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-radius: var(--r-sm);
+  color: var(--t2); text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all .12s;
+}
+.toc a:hover { background: var(--panel); color: var(--t1); }
+.toc a.active {
+  background: rgba(124,106,247,0.10);
+  border-left-color: var(--accent);
+  color: var(--t1);
+}
+.toc .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--t3); width: 22px;
+}
+
+/* ── Feature demo card ────────────────────────────────── */
+.demo {
+  scroll-margin-top: 100px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--panel-bd);
+}
+.demo:last-child { border-bottom: 0; }
+.demo-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent2);
+  margin-bottom: 14px;
+}
+.demo-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 12px var(--accent2); }
+.demo h2 {
+  font-size: clamp(28px, 4.2vw, 42px);
+  font-weight: 800; letter-spacing: -0.8px; line-height: 1.1;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+.demo .lede {
+  font-size: 18px; line-height: 1.65; color: var(--t2);
+  max-width: 720px; margin-bottom: 28px;
+  text-wrap: pretty;
+}
+
+/* Panel — sample-data preview surface */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-bd);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+.panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--panel-bd);
+  background: linear-gradient(180deg, rgba(255,255,255,0.025), transparent);
+}
+.panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 600; color: var(--t1);
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-title .icon {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: grid; place-items: center;
+  font-size: 13px;
+}
+.panel-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--t3);
+}
+.panel-body { padding: 20px; }
+.panel-foot {
+  padding: 14px 20px;
+  border-top: 1px solid var(--panel-bd);
+  background: rgba(255,255,255,0.015);
+  font-size: 13px; color: var(--t3);
+}
+
+/* Two-up: panel left, "why" right */
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+  margin-bottom: 28px;
+}
+@media (max-width: 860px) { .demo-grid { grid-template-columns: 1fr; } }
+
+.why {
+  background: rgba(124,106,247,0.06);
+  border: 1px solid rgba(124,106,247,0.18);
+  border-radius: var(--r);
+  padding: 22px 24px;
+}
+.why-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+}
+.why h3 {
+  font-size: 17px; font-weight: 700; line-height: 1.35;
+  margin-bottom: 12px;
+  text-wrap: balance;
+}
+.why p {
+  font-size: 14.5px; line-height: 1.65; color: var(--t2);
+  text-wrap: pretty;
+  hyphens: auto;
+}
+.why p + p { margin-top: 10px; }
+.why .scenario {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255,255,255,0.08);
+  font-size: 13.5px; color: var(--t2); font-style: italic;
+}
+.why .scenario strong { color: var(--t1); font-style: normal; }
+
+/* Sample finding rows (used by several demos) */
+.finding-list { display: flex; flex-direction: column; gap: 8px; }
+.finding {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px; align-items: center;
+  padding: 12px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--panel-bd);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+}
+.finding-sev {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 3px 8px; border-radius: 4px;
+  width: 70px; text-align: center;
+}
+.sev-crit  { background: rgba(240,79,89,0.15); color: var(--crit); }
+.sev-high  { background: rgba(240,133,58,0.15); color: var(--high); }
+.sev-med   { background: rgba(240,201,58,0.15); color: var(--warn); }
+.sev-low   { background: rgba(79,201,240,0.15); color: var(--accent2); }
+.sev-info  { background: rgba(124,106,247,0.12); color: var(--accent); }
+.sev-clean { background: rgba(61,214,140,0.12); color: var(--success); }
+.finding-text { color: var(--t1); }
+.finding-text code, .finding-text .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px; color: var(--t2);
+  background: rgba(255,255,255,0.04);
+  padding: 1px 6px; border-radius: 4px;
+}
+.finding-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--t3);
+}
+
+/* Subdomain grid (demo 1) */
+.sd-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  font-size: 13px;
+}
+@media (max-width: 540px) { .sd-grid { grid-template-columns: 1fr; } }
+.sd-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 9px 12px; background: var(--bg2); border-radius: 6px;
+  border: 1px solid var(--panel-bd);
+}
+.sd-host {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--t1);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sd-ip {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--accent2);
+  flex-shrink: 0;
+}
+
+/* Terminal box */
+.terminal {
+  background: #04050a; border: 1px solid var(--panel-bd);
+  border-radius: var(--r);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; line-height: 1.55; color: #d8dcef;
+  overflow: hidden;
+}
+.terminal-head {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; background: #0a0d18; border-bottom: 1px solid var(--panel-bd);
+}
+.terminal-head .dot3 { display: flex; gap: 6px; }
+.terminal-head .dot3 span { width: 11px; height: 11px; border-radius: 50%; }
+.terminal-head .dot3 span:nth-child(1) { background: #f04f59; }
+.terminal-head .dot3 span:nth-child(2) { background: #f0c93a; }
+.terminal-head .dot3 span:nth-child(3) { background: #3dd68c; }
+.terminal-head .ttl { font-size: 12px; color: var(--t3); margin-left: 8px; }
+.terminal-body { padding: 16px; white-space: pre-wrap; }
+.t-prompt { color: var(--accent); }
+.t-cmd { color: #d8dcef; }
+.t-out { color: var(--t2); }
+.t-ok  { color: var(--success); }
+.t-bad { color: var(--crit); }
+.t-warn { color: var(--warn); }
+.t-comment { color: var(--t3); font-style: italic; }
+
+/* Attack path mock */
+.path {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px; background: var(--bg2);
+  border: 1px solid var(--panel-bd); border-radius: var(--r);
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+}
+.path-node {
+  flex: 1; text-align: center;
+  padding: 12px 10px;
+  border: 1px solid var(--panel-bd); border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+}
+.path-node .nl { font-size: 10px; color: var(--t3); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
+.path-node .nv { color: var(--t1); font-weight: 600; }
+.path-node.crit { border-color: rgba(240,79,89,0.4); background: rgba(240,79,89,0.06); }
+.path-node.crit .nv { color: var(--crit); }
+.path-arrow { color: var(--t3); font-size: 18px; }
+
+/* CTA section at bottom */
+.bottom-cta {
+  max-width: 980px; margin: 80px auto 0;
+  padding: 56px 36px;
+  background: linear-gradient(135deg, rgba(124,106,247,0.12), rgba(79,201,240,0.06));
+  border: 1px solid rgba(124,106,247,0.25);
+  border-radius: var(--r-lg);
+  text-align: center;
+}
+.bottom-cta h2 {
+  font-size: clamp(28px, 4.2vw, 44px);
+  font-weight: 900; letter-spacing: -0.8px; line-height: 1.1;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+.bottom-cta p {
+  font-size: 17px; color: var(--t2);
+  max-width: 600px; margin: 0 auto 28px;
+  text-wrap: pretty;
+}
+
+/* Footer */
+.footer {
+  max-width: 1200px; margin: 0 auto;
+  padding: 40px 28px;
+  border-top: 1px solid var(--panel-bd);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  font-size: 13px; color: var(--t3);
+}
+.footer a { color: var(--t2); text-decoration: none; margin-right: 18px; }
+.footer a:hover { color: var(--t1); }
+
+/* Subtle entry animation */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.demo > * { animation: rise .5s ease both; }
+.demo > *:nth-child(2) { animation-delay: .05s; }
+.demo > *:nth-child(3) { animation-delay: .10s; }
+.demo > *:nth-child(4) { animation-delay: .15s; }
+@media (prefers-reduced-motion: reduce) {
+  .demo > * { animation: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">X</div>
+      XAREX
+    </a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/signup" class="nav-cta">Start free — 2 scans</a>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────── -->
+<header class="hero">
+  <span class="eyebrow">Live feature demos</span>
+  <h1>See exactly what Xarex<br/>finds <span class="grad">before attackers do</span>.</h1>
+  <p>Pick a feature. See the sample output. Read the real-world scenario. No signup, no email — just the same findings your scan would produce. Then start free with 2 included scans.</p>
+  <div class="hero-ctas">
+    <a class="btn btn-primary" href="/signup">Start free — 2 scans included</a>
+    <a class="btn btn-ghost" href="#demo-1">Jump to first demo ↓</a>
+  </div>
+</header>
+
+<!-- ─── Demos ────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- Sticky TOC -->
+  <aside class="toc">
+    <div class="toc-title">In this page</div>
+    <ol>
+      <li><a href="#demo-1"><span class="num">01</span>Subdomain enumeration</a></li>
+      <li><a href="#demo-2"><span class="num">02</span>OSINT email harvest</a></li>
+      <li><a href="#demo-3"><span class="num">03</span>Secrets &amp; git scanner</a></li>
+      <li><a href="#demo-4"><span class="num">04</span>9,000+ CVE templates</a></li>
+      <li><a href="#demo-5"><span class="num">05</span>Autonomous scan pipeline</a></li>
+      <li><a href="#demo-6"><span class="num">06</span>Attack-path modelling</a></li>
+      <li><a href="#demo-7"><span class="num">07</span>AI-written reports</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+    <!-- ═══════════ DEMO 1: SUBDOMAIN ENUMERATION ═══════════ -->
+    <section class="demo" id="demo-1">
+      <div class="demo-tag"><span class="dot"></span>Recon · Asset discovery</div>
+      <h2>Find every subdomain — including the ones your team forgot.</h2>
+      <p class="lede">
+        Type your apex domain. Xarex queries Certificate Transparency logs, passive DNS aggregators, and resolves every result to its current IP — in 5 to 20 seconds. Every CTO has shadow IT they don't know about. This is how you find it.
+      </p>
+
+      <div class="demo-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="icon">🌐</span> Subdomain enumeration · acme-corp.com</div>
+            <div class="panel-meta">Discovered 16 · 2 sources</div>
+          </div>
+          <div class="panel-body">
+            <div class="sd-grid">
+              <div class="sd-row"><span class="sd-host">api.acme-corp.com</span>          <span class="sd-ip">104.18.36.214</span></div>
+              <div class="sd-row"><span class="sd-host">staging.acme-corp.com</span>      <span class="sd-ip">52.55.180.21</span></div>
+              <div class="sd-row"><span class="sd-host">dev.acme-corp.com</span>          <span class="sd-ip">52.55.180.22</span></div>
+              <div class="sd-row"><span class="sd-host">old-billing.acme-corp.com</span>  <span class="sd-ip">198.71.232.3</span></div>
+              <div class="sd-row"><span class="sd-host">jenkins.acme-corp.com</span>      <span class="sd-ip">10.0.5.41</span></div>
+              <div class="sd-row"><span class="sd-host">vpn.acme-corp.com</span>          <span class="sd-ip">203.0.113.99</span></div>
+              <div class="sd-row"><span class="sd-host">docs.acme-corp.com</span>         <span class="sd-ip">172.64.151.42</span></div>
+              <div class="sd-row"><span class="sd-host">support.acme-corp.com</span>      <span class="sd-ip">172.66.0.145</span></div>
+              <div class="sd-row"><span class="sd-host">mta-sts.acme-corp.com</span>      <span class="sd-ip">185.199.108.153</span></div>
+              <div class="sd-row"><span class="sd-host">gslink.acme-corp.com</span>       <span class="sd-ip">13.35.163.123</span></div>
+            </div>
+          </div>
+          <div class="panel-foot">Sources: crt.sh, HackerTarget · IPs resolved via Cloudflare DNS-over-HTTPS</div>
+        </div>
+
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>Your real attack surface is bigger than what you remember owning.</h3>
+          <p>
+            Most breaches start at the forgotten edge — a staging server from 2021, a marketing experiment nobody decommissioned, an internal Jenkins exposed because a firewall rule changed. Your team can't defend infrastructure they don't know exists.
+          </p>
+          <p>
+            Xarex pulls from sources attackers already use — every TLS certificate ever issued for your domain is public, and passive DNS aggregators have years of historical resolution data. You get the same map an adversary gets, but you get it first.
+          </p>
+          <div class="scenario">
+            <strong>Real scenario:</strong> A 40-person SaaS company ran their first subdomain enumeration and found <em>old-billing.acme-corp.com</em> — a 2-year-old Wordpress instance still serving real customer invoices over plain HTTP. It was disclosed responsibly within 24 hours.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 2: OSINT EMAIL ═══════════ -->
+    <section class="demo" id="demo-2">
+      <div class="demo-tag"><span class="dot"></span>Recon · Exposure</div>
+      <h2>Find every employee email leaked in public records.</h2>
+      <p class="lede">
+        Certificates expose the email of whoever requested them. Public PGP keyservers expose anyone with a signing key. Xarex aggregates both — then cross-checks every address against the HaveIBeenPwned breach database. You see which staff have credentials already in attacker hands.
+      </p>
+
+      <div class="demo-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="icon">📧</span> OSINT emails · acme-corp.com</div>
+            <div class="panel-meta">8 found · 3 in known breaches</div>
+          </div>
+          <div class="panel-body">
+            <div class="finding-list">
+              <div class="finding">
+                <span class="finding-sev sev-high">BREACHED</span>
+                <span class="finding-text">
+                  <code>cto@acme-corp.com</code> — Adobe (2013), LinkedIn (2016), Canva (2019)
+                </span>
+                <span class="finding-meta">3 breaches</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">BREACHED</span>
+                <span class="finding-text">
+                  <code>billing@acme-corp.com</code> — Dropbox (2012), MyFitnessPal (2018)
+                </span>
+                <span class="finding-meta">2 breaches</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">BREACHED</span>
+                <span class="finding-text">
+                  <code>j.smith@acme-corp.com</code> — Collection #1 (2019)
+                </span>
+                <span class="finding-meta">1 breach</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-clean">CLEAN</span>
+                <span class="finding-text">
+                  <code>ops@acme-corp.com</code> — no known breach
+                </span>
+                <span class="finding-meta">crt.sh</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-clean">CLEAN</span>
+                <span class="finding-text">
+                  <code>security@acme-corp.com</code> — no known breach
+                </span>
+                <span class="finding-meta">crt.sh + PGP</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-foot">Breach data via HIBP k-anonymity · we never see, log, or transmit plaintext emails</div>
+        </div>
+
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>Credential stuffing is now the #1 initial-access vector.</h3>
+          <p>
+            When an employee reused their corporate email + password on a breached service, the password is in dictionaries that bots cycle through your VPN, admin panel, Microsoft 365 portal, and AWS console — every 24 hours. The window between "breach disclosed" and "your account is taken over" is measured in days.
+          </p>
+          <p>
+            Xarex shows you exactly which employees to force-reset before that happens.
+          </p>
+          <div class="scenario">
+            <strong>Real scenario:</strong> Same SaaS company found their <em>billing@</em> alias was in the Dropbox 2012 breach. Their AP clerk had been reusing that password. They rotated it that afternoon — and one week later, an unrelated phishing campaign attempted the old credentials and failed.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 3: SECRETS / GIT ═══════════ -->
+    <section class="demo" id="demo-3">
+      <div class="demo-tag"><span class="dot"></span>Protect · Code security</div>
+      <h2>Catch leaked API keys before they become an incident.</h2>
+      <p class="lede">
+        Paste any public git URL. Xarex clones it in a sandbox (100 MB cap, 60 s wall clock, HTTPS only) and runs every text file through 20+ secret patterns — AWS, Stripe, Anthropic, OpenAI, GitHub PATs, Slack tokens, PEM keys, JWTs, env-style passwords. Matches are severity-graded and redacted before they hit your dashboard.
+      </p>
+
+      <div class="demo-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="icon">🔑</span> Secrets scan · github.com/acme-corp/internal-tools</div>
+            <div class="panel-meta">7 secrets · 0.6 MB scanned</div>
+          </div>
+          <div class="panel-body">
+            <div class="finding-list">
+              <div class="finding">
+                <span class="finding-sev sev-crit">CRITICAL</span>
+                <span class="finding-text">AWS Access Key ID — <code>scripts/deploy.sh:12</code> — <span class="mono">AKIA****************MGZ7</span></span>
+                <span class="finding-meta">entropy 4.6</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-crit">CRITICAL</span>
+                <span class="finding-text">Stripe Live Secret Key — <code>config/payments.yml:8</code> — <span class="mono">sk_live****************fAxQ</span></span>
+                <span class="finding-meta">entropy 5.1</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">HIGH</span>
+                <span class="finding-text">GitHub PAT — <code>ci/release.sh:3</code> — <span class="mono">ghp_****************tK4P</span></span>
+                <span class="finding-meta">entropy 4.8</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">HIGH</span>
+                <span class="finding-text">Slack Bot Token — <code>notify/slack.py:21</code> — <span class="mono">xoxb-****-****-NkPq</span></span>
+                <span class="finding-meta">entropy 4.4</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-med">MEDIUM</span>
+                <span class="finding-text">PEM Private Key — <code>certs/staging.pem:1</code> — RSA 2048</span>
+                <span class="finding-meta">3 KB block</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-med">MEDIUM</span>
+                <span class="finding-text">Hardcoded password — <code>.env.example:5</code> — <span class="mono">Welc****!23</span></span>
+                <span class="finding-meta">entropy 3.4</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-foot">All matches are redacted server-side · the full secret never appears in your dashboard or our logs</div>
+        </div>
+
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>An AWS root key leaked to a public repo is mined within 30 seconds.</h3>
+          <p>
+            GitHub's secret-scanning catches the obvious ones, but it doesn't scan your forks, your contractors' personal repos, the PoC repo your intern made public last Friday, or your acquisition target's archive. Bots scrape every push every minute. The window between leak and abuse is measured in seconds, not days.
+          </p>
+          <p>
+            Xarex lets you proactively audit any repo you have a stake in — yours, your vendors', your acquisitions'. The detection is the same regardless of who owns the repo.
+          </p>
+          <div class="scenario">
+            <strong>Real scenario:</strong> An acquirer ran Xarex against the target's main monorepo during due diligence and found a Stripe live key in an old test fixture. Closed the deal at a $40k lower valuation citing the secret-leak liability.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 4: NUCLEI / CVE TEMPLATES ═══════════ -->
+    <section class="demo" id="demo-4">
+      <div class="demo-tag"><span class="dot"></span>Scan · Vulnerability detection</div>
+      <h2>9,000+ CVE templates — running on every scan, automatically.</h2>
+      <p class="lede">
+        Xarex embeds the entire Nuclei community template library — every CVE, exposed admin panel, default credential, leaked .env, misconfigured WordPress plugin, Spring4Shell, Log4Shell, you name it. Templates land hours after CVE disclosure. Your scans inherit them without you doing anything.
+      </p>
+
+      <div class="demo-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title"><span class="icon">🎯</span> Templated scan · 127.0.0.1:8080 (Acme intranet)</div>
+            <div class="panel-meta">24 matches · 6 high · 18 info</div>
+          </div>
+          <div class="panel-body">
+            <div class="finding-list">
+              <div class="finding">
+                <span class="finding-sev sev-high">HIGH</span>
+                <span class="finding-text">Redis Server — Unauthenticated Access <code>(127.0.0.1:6379)</code></span>
+                <span class="finding-meta">CVE-2022-0543</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">HIGH</span>
+                <span class="finding-text">Redis — Default Logins (no password) <code>(127.0.0.1:6379)</code></span>
+                <span class="finding-meta">network/default-login</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-high">HIGH</span>
+                <span class="finding-text">Apache Log4j2 Remote Code Execution <code>(127.0.0.1:8080)</code></span>
+                <span class="finding-meta">CVE-2021-44228</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-info">INFO</span>
+                <span class="finding-text">WAF Detection — fingerprint nginx generic</span>
+                <span class="finding-meta">tech/waf-detect</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-info">INFO</span>
+                <span class="finding-text">Nginx 1.31.0 default test page exposed</span>
+                <span class="finding-meta">misconfiguration</span>
+              </div>
+              <div class="finding">
+                <span class="finding-sev sev-info">INFO</span>
+                <span class="finding-text">FTP Service Detected — banner <code>220 FTP Server</code></span>
+                <span class="finding-meta">network/detection</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-foot">Templates pulled from projectdiscovery/nuclei-templates (MIT) at build time · scan duration ≈ 3 min on this target</div>
+        </div>
+
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>Nessus charges $3,990 per year for the same template library — and it's not faster than Xarex.</h3>
+          <p>
+            Templated scanning is the workhorse of every commercial vulnerability scanner. Nuclei is the community open-source equivalent — broader coverage, faster template updates, free. Xarex shrink-wraps it into the same pipeline as everything else so you don't have to install, configure, or maintain anything.
+          </p>
+          <p>
+            Every web port discovered in your scan automatically gets the full template library thrown at it. New CVE? New template? Your next scan picks it up.
+          </p>
+          <div class="scenario">
+            <strong>Real scenario:</strong> A regional credit union's monthly Xarex scan picked up a freshly-published Atlassian Confluence RCE template the morning after CVE-2024-21683 was published. They patched before noon — and the public-exploit honeypot logs showed scanning bots arriving 6 hours later.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 5: AUTONOMOUS SCAN ═══════════ -->
+    <section class="demo" id="demo-5">
+      <div class="demo-tag"><span class="dot"></span>Scan · Orchestration</div>
+      <h2>One click. Six phases. Zero manual intervention.</h2>
+      <p class="lede">
+        Most "automated" scanners ask you to pick which checks to run, configure each one, and stitch the results together. Xarex runs the full pipeline autonomously — host discovery, port scan, service fingerprinting, vuln check, credential test, attack-path modelling — and chains them based on what each step finds.
+      </p>
+
+      <div class="terminal">
+        <div class="terminal-head"><div class="dot3"><span></span><span></span><span></span></div><div class="ttl">scan-output · 127.0.0.1</div></div>
+        <div class="terminal-body"><span class="t-prompt">$</span> <span class="t-cmd">xarex scan start --target 127.0.0.1</span>
+<span class="t-comment"># Phase 1 — Host discovery</span>
+<span class="t-out">→ ARP sweep on 127.0.0.1/32  ............  1 live host</span>
+
+<span class="t-comment"># Phase 2 — Port scan (Top 1000 TCP)</span>
+<span class="t-out">→ 127.0.0.1  .....  8 open: 21, 25, 5432, 6379, 8080, 9200, 11211, 27017</span>
+
+<span class="t-comment"># Phase 3 — Service fingerprint</span>
+<span class="t-out">→ :21    ftp        FTP Server</span>
+<span class="t-out">→ :25    smtp       exim 4.89</span>
+<span class="t-out">→ :6379  redis      Redis 7.0.5</span>
+<span class="t-out">→ :8080  http       nginx/1.31.0</span>
+
+<span class="t-comment"># Phase 4 — Service-specific credential tests</span>
+<span class="t-bad">✗ :6379  Redis Unauthenticated Access      (CRITICAL)</span>
+<span class="t-bad">✗ :11211 Memcached Unauthenticated Access  (HIGH)</span>
+<span class="t-bad">✗ :9200  Elasticsearch Unauthenticated     (CRITICAL)</span>
+<span class="t-bad">✗ :25    SMTP Open Relay Detected           (HIGH)</span>
+
+<span class="t-comment"># Phase 5 — Nuclei templated scan</span>
+<span class="t-out">→ http://127.0.0.1:8080 . 24 matches (6 high, 18 info)</span>
+
+<span class="t-comment"># Phase 6 — Attack path modelling</span>
+<span class="t-out">→ Building graph  ..........  2 critical paths to crown jewels</span>
+
+<span class="t-ok">✓ Scan complete · 55 findings · 2 CRITICAL · 6 HIGH</span>
+<span class="t-ok">  AI-written report at /reports/22340a55…</span></div>
+      </div>
+
+      <div class="demo-grid" style="margin-top:24px">
+        <div></div>
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>Most teams don't run scans because configuring them is the hard part.</h3>
+          <p>
+            Nessus has 300+ scan policy options. Burp's enterprise scanner needs you to define crawls and pick check categories. The reason internal pentests happen quarterly isn't lack of tooling — it's that running the tool is a project.
+          </p>
+          <p>
+            Xarex's autonomous engine makes scanning forgettable. Set a schedule, walk away. The pipeline picks the right follow-up for every finding. New surface gets new checks automatically.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 6: ATTACK PATH ═══════════ -->
+    <section class="demo" id="demo-6">
+      <div class="demo-tag"><span class="dot"></span>Analyse · Adversary thinking</div>
+      <h2>See how an attacker would chain your findings.</h2>
+      <p class="lede">
+        A list of CVEs doesn't tell you which one matters. Xarex models how an adversary would chain multiple weaknesses across your network — entry point → pivot host → privileged service → your crown jewels. Fix the entry, break the entire chain.
+      </p>
+
+      <div class="path">
+        <div class="path-node">
+          <div class="nl">Entry · public</div>
+          <div class="nv">api.acme.com</div>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-node">
+          <div class="nl">Pivot · RCE</div>
+          <div class="nv">Log4Shell</div>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-node">
+          <div class="nl">Lateral · cred reuse</div>
+          <div class="nv">redis :6379</div>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-node crit">
+          <div class="nl">Crown jewel</div>
+          <div class="nv">PII database</div>
+        </div>
+      </div>
+
+      <div class="demo-grid" style="margin-top:24px">
+        <div></div>
+        <aside class="why">
+          <div class="why-label">Why this matters</div>
+          <h3>CVSS scores are about <em>severity</em>. Attack paths are about <em>exploitability against you specifically</em>.</h3>
+          <p>
+            A CVSS 9.8 vulnerability in a service that's behind your VPN and only accessible to your ops team is, in practice, less urgent than a CVSS 6.5 in your internet-facing API that pivots to your customer database. Xarex shows you which is which.
+          </p>
+          <p>
+            Boards understand "this one finding leads to four more, ending at our PII database" in a way they will never understand a 200-row CVE table.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ DEMO 7: AI REPORTS ═══════════ -->
+    <section class="demo" id="demo-7">
+      <div class="demo-tag"><span class="dot"></span>Report · Communicate up</div>
+      <h2>The report your board can act on. Written by Claude.</h2>
+      <p class="lede">
+        Every scan ends with a Claude-written report — an executive summary your board can read in 90 seconds, a technical attack narrative your security team can act on, MITRE ATT&amp;CK mapping for your auditors, and a prioritised remediation plan with effort estimates. No copy-paste, no consultant invoice.
+      </p>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title"><span class="icon">🧠</span> Executive summary · Q2 internal audit · acme-corp</div>
+          <div class="panel-meta">Generated by Claude Opus</div>
+        </div>
+        <div class="panel-body" style="font-size:15px; line-height:1.65; color:var(--t2); max-width:780px;">
+          <p style="text-wrap:pretty; hyphens:auto; text-align:justify">
+            This scan identified <strong style="color:var(--t1)">2 critical and 6 high-severity findings</strong> across 8 hosts on Acme Corp's internal network. The single most material issue is a Redis instance running on the application server (<code style="color:var(--accent2)">10.0.5.41:6379</code>) with no authentication enabled — it stores session cookies for the customer portal, meaning an attacker on the network can hijack any logged-in user's session in under one minute of access.
+          </p>
+          <p style="margin-top:14px; text-wrap:pretty; hyphens:auto; text-align:justify">
+            A separate Elasticsearch instance on the same host is similarly unauthenticated and indexes <strong style="color:var(--t1)">142 GB of customer support tickets</strong> containing email addresses, account IDs, and in 3% of cases, plaintext passwords pasted by users. We assess this as the highest-impact finding because it is both currently exploitable and would constitute a reportable breach under both GDPR Article 34 and your standard SOC 2 customer data agreements.
+          </p>
+          <p style="margin-top:14px; text-wrap:pretty; hyphens:auto; text-align:justify">
+            We recommend three immediate actions, in order: <strong style="color:var(--t1)">(1)</strong> set a Redis password and bind to 127.0.0.1 — 5 minutes of work, removes the session-hijacking path; <strong style="color:var(--t1)">(2)</strong> enable X-Pack security on Elasticsearch — 20 minutes, removes the customer-data exposure; <strong style="color:var(--t1)">(3)</strong> rotate the AWS access key found leaked in your <code style="color:var(--accent2)">internal-tools</code> repo and audit the past 90 days of CloudTrail for unexpected use of that principal.
+          </p>
+        </div>
+        <div class="panel-foot">Full report includes attack narrative, MITRE mapping, per-finding remediation plan, and PDF + JSON exports.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ─── Bottom CTA ──────────────────────────────────────── -->
+<section class="bottom-cta">
+  <h2>Run all of this against <em>your</em> network.</h2>
+  <p>Free signup includes 2 full scans across every feature shown above — no credit card, no sales call, no time limit.</p>
+  <a href="/signup" class="btn btn-primary" style="font-size:16px; padding:16px 32px">Start free — 2 scans included →</a>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer class="footer">
+  <div>© 2026 Xarex Security</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/sample-report.html">Sample report</a>
+    <a href="mailto:hello@xarex.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── Sticky TOC active-section highlight ──
+(function() {
+  const links = document.querySelectorAll('.toc a');
+  const map = {};
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) map[id] = { link: a, section: el };
+  });
+
+  function update() {
+    let activeId = null;
+    let activeY  = -Infinity;
+    for (const id in map) {
+      const top = map[id].section.getBoundingClientRect().top - 140;
+      if (top <= 0 && top > activeY) {
+        activeY = top;
+        activeId = id;
+      }
+    }
+    links.forEach(a => a.classList.remove('active'));
+    if (activeId && map[activeId]) map[activeId].link.classList.add('active');
+  }
+  document.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>

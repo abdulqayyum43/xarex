@@ -1,0 +1,10 @@
+# Dev-only dependencies. Install with:
+#   pip install -r requirements.txt -r requirements-dev.txt
+# CI / containers can install this alongside requirements.txt; production
+# images should NOT install this file.
+
+pytest>=8.2.0
+pytest-asyncio>=0.23.7
+aiosqlite>=0.20.0
+# httpx already in requirements.txt; we use httpx.AsyncClient + ASGITransport
+# for in-process FastAPI testing (no real network).

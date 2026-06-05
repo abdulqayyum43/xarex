@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xarex AI Report — Sample (Northwind Fintech Inc.)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Xarex AI Report — Single-file styles
+     Screen view: dark cover + light interior pages
+     Print: clean A4 light theme, page breaks at major sections
+     ============================================================ */
+
+  :root {
+    --violet:        #7c6af7;
+    --violet-deep:   #5841d8;
+    --violet-soft:   #efeaff;
+    --dark:          #060810;
+    --ink:           #14161f;
+    --ink-soft:      #3a3e4d;
+    --muted:         #6b7080;
+    --rule:          #e4e6ee;
+    --rule-soft:     #f0f1f6;
+    --row-alt:       #f7f8fc;
+    --bg:            #ffffff;
+
+    --sev-critical:  #f04f59;
+    --sev-high:      #f0853a;
+    --sev-medium:    #f0c93a;
+    --sev-low:       #4fc9f0;
+    --sev-ok:        #3dd68c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #2a2c3a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-size: 11.5pt;
+    line-height: 1.55;
+  }
+
+  code, pre, .mono { font-family: 'JetBrains Mono', Menlo, Consolas, monospace; }
+
+  /* ---------- Page model ---------- */
+  .page {
+    background: var(--bg);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 14px auto;
+    padding: 18mm 18mm 22mm 18mm;
+    position: relative;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .page:last-child { page-break-after: auto; }
+
+  /* Footer on every interior page */
+  .page-footer {
+    position: absolute;
+    left: 18mm;
+    right: 18mm;
+    bottom: 10mm;
+    border-top: 1px solid var(--rule);
+    padding-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8.5pt;
+    color: var(--muted);
+  }
+  .page-footer .sample-tag {
+    color: var(--violet-deep);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .page-footer .confid { font-weight: 500; }
+  .page-footer .page-num::after { content: counter(page); }
+
+  /* ---------- Typography ---------- */
+  h1, h2, h3, h4 { color: var(--ink); margin: 0 0 0.4em 0; font-weight: 700; letter-spacing: -0.01em; }
+  h1 { font-size: 26pt; line-height: 1.15; }
+  h2 { font-size: 17pt; margin-top: 0.4em; }
+  h3 { font-size: 12.5pt; }
+  h4 { font-size: 10.5pt; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  p  { margin: 0 0 0.85em 0; }
+  a  { color: var(--violet-deep); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--violet-deep);
+    background: var(--violet-soft);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .rule-h { height: 3px; width: 60px; background: var(--violet); margin: 0 0 18px 0; border-radius: 2px; }
+
+  /* ---------- Cover page (dark) ---------- */
+  .cover {
+    background:
+      radial-gradient(ellipse at top right, rgba(124,106,247,0.55), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(88,65,216,0.45), transparent 55%),
+      linear-gradient(160deg, #0a0d1f 0%, #060810 100%);
+    color: #f3f4fb;
+    padding: 22mm 18mm;
+  }
+  .cover h1 { color: #fff; font-size: 34pt; line-height: 1.05; }
+  .cover h2 { color: #cdd0e6; font-weight: 500; font-size: 14pt; margin-top: 4px; }
+  .cover .brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 28mm; }
+  .cover .brand-row .wordmark { font-size: 18pt; font-weight: 700; letter-spacing: -0.01em; color: #fff; }
+  .cover .brand-row .product-tag { font-size: 9pt; color: #aab0d0; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .logo-sq {
+    width: 44px; height: 44px;
+    background: var(--violet);
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 22px rgba(124,106,247,0.45);
+  }
+  .logo-sq svg { width: 26px; height: 26px; }
+
+  .cover .meta-grid {
+    margin-top: 32mm;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 36px;
+    color: #d3d6ea;
+    font-size: 10.5pt;
+  }
+  .cover .meta-grid div { border-top: 1px solid rgba(255,255,255,0.13); padding-top: 8px; }
+  .cover .meta-grid .label { color: #9aa0c0; text-transform: uppercase; letter-spacing: 0.12em; font-size: 8.5pt; margin-bottom: 4px; }
+  .cover .meta-grid .value { color: #fff; font-weight: 500; font-size: 11pt; }
+
+  .cover .classify {
+    margin-top: 22mm;
+    display: inline-block;
+    border: 1px solid rgba(240,79,89,0.5);
+    background: rgba(240,79,89,0.12);
+    color: #ffd4d8;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 14mm;
+    right: 18mm;
+    transform: rotate(8deg);
+    border: 2px dashed rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.55);
+    padding: 6px 14px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-radius: 6px;
+  }
+
+  .cover-footer {
+    position: absolute;
+    left: 18mm; right: 18mm; bottom: 14mm;
+    display: flex; justify-content: space-between;
+    color: #8b91b3;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---------- Interior page header ---------- */
+  .page-head {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+  .page-head .mini-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 10pt; }
+  .page-head .mini-brand .logo-sq { width: 22px; height: 22px; border-radius: 5px; box-shadow: none; }
+  .page-head .mini-brand .logo-sq svg { width: 13px; height: 13px; }
+  .page-head .section-tag { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+
+  /* ---------- TOC ---------- */
+  .toc ol { padding-left: 0; list-style: none; counter-reset: tocitem; }
+  .toc li {
+    counter-increment: tocitem;
+    display: flex;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 11pt;
+  }
+  .toc li::before {
+    content: counter(tocitem, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--violet);
+    font-size: 9pt;
+    width: 36px;
+    flex-shrink: 0;
+  }
+  .toc li .label { flex: 1; color: var(--ink); }
+  .toc li .pg { font-family: 'JetBrains Mono', monospace; font-size: 9.5pt; color: var(--muted); }
+
+  /* ---------- Stats / overview ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 18px 0 24px 0;
+  }
+  .stat-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: left;
+    background: var(--bg);
+  }
+  .stat-card .n { font-size: 22pt; font-weight: 700; line-height: 1; font-family: 'JetBrains Mono', monospace; }
+  .stat-card .lbl { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-top: 6px; }
+  .stat-card .delta { font-size: 9pt; margin-top: 4px; }
+  .stat-card.crit { border-left: 4px solid var(--sev-critical); }
+  .stat-card.high { border-left: 4px solid var(--sev-high); }
+  .stat-card.med  { border-left: 4px solid var(--sev-medium); }
+  .stat-card.low  { border-left: 4px solid var(--sev-low); }
+  .stat-card.total { border-left: 4px solid var(--violet); }
+  .delta.up   { color: var(--sev-critical); font-weight: 600; }
+  .delta.down { color: var(--sev-ok); font-weight: 600; }
+  .delta.flat { color: var(--muted); }
+
+  /* Severity bar (stacked) */
+  .sev-bar {
+    display: flex;
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0 14px 0;
+    border: 1px solid var(--rule);
+  }
+  .sev-bar div { font-size: 8pt; color: #fff; text-align: center; line-height: 14px; font-weight: 600; }
+
+  /* Severity pill */
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .pill::before {
+    content: ""; display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+  }
+  .pill.critical { background: var(--sev-critical); }
+  .pill.high     { background: var(--sev-high); }
+  .pill.medium   { background: var(--sev-medium); color: #4a3a00; }
+  .pill.medium::before { background: rgba(0,0,0,0.4); }
+  .pill.low      { background: var(--sev-low); color: #08344a; }
+  .pill.low::before    { background: rgba(0,0,0,0.4); }
+  .pill.ok       { background: var(--sev-ok); }
+  .pill.muted    { background: #dfe1ea; color: var(--ink-soft); }
+  .pill.muted::before  { background: var(--muted); }
+
+  /* ---------- Finding cards ---------- */
+  .finding {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+    background: #fff;
+  }
+  .finding.critical { border-left: 4px solid var(--sev-critical); }
+  .finding.high     { border-left: 4px solid var(--sev-high); }
+  .finding.medium   { border-left: 4px solid var(--sev-medium); }
+  .finding-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .finding-head .left { flex: 1; }
+  .finding-head .fid {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+    color: var(--violet-deep);
+    background: var(--violet-soft);
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  .finding-head .title { font-size: 12pt; font-weight: 700; color: var(--ink); }
+  .finding-head .right { text-align: right; min-width: 140px; }
+  .finding-meta {
+    display: grid; grid-template-columns: repeat(3, auto);
+    gap: 6px 18px;
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    margin: 6px 0 10px 0;
+  }
+  .finding-meta b { font-weight: 600; color: var(--ink); margin-right: 4px; }
+  .finding-meta .mono { font-size: 9pt; }
+  .evidence {
+    background: #0d1018;
+    color: #d9deff;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+    line-height: 1.5;
+    margin: 8px 0;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  .evidence .prompt { color: var(--violet); }
+  .evidence .green  { color: #79e6a5; }
+  .evidence .red    { color: #ff8b93; }
+  .evidence .yellow { color: #ffd66e; }
+
+  .why-block {
+    background: #fbf9ff;
+    border-left: 3px solid var(--violet);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    font-size: 10pt;
+    margin: 8px 0;
+  }
+  .why-block b { color: var(--violet-deep); }
+
+  .rec-block {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+    font-size: 9.5pt;
+  }
+  .rec-block .rec  { flex: 1; }
+  .rec-block .sla  { flex-shrink: 0; }
+  .rec-block b     { color: var(--ink); }
+
+  /* ---------- Tables ---------- */
+  table.xtbl {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 16px 0;
+    font-size: 9.5pt;
+  }
+  table.xtbl th, table.xtbl td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  table.xtbl thead th {
+    background: #fafbff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 8.5pt;
+    color: var(--muted);
+    border-bottom: 1.5px solid var(--rule);
+    font-weight: 600;
+  }
+  table.xtbl tbody tr:nth-child(even) { background: var(--row-alt); }
+  table.xtbl td .mono { font-size: 9pt; }
+
+  /* ---------- Threat actor cards ---------- */
+  .ta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .ta-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 12px 14px;
+    page-break-inside: avoid;
+    background: #fff;
+  }
+  .ta-card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .ta-card-head .name { font-weight: 700; font-size: 11pt; }
+  .ta-card-head .flag { font-size: 9pt; color: var(--muted); margin-left: 6px; }
+  .score-ring {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .score-ring .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12pt;
+  }
+  .score-ring .out { font-size: 8.5pt; color: var(--muted); }
+  .score-bar {
+    height: 6px; border-radius: 3px; background: var(--rule-soft);
+    overflow: hidden; margin: 4px 0 8px 0;
+  }
+  .score-bar > div { height: 100%; background: linear-gradient(90deg, var(--violet) 0%, var(--sev-critical) 100%); }
+  .ta-card .aliases { font-size: 9pt; color: var(--muted); margin-bottom: 6px; }
+  .ta-card .why { font-size: 9.5pt; margin-bottom: 6px; }
+  .ta-card .ttp { font-family: 'JetBrains Mono', monospace; font-size: 8.5pt; color: var(--violet-deep); }
+  .ta-card .ttp span {
+    display: inline-block;
+    background: var(--violet-soft);
+    padding: 1px 6px; border-radius: 4px;
+    margin: 2px 4px 0 0;
+  }
+
+  /* ---------- Attack path SVG ---------- */
+  .path-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: #fafbff;
+    padding: 14px;
+    margin: 10px 0 14px 0;
+    page-break-inside: avoid;
+  }
+  .path-steps { font-size: 10pt; margin-top: 6px; }
+  .path-steps ol { padding-left: 22px; margin: 0; }
+  .path-steps li { margin-bottom: 6px; }
+  .path-steps li code { background: #eef0f8; padding: 1px 5px; border-radius: 3px; font-size: 9pt; }
+
+  /* Crown jewels */
+  .cj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+  .cj-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #fff;
+  }
+  .cj-card .nm { font-weight: 700; font-size: 10.5pt; margin-bottom: 2px; }
+  .cj-card .ds { font-size: 9.5pt; color: var(--ink-soft); margin-bottom: 4px; }
+  .cj-card .rsk { font-size: 9pt; font-weight: 600; }
+  .cj-card.cr  .rsk { color: var(--sev-critical); }
+  .cj-card.hi  .rsk { color: var(--sev-high); }
+  .cj-card.md  .rsk { color: var(--sev-medium); }
+  .cj-card.lo  .rsk { color: var(--sev-ok); }
+
+  /* ---------- CTA / final page ---------- */
+  .cta {
+    margin-top: 30mm;
+    border-radius: 16px;
+    padding: 32px 28px;
+    background: linear-gradient(135deg, #060810 0%, #1c1840 60%, #5841d8 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cta h2 { color: #fff; font-size: 22pt; margin-bottom: 6px; }
+  .cta p  { color: #d6d9f0; font-size: 11pt; }
+  .cta .btn {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 10px 22px;
+    background: #fff;
+    color: var(--violet-deep);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 11pt;
+  }
+
+  /* ---------- Compact lists ---------- */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 22px;
+    font-size: 9.5pt;
+  }
+  .glossary-grid div { padding: 5px 0; border-bottom: 1px dashed var(--rule); }
+  .glossary-grid b { color: var(--ink); margin-right: 6px; font-family: 'JetBrains Mono', monospace; font-size: 9pt; }
+
+  .full-finding-list { columns: 2; column-gap: 24px; font-size: 8.5pt; line-height: 1.55; }
+  .full-finding-list .row {
+    break-inside: avoid;
+    display: flex;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .full-finding-list .id { font-family: 'JetBrains Mono', monospace; color: var(--violet-deep); flex-shrink: 0; min-width: 88px; }
+  .full-finding-list .ttl { flex: 1; }
+  .full-finding-list .sev { flex-shrink: 0; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; min-width: 32px; text-align: right; }
+  .full-finding-list .sev.c { color: var(--sev-critical); }
+  .full-finding-list .sev.h { color: var(--sev-high); }
+  .full-finding-list .sev.m { color: #a17800; }
+  .full-finding-list .sev.l { color: #1a8ec0; }
+
+  /* Section opener (used as a banner on top of each section) */
+  .section-opener {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .section-opener .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--violet);
+    font-size: 10pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  /* ============================================================
+     PRINT STYLES
+     ============================================================ */
+  @page {
+    size: A4;
+    margin: 18mm;
+  }
+
+  @media print {
+    html, body { background: #fff; font-size: 10.5pt; }
+    .page {
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      min-height: 0;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; }
+
+    /* Hide on-screen footer; print uses @page running headers */
+    .page-footer { position: static; margin-top: 10mm; }
+    .cover-footer { position: static; margin-top: 14mm; }
+    .watermark { position: absolute; top: 0; right: 0; }
+
+    /* Avoid breaking inside delicate elements */
+    .finding, .ta-card, .cj-card, .path-wrap, table.xtbl { page-break-inside: avoid; }
+    h2, h3 { page-break-after: avoid; }
+    .section-opener { page-break-after: avoid; }
+
+    a { color: var(--ink); text-decoration: none; }
+    .evidence { background: #f4f5fa; color: #14161f; border: 1px solid var(--rule); }
+    .evidence .green  { color: #14794a; }
+    .evidence .red    { color: #b53038; }
+    .evidence .yellow { color: #8a6a00; }
+    .evidence .prompt { color: var(--violet-deep); }
+  }
+
+  /* On-screen, indicate to readers this is a sample */
+  .screen-banner {
+    background: #2a2c3a;
+    color: #c9ccdb;
+    text-align: center;
+    font-size: 9pt;
+    padding: 10px 16px;
+    letter-spacing: 0.04em;
+  }
+  .screen-banner b { color: #fff; }
+  @media print { .screen-banner { display: none; } }
+
+</style>
+</head>
+<body>
+
+<div class="screen-banner">
+  <b>SAMPLE REPORT</b> &nbsp;&middot;&nbsp; Illustrative content for evaluation. Use Chrome &gt; Print &gt; Save as PDF for the deliverable version.
+</div>
+
+<!-- ============================================================
+     PAGE 1 — COVER
+     ============================================================ -->
+<section class="page cover">
+
+  <div class="watermark">SAMPLE REPORT</div>
+
+  <div class="brand-row">
+    <span class="logo-sq" aria-label="Xarex logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <div>
+      <div class="wordmark">Xarex</div>
+      <div class="product-tag">Autonomous Penetration Testing</div>
+    </div>
+  </div>
+
+  <div style="margin-top:8mm;">
+    <span style="display:inline-block; color:#aab0d0; letter-spacing:0.14em; text-transform:uppercase; font-size:9pt; font-weight:600; padding-bottom:8px;">Xarex AI Report</span>
+    <h1>External Attack Surface Assessment</h1>
+    <h2>Northwind Fintech Inc. &mdash; Production Perimeter</h2>
+  </div>
+
+  <div class="meta-grid">
+    <div>
+      <div class="label">Scan Window</div>
+      <div class="value">2026-05-13 22:00 UTC &rarr; 2026-05-14 06:42 UTC</div>
+    </div>
+    <div>
+      <div class="label">Report Issued</div>
+      <div class="value">2026-05-14</div>
+    </div>
+    <div>
+      <div class="label">Engagement</div>
+      <div class="value">Continuous External (Tier 2)</div>
+    </div>
+    <div>
+      <div class="label">Scope</div>
+      <div class="value">14 hosts &middot; 7 subdomains &middot; 41 exposed services</div>
+    </div>
+    <div>
+      <div class="label">Prepared By</div>
+      <div class="value">Xarex Autonomous Engine v0.9.2</div>
+    </div>
+    <div>
+      <div class="label">Report ID</div>
+      <div class="value mono" style="font-family:'JetBrains Mono', monospace;">XRX-RPT-2026-05-14-0042</div>
+    </div>
+  </div>
+
+  <div class="classify">CONFIDENTIAL &mdash; Internal Use Only</div>
+
+  <div class="cover-footer">
+    <span>SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>xarex.io</span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 2 — TABLE OF CONTENTS
+     ============================================================ -->
+<section class="page">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Contents</div>
+  </div>
+
+  <span class="eyebrow">Navigation</span>
+  <h2 style="margin-top:10px;">Table of contents</h2>
+  <div class="rule-h"></div>
+
+  <div class="toc">
+    <ol>
+      <li><span class="label"><a href="#exec">Executive summary</a></span><span class="pg">003</span></li>
+      <li><span class="label"><a href="#overview">Findings overview &amp; trend</a></span><span class="pg">004</span></li>
+      <li><span class="label"><a href="#critical">Top critical findings</a></span><span class="pg">005</span></li>
+      <li><span class="label"><a href="#threat">Threat actor exposure</a></span><span class="pg">009</span></li>
+      <li><span class="label"><a href="#crown">Crown jewels &amp; attack-path narrative</a></span><span class="pg">010</span></li>
+      <li><span class="label"><a href="#compliance">Compliance signal (advisory)</a></span><span class="pg">011</span></li>
+      <li><span class="label"><a href="#remediation">Remediation plan</a></span><span class="pg">012</span></li>
+      <li><span class="label"><a href="#methodology">Methodology</a></span><span class="pg">013</span></li>
+      <li><span class="label"><a href="#appendix">Glossary &amp; appendix</a></span><span class="pg">014</span></li>
+      <li><span class="label"><a href="#cta">Next steps</a></span><span class="pg">015</span></li>
+    </ol>
+  </div>
+
+  <p style="margin-top:24px; font-size:9.5pt; color:var(--muted);">
+    This report is generated by the Xarex Autonomous Engine. Findings combine deterministic rule-engine output with AI-narrated commentary. All evidence, screenshots, and recommendations are produced under a read-only, non-destructive scan profile. No exploitation, credential brute-forcing beyond default-credential probes, or denial-of-service tests are performed.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">2</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 3 — EXECUTIVE SUMMARY
+     ============================================================ -->
+<section class="page" id="exec">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 01 &middot; Executive summary</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">01</span>
+    <span class="eyebrow">AI-narrated</span>
+  </div>
+  <h2>Executive summary</h2>
+  <div class="rule-h"></div>
+
+  <p>
+    Northwind Fintech's external attack surface contains <b>47 findings across 14 in-scope hosts</b>, including <b>7 critical exposures</b> that an APT-level adversary could chain into customer database access within an estimated <b>72&nbsp;hours</b> of opportunistic discovery. The most consequential single weakness is an unauthenticated Redis instance on <code class="mono">cache-edge-02.example.com</code> sitting one network hop away from the payments service, alongside a forgotten internet-facing Windows host still vulnerable to MS17-010 (EternalBlue) and a Jenkins build server reachable from the public internet accepting <code class="mono">admin:admin</code>. In aggregate, the perimeter exhibits the signature of a fast-growth fintech where production guardrails have not yet caught up to engineering velocity.
+  </p>
+
+  <p>
+    Business impact is concentrated in three areas. <b>First, customer data exposure.</b> A successful pivot through the Jenkins build pipeline grants short-lived AWS credentials with read access to a backups bucket containing 14 months of cardholder-adjacent metadata &mdash; a discoverable PCI-DSS scope violation. <b>Second, financial integrity.</b> The Citrix NetScaler appliance at the edge has not received the CVE-2023-3519 patch, an unauthenticated RCE actively exploited by APT29 and several ransomware affiliates; compromise here yields a foothold inside the payments VPC. <b>Third, brand and regulatory.</b> An expired wildcard TLS certificate on the public API is silently downgrading client trust and would be a reportable finding in the next SOC 2 surveillance audit window.
+  </p>
+
+  <p>
+    The good news is that mitigation is concentrated. Closing <b>five specific findings</b> &mdash; the Redis bind, the Jenkins exposure, the NetScaler patch, the public S3 bucket policy, and the EternalBlue host &mdash; collapses the modeled adversary exposure score from <b>8.4 / 10 to 5.1 / 10</b> and removes the only end-to-end attack path Xarex was able to construct against a designated crown jewel. We recommend treating these five items as a sprint-zero burndown with a 7-day SLA and assigning each to a named owner before the next continuous scan cycle on 2026-05-21.
+  </p>
+
+  <p style="font-size:10pt; color:var(--ink-soft);">
+    <b>Top three immediate actions</b> &mdash;
+    (1)&nbsp;Remove public exposure of Redis on <code class="mono">cache-edge-02</code> and rotate any keys it accessed;
+    (2)&nbsp;Patch Citrix NetScaler to firmware 14.1-12.35 or later and audit session tokens issued in the last 60&nbsp;days;
+    (3)&nbsp;Take the Jenkins controller off the public internet behind a VPN or identity-aware proxy and rotate every pipeline secret.
+  </p>
+
+  <h3 style="margin-top:18px;">At a glance</h3>
+  <table class="xtbl">
+    <tbody>
+      <tr><td style="width:32%;"><b>Hosts scanned</b></td><td>14 (7 web, 4 infra, 3 mail/edge)</td></tr>
+      <tr><td><b>Services fingerprinted</b></td><td>41 across 23 unique software products</td></tr>
+      <tr><td><b>Findings (this cycle)</b></td><td>47 total &mdash; 7 critical, 11 high, 18 medium, 11 low</td></tr>
+      <tr><td><b>Delta vs prior scan (2026-05-07)</b></td><td><span class="delta up">+3 critical</span>, +2 high, -4 medium, +1 net new host</td></tr>
+      <tr><td><b>Modeled adversary exposure</b></td><td><b>8.4 / 10</b> (High) &mdash; driven by APT29 + Scattered Spider TTP overlap</td></tr>
+      <tr><td><b>End-to-end attack paths constructed</b></td><td>1 to <i>Customer Database</i>, 1 to <i>Payment Gateway</i> (partial)</td></tr>
+      <tr><td><b>Estimated time-to-customer-data</b></td><td>~72&nbsp;hours under opportunistic adversary model</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">3</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 4 — FINDINGS OVERVIEW
+     ============================================================ -->
+<section class="page" id="overview">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 02 &middot; Findings overview</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">02</span>
+    <span class="eyebrow">Quantitative</span>
+  </div>
+  <h2>Findings overview &amp; trend</h2>
+  <div class="rule-h"></div>
+
+  <p>
+    Distribution of the 47 findings produced by the rule engine, deduplicated against the prior scan window of 2026-05-07.
+    Severity reflects CVSS v3.1 base score with EPSS-weighted prioritization. Trend arrows show change vs the prior cycle.
+  </p>
+
+  <div class="stat-grid">
+    <div class="stat-card crit">
+      <div class="n" style="color:var(--sev-critical);">7</div>
+      <div class="lbl">Critical</div>
+      <div class="delta up">&uarr; +3 vs prior</div>
+    </div>
+    <div class="stat-card high">
+      <div class="n" style="color:var(--sev-high);">11</div>
+      <div class="lbl">High</div>
+      <div class="delta up">&uarr; +2 vs prior</div>
+    </div>
+    <div class="stat-card med">
+      <div class="n" style="color:#a17800;">18</div>
+      <div class="lbl">Medium</div>
+      <div class="delta down">&darr; -4 vs prior</div>
+    </div>
+    <div class="stat-card low">
+      <div class="n" style="color:#1a8ec0;">11</div>
+      <div class="lbl">Low / Info</div>
+      <div class="delta flat">&mdash; no change</div>
+    </div>
+    <div class="stat-card total">
+      <div class="n" style="color:var(--violet-deep);">47</div>
+      <div class="lbl">Total findings</div>
+      <div class="delta up">&uarr; +1 vs prior</div>
+    </div>
+  </div>
+
+  <h3>Severity distribution</h3>
+  <div class="sev-bar">
+    <div style="background:var(--sev-critical); flex: 7;">7</div>
+    <div style="background:var(--sev-high);     flex: 11;">11</div>
+    <div style="background:var(--sev-medium);   flex: 18; color:#4a3a00;">18</div>
+    <div style="background:var(--sev-low);      flex: 11; color:#08344a;">11</div>
+  </div>
+
+  <h3 style="margin-top:14px;">Findings by category</h3>
+  <table class="xtbl">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th style="text-align:right;">Critical</th>
+        <th style="text-align:right;">High</th>
+        <th style="text-align:right;">Medium</th>
+        <th style="text-align:right;">Low</th>
+        <th style="text-align:right;">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Unpatched software (known CVE)</td><td style="text-align:right;">4</td><td style="text-align:right;">5</td><td style="text-align:right;">3</td><td style="text-align:right;">0</td><td style="text-align:right;"><b>12</b></td></tr>
+      <tr><td>Authentication / default credentials</td><td style="text-align:right;">2</td><td style="text-align:right;">2</td><td style="text-align:right;">1</td><td style="text-align:right;">0</td><td style="text-align:right;"><b>5</b></td></tr>
+      <tr><td>Service exposure &amp; segmentation</td><td style="text-align:right;">1</td><td style="text-align:right;">2</td><td style="text-align:right;">4</td><td style="text-align:right;">2</td><td style="text-align:right;"><b>9</b></td></tr>
+      <tr><td>TLS / certificate hygiene</td><td style="text-align:right;">0</td><td style="text-align:right;">1</td><td style="text-align:right;">5</td><td style="text-align:right;">3</td><td style="text-align:right;"><b>9</b></td></tr>
+      <tr><td>Cloud storage misconfiguration</td><td style="text-align:right;">0</td><td style="text-align:right;">1</td><td style="text-align:right;">2</td><td style="text-align:right;">1</td><td style="text-align:right;"><b>4</b></td></tr>
+      <tr><td>Information disclosure / banners</td><td style="text-align:right;">0</td><td style="text-align:right;">0</td><td style="text-align:right;">3</td><td style="text-align:right;">5</td><td style="text-align:right;"><b>8</b></td></tr>
+      <tr><td><b>Total</b></td><td style="text-align:right;"><b>7</b></td><td style="text-align:right;"><b>11</b></td><td style="text-align:right;"><b>18</b></td><td style="text-align:right;"><b>11</b></td><td style="text-align:right;"><b>47</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:14px;">Burndown trend (last 6 scan cycles)</h3>
+  <!-- Inline SVG sparkline-style chart for severity over time -->
+  <div style="border:1px solid var(--rule); border-radius:8px; padding:12px 16px; background:#fafbff;">
+    <svg viewBox="0 0 600 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" aria-label="Severity trend over 6 scans">
+      <!-- gridlines -->
+      <line x1="40" y1="20"  x2="580" y2="20"  stroke="#e4e6ee" stroke-width="1"/>
+      <line x1="40" y1="50"  x2="580" y2="50"  stroke="#e4e6ee" stroke-width="1"/>
+      <line x1="40" y1="80"  x2="580" y2="80"  stroke="#e4e6ee" stroke-width="1"/>
+      <line x1="40" y1="110" x2="580" y2="110" stroke="#e4e6ee" stroke-width="1"/>
+      <!-- y-axis labels -->
+      <text x="6"  y="24"  font-family="JetBrains Mono" font-size="9" fill="#6b7080">20</text>
+      <text x="6"  y="54"  font-family="JetBrains Mono" font-size="9" fill="#6b7080">15</text>
+      <text x="6"  y="84"  font-family="JetBrains Mono" font-size="9" fill="#6b7080">10</text>
+      <text x="6"  y="114" font-family="JetBrains Mono" font-size="9" fill="#6b7080">5</text>
+      <!-- x-axis labels -->
+      <text x="50"  y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">04-09</text>
+      <text x="140" y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">04-16</text>
+      <text x="230" y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">04-23</text>
+      <text x="320" y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">04-30</text>
+      <text x="410" y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">05-07</text>
+      <text x="500" y="132" font-family="JetBrains Mono" font-size="8" fill="#6b7080">05-14</text>
+
+      <!-- Critical line -->
+      <polyline points="60,100 150,98 240,92 330,86 420,80 510,68" fill="none" stroke="#f04f59" stroke-width="2.5"/>
+      <!-- High line -->
+      <polyline points="60,86  150,80 240,74 330,68 420,62 510,56" fill="none" stroke="#f0853a" stroke-width="2.5"/>
+      <!-- Medium line -->
+      <polyline points="60,40  150,42 240,36 330,30 420,28 510,38" fill="none" stroke="#f0c93a" stroke-width="2.5"/>
+
+      <!-- dots -->
+      <g fill="#f04f59">
+        <circle cx="60" cy="100" r="3"/><circle cx="150" cy="98" r="3"/><circle cx="240" cy="92" r="3"/>
+        <circle cx="330" cy="86" r="3"/><circle cx="420" cy="80" r="3"/><circle cx="510" cy="68" r="3"/>
+      </g>
+      <g fill="#f0853a">
+        <circle cx="60" cy="86" r="3"/><circle cx="150" cy="80" r="3"/><circle cx="240" cy="74" r="3"/>
+        <circle cx="330" cy="68" r="3"/><circle cx="420" cy="62" r="3"/><circle cx="510" cy="56" r="3"/>
+      </g>
+      <g fill="#f0c93a">
+        <circle cx="60" cy="40" r="3"/><circle cx="150" cy="42" r="3"/><circle cx="240" cy="36" r="3"/>
+        <circle cx="330" cy="30" r="3"/><circle cx="420" cy="28" r="3"/><circle cx="510" cy="38" r="3"/>
+      </g>
+
+      <!-- legend -->
+      <g font-family="Inter" font-size="9">
+        <rect x="380" y="6" width="10" height="3" fill="#f04f59"/>
+        <text x="394" y="11" fill="#14161f">Critical</text>
+        <rect x="440" y="6" width="10" height="3" fill="#f0853a"/>
+        <text x="454" y="11" fill="#14161f">High</text>
+        <rect x="488" y="6" width="10" height="3" fill="#f0c93a"/>
+        <text x="502" y="11" fill="#14161f">Medium</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">4</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGES 5-8 — TOP CRITICAL FINDINGS
+     ============================================================ -->
+<section class="page" id="critical">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 03 &middot; Top critical findings</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">03</span>
+    <span class="eyebrow">Detail</span>
+  </div>
+  <h2>Top critical findings</h2>
+  <div class="rule-h"></div>
+
+  <p style="font-size:10pt;">
+    Seven critical-severity findings were identified in this scan cycle. The seven cards below are ordered by the Xarex prioritization score, which combines CVSS, EPSS percentile, asset criticality (crown-jewel adjacency), and known active threat-actor TTP overlap.
+  </p>
+
+  <!-- F1 — Redis -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0014</span>
+        <span class="title">Unauthenticated Redis on payment-adjacent host</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>9.8</b> &middot; EPSS <b>p93</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">cache-edge-02.example.com (198.51.100.42)</span></div>
+      <div><b>Service:</b> <span class="mono">redis 7.0.11 / tcp/6379</span></div>
+      <div><b>Reference:</b> <span class="mono">CWE-306, MITRE T1078</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> redis-cli -h 198.51.100.42 -p 6379 PING
+<span class="green">PONG</span>
+<span class="prompt">$</span> redis-cli -h 198.51.100.42 -p 6379 INFO server | head -3
+<span class="yellow"># Server</span>
+redis_version:7.0.11
+os:Linux 5.15.0-91-generic x86_64</div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> The instance has no <code class="mono">requirepass</code> and is bound to <code class="mono">0.0.0.0</code>. It caches session tokens for the payment service one VPC peering hop away. An attacker can read live session JWTs, replay them against <code class="mono">api.example.com</code>, and reach authenticated payment endpoints without alerting the WAF.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Bind to internal interface only, enable AUTH, restrict via security group, and rotate all cached session tokens. Add a Falco rule to detect future <code class="mono">redis-cli</code> from outside the VPC CIDR.</div>
+      <div class="sla"><span class="pill critical">SLA 24h</span></div>
+    </div>
+  </div>
+
+  <!-- F2 — Citrix NetScaler -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0021</span>
+        <span class="title">Citrix NetScaler ADC unpatched against CVE-2023-3519</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>9.8</b> &middot; EPSS <b>p98</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">edge-gw01.example.com (203.0.113.18)</span></div>
+      <div><b>Service:</b> <span class="mono">NetScaler ADC 13.1-48.47</span></div>
+      <div><b>CVE:</b> <span class="mono">CVE-2023-3519</span> &middot; KEV listed</div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> curl -sk https://203.0.113.18/vpn/index.html | grep -i version
+&lt;meta name="generator" content=<span class="red">"NSC 13.1-48.47"</span>&gt;
+<span class="yellow">[xarex] fingerprint match &rarr; vulnerable build (fixed in 13.1-49.13)</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> Unauthenticated RCE in an internet-facing remote-access appliance. APT29 has used this exact CVE to deploy webshells (<code class="mono">PHP/sh3ll.php</code>) and pivot into payment networks during 2023-2024 campaigns. Xarex did <b>not</b> attempt exploitation, but version + path fingerprinting confirms vulnerability.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Patch to 14.1-12.35 or later. Audit <code class="mono">/var/vpn/bookmark/</code> and <code class="mono">/netscaler/ns_gui/</code> for unexpected files. Revoke and reissue all session and gateway tokens issued in the last 60 days.</div>
+      <div class="sla"><span class="pill critical">SLA 24h</span></div>
+    </div>
+  </div>
+
+  <!-- F3 — Jenkins -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0007</span>
+        <span class="title">Jenkins controller exposed with default credentials</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>9.6</b> &middot; EPSS <b>p86</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">ci.northwind.example.net (203.0.113.55)</span></div>
+      <div><b>Service:</b> <span class="mono">Jenkins 2.401.3 / tcp/8080</span></div>
+      <div><b>Reference:</b> <span class="mono">CWE-521, T1078.001</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> curl -s -u admin:admin http://203.0.113.55:8080/api/json | jq '.mode,.numExecutors'
+<span class="green">"NORMAL"</span>
+<span class="green">4</span>
+<span class="yellow">[xarex] default credentials accepted &mdash; admin role confirmed</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> The Jenkins admin role can execute arbitrary Groovy on the controller, read all build credentials, and read AWS keys bound to <code class="mono">deploy-prod</code>. Effective access from a single HTTP request: full read on <code class="mono">s3://northwind-prod-backups</code>.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Remove public exposure of <code class="mono">ci.northwind.example.net</code>, place behind identity-aware proxy (Cloudflare Access, IAP, or Tailscale), rotate all stored credentials, and force-revoke API tokens.</div>
+      <div class="sla"><span class="pill critical">SLA 24h</span></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">5</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 6 — More critical findings
+     ============================================================ -->
+<section class="page">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 03 &middot; Top critical findings (cont.)</div>
+  </div>
+
+  <!-- F4 — EternalBlue -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0033</span>
+        <span class="title">Windows host vulnerable to MS17-010 (EternalBlue)</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>9.3</b> &middot; EPSS <b>p99</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">legacy-relay.example.com (192.0.2.91)</span></div>
+      <div><b>Service:</b> <span class="mono">SMBv1 / tcp/445</span></div>
+      <div><b>CVE:</b> <span class="mono">CVE-2017-0144</span> &middot; KEV listed</div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> xarex-probe --module smb-check 192.0.2.91
+<span class="green">[+] SMBv1 enabled</span>
+<span class="red">[!] MS17-010 vulnerable &mdash; missing KB4013389</span>
+OS Name: <span class="yellow">Windows Server 2008 R2 Datacenter (Build 7601)</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> A wormable, unauthenticated RCE on an end-of-life Windows host that should not be reachable. EternalBlue underpinned WannaCry and NotPetya. Even if the host is "just a relay," it shares an AD trust with the corporate domain, giving an attacker an instant Tier-1 foothold.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Take this host offline today, then either retire or rebuild on a supported Windows Server SKU with SMBv1 disabled. Audit AD for any service accounts that have authenticated to this host in the last 90 days.</div>
+      <div class="sla"><span class="pill critical">SLA 24h</span></div>
+    </div>
+  </div>
+
+  <!-- F5 — Public S3 -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0029</span>
+        <span class="title">Public S3 bucket containing application logs</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>8.6</b> &middot; EPSS <b>n/a</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">s3://northwind-prod-backups</span></div>
+      <div><b>Region:</b> <span class="mono">us-east-1</span></div>
+      <div><b>Reference:</b> <span class="mono">CWE-200, T1530</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> aws s3 ls s3://northwind-prod-backups --no-sign-request | head -3
+2026-04-30 02:11:14   142MB  app-2026-04-30.log.gz
+2026-05-01 02:09:55   139MB  app-2026-05-01.log.gz
+2026-05-02 02:08:11   144MB  app-2026-05-02.log.gz
+<span class="yellow">[xarex] bucket policy grants s3:ListBucket + s3:GetObject to Principal: *</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> Application logs contain truncated PAN data, partial JWTs, and operator email addresses (sampled 200 lines). This is a likely PCI-DSS Requirement 3 violation and a high-confidence data-breach disclosure trigger under several state laws.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Enable Block Public Access at the account level, remove the wildcard bucket policy, rotate any tokens visible in log samples, and engage privacy counsel to evaluate notification triggers.</div>
+      <div class="sla"><span class="pill critical">SLA 48h</span></div>
+    </div>
+  </div>
+
+  <!-- F6 — GitLab CVE -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0041</span>
+        <span class="title">Self-hosted GitLab vulnerable to CVE-2024-0402 (arbitrary file write)</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>9.9</b> &middot; EPSS <b>p88</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">git.example.net (203.0.113.62)</span></div>
+      <div><b>Service:</b> <span class="mono">GitLab CE 16.5.3</span></div>
+      <div><b>CVE:</b> <span class="mono">CVE-2024-0402</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> curl -s https://203.0.113.62/help | grep -oE "GitLab [0-9.]+"
+<span class="red">GitLab 16.5.3</span>
+<span class="yellow">[xarex] fixed in 16.5.8 / 16.6.6 / 16.7.4</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> Authenticated arbitrary file write to any path readable by the GitLab user. Combined with self-service account creation (currently enabled), this yields source-code disclosure and CI/CD pipeline compromise.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Upgrade to 16.7.4 or later this week. In the meantime, disable public sign-up and require admin approval for new accounts. Audit <code class="mono">/var/opt/gitlab/git-data/repositories/</code> for unexpected files dated after 2026-04-01.</div>
+      <div class="sla"><span class="pill high">SLA 72h</span></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">6</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 7 — More critical findings
+     ============================================================ -->
+<section class="page">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 03 &middot; Top critical findings (cont.)</div>
+  </div>
+
+  <!-- F7 — OpenSSH outdated -->
+  <div class="finding critical">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0046</span>
+        <span class="title">OpenSSH 7.4 with known signal handler race (CVE-2024-6387 "regreSSHion")</span>
+      </div>
+      <div class="right">
+        <span class="pill critical">Critical</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>8.1</b> &middot; EPSS <b>p72</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">bastion-old.example.com (192.0.2.119)</span></div>
+      <div><b>Service:</b> <span class="mono">OpenSSH 7.4 / tcp/22</span></div>
+      <div><b>CVE:</b> <span class="mono">CVE-2024-6387</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> nc -nv 192.0.2.119 22
+SSH-2.0-<span class="red">OpenSSH_7.4</span>
+<span class="yellow">[xarex] glibc-based Linux + sshd 7.4 &rarr; regreSSHion-vulnerable window</span></div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> Pre-authentication remote code execution as <code class="mono">root</code>. Exploitation is non-trivial but credibly demonstrated by multiple researchers. This bastion has direct VPC access &mdash; a successful exploit lands inside the production network.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Upgrade OpenSSH to &ge;&nbsp;9.8p1. Move bastion access behind SSO (e.g., Teleport, AWS SSM Session Manager) and consider decommissioning in favor of identity-aware proxy access.</div>
+      <div class="sla"><span class="pill high">SLA 72h</span></div>
+    </div>
+  </div>
+
+  <!-- F8 — Expired wildcard TLS -->
+  <div class="finding high">
+    <div class="finding-head">
+      <div class="left">
+        <span class="fid">XRX-2026-0011</span>
+        <span class="title">Expired wildcard TLS certificate on public API</span>
+      </div>
+      <div class="right">
+        <span class="pill high">High</span><br/>
+        <span style="font-size:9pt; color:var(--muted); display:inline-block; margin-top:6px;">
+          CVSS <b>7.4</b> &middot; EPSS <b>n/a</b>
+        </span>
+      </div>
+    </div>
+    <div class="finding-meta">
+      <div><b>Asset:</b> <span class="mono">api.example.com (203.0.113.12)</span></div>
+      <div><b>Service:</b> <span class="mono">nginx 1.24 / tcp/443</span></div>
+      <div><b>Reference:</b> <span class="mono">CWE-298</span></div>
+    </div>
+    <div class="evidence"><span class="prompt">$</span> echo | openssl s_client -connect api.example.com:443 2&gt;/dev/null | openssl x509 -noout -dates
+notBefore=Feb 14 00:00:00 2025 GMT
+<span class="red">notAfter =May 12 23:59:59 2026 GMT  (expired 2 days ago)</span>
+issuer=DigiCert TLS Hybrid ECC SHA384 2020 CA1
+subject=*.example.com</div>
+    <div class="why-block">
+      <b>Why it matters &mdash;</b> Mobile clients pin certificate chains and will fail closed; this is the likely source of the elevated 5xx rate the SRE team has been investigating since 2026-05-13. Browser warnings will erode customer trust and trigger SOC&nbsp;2 surveillance findings.
+    </div>
+    <div class="rec-block">
+      <div class="rec"><b>Recommendation:</b> Reissue and deploy a 90-day cert today. Wire renewal into the existing ACM/Let's Encrypt automation. Add a synthetic check for cert expiry &lt; 21 days into the SRE on-call dashboard.</div>
+      <div class="sla"><span class="pill high">SLA 24h</span></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:14px;">Additional high-severity items (summary)</h3>
+  <table class="xtbl">
+    <thead>
+      <tr><th>ID</th><th>Title</th><th>Asset</th><th style="text-align:right;">CVSS</th><th>Severity</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">XRX-2026-0017</td><td>SMTP open relay on edge mail</td><td class="mono">mx02.example.com</td><td style="text-align:right;">7.5</td><td><span class="pill high">High</span></td></tr>
+      <tr><td class="mono">XRX-2026-0019</td><td>Outdated Apache HTTPD (2.4.49 — Path Traversal)</td><td class="mono">web-legacy.example.net</td><td style="text-align:right;">7.5</td><td><span class="pill high">High</span></td></tr>
+      <tr><td class="mono">XRX-2026-0023</td><td>Kubernetes API server exposed (auth required)</td><td class="mono">k8s-api.example.com</td><td style="text-align:right;">7.2</td><td><span class="pill high">High</span></td></tr>
+      <tr><td class="mono">XRX-2026-0027</td><td>MongoDB allows unauthenticated <code>buildInfo</code></td><td class="mono">db-warm.example.net</td><td style="text-align:right;">7.0</td><td><span class="pill high">High</span></td></tr>
+      <tr><td class="mono">XRX-2026-0035</td><td>WordPress admin reachable without 2FA</td><td class="mono">blog.example.com</td><td style="text-align:right;">6.8</td><td><span class="pill high">High</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">7</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 8 — THREAT ACTOR EXPOSURE
+     ============================================================ -->
+<section class="page" id="threat">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 04 &middot; Threat actor exposure</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">04</span>
+    <span class="eyebrow">Adversary modeling</span>
+  </div>
+  <h2>Threat actor exposure</h2>
+  <div class="rule-h"></div>
+
+  <p style="font-size:10pt;">
+    Xarex maps observed findings to the TTPs (MITRE ATT&amp;CK techniques) of 11 tracked threat groups (APT28, APT29, APT41, Lazarus, Sandworm, FIN7, DarkSide, LAPSUS$, Cl0p, MuddyWater, Scattered Spider). The top five groups by exposure score for this scan are shown below. Scores are <b>relative</b> and intended for prioritization, not absolute probabilities.
+  </p>
+
+  <div class="ta-grid">
+
+    <!-- APT29 -->
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div><span class="name">APT29</span> <span class="flag">RU &middot; "Cozy Bear", "Midnight Blizzard"</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--sev-critical);">8.4</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:84%;"></div></div>
+      <div class="why">
+        Northwind exposes an unpatched Citrix NetScaler (CVE-2023-3519) and a Windows host vulnerable to EternalBlue &mdash; both have appeared in APT29 cluster reporting since 2023. Combined with a privileged AD trust relationship to the legacy relay host, the group's preferred initial-access and lateral movement chain is largely viable end-to-end.
+      </div>
+      <div class="ttp">
+        <span>T1190</span><span>T1078</span><span>T1059.001</span><span>T1210</span>
+      </div>
+    </div>
+
+    <!-- Scattered Spider -->
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div><span class="name">Scattered Spider</span> <span class="flag">US/UK &middot; "UNC3944", "0ktapus"</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--sev-critical);">7.9</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:79%;"></div></div>
+      <div class="why">
+        Group specializes in SaaS / identity-provider compromise. Northwind's IdP exposes self-service password reset over an over-permissive captcha policy, and the helpdesk runbook (recovered from the public S3 bucket) outlines a phone-verification procedure that does not require a second factor &mdash; a known Scattered Spider abuse path.
+      </div>
+      <div class="ttp">
+        <span>T1566.004</span><span>T1078.004</span><span>T1556</span><span>T1199</span>
+      </div>
+    </div>
+
+    <!-- APT41 -->
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div><span class="name">APT41</span> <span class="flag">CN &middot; "Barium", "Wicked Panda"</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--sev-high);">6.7</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:67%;"></div></div>
+      <div class="why">
+        APT41 routinely chains web-tier RCEs (here: Apache 2.4.49 path traversal on <code class="mono">web-legacy</code>) with CI/CD pivot. The exposed Jenkins controller offers the exact toolchain step they have used to deploy <code class="mono">MOONWALK</code>-class implants in 2024 banking-sector incidents.
+      </div>
+      <div class="ttp">
+        <span>T1190</span><span>T1505.003</span><span>T1547.001</span><span>T1078.001</span>
+      </div>
+    </div>
+
+    <!-- FIN7 -->
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div><span class="name">FIN7</span> <span class="flag">UA/RU &middot; "Carbanak", "Sangria Tempest"</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--sev-high);">6.1</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:61%;"></div></div>
+      <div class="why">
+        Financially-motivated group with a documented preference for cardholder-adjacent fintech targets. Exposure score is driven by the public S3 bucket containing partial PAN data and by the absence of egress filtering on the payment VPC observed during the reconnaissance phase.
+      </div>
+      <div class="ttp">
+        <span>T1566.001</span><span>T1059.003</span><span>T1027</span><span>T1071.001</span>
+      </div>
+    </div>
+
+    <!-- MuddyWater -->
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div><span class="name">MuddyWater</span> <span class="flag">IR &middot; "Static Kitten", "Mango Sandstorm"</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--sev-medium);">5.2</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:52%;"></div></div>
+      <div class="why">
+        Group relies heavily on outdated remote-management tooling and OpenSSH abuse. The OpenSSH 7.4 bastion provides a textbook MuddyWater foothold; the GitLab CVE provides a credible code-repository pivot. Exposure score would drop below 3.0 if both findings are closed.
+      </div>
+      <div class="ttp">
+        <span>T1078</span><span>T1133</span><span>T1219</span><span>T1059.001</span>
+      </div>
+    </div>
+
+    <!-- Aggregate -->
+    <div class="ta-card" style="background:#fbf9ff;">
+      <div class="ta-card-head">
+        <div><span class="name">Aggregate exposure</span> <span class="flag">All 11 tracked groups</span></div>
+        <div class="score-ring"><span class="val" style="color:var(--violet-deep);">6.5</span><span class="out">/ 10</span></div>
+      </div>
+      <div class="score-bar"><div style="width:65%;"></div></div>
+      <div class="why">
+        Modeled average across all 11 groups, weighted by relevance to financial services. Closing the five-finding burndown identified in the executive summary is projected to drop the aggregate to <b>3.8 / 10</b> (Moderate) and the top-group score to <b>5.1 / 10</b>.
+      </div>
+      <div class="ttp">
+        <span>+APT28</span><span>+Lazarus</span><span>+Sandworm</span><span>+DarkSide</span><span>+LAPSUS$</span><span>+Cl0p</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size:9pt; color:var(--muted); margin-top:10px;">
+    Threat actor mappings are derived from public MITRE ATT&amp;CK group profiles and industry reporting current as of 2026-05. Scores are <i>not</i> claims about actual targeting; they describe how well a group's known playbook overlaps with the current attack surface.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">8</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 9 — CROWN JEWELS & ATTACK PATH
+     ============================================================ -->
+<section class="page" id="crown">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 05 &middot; Crown jewels &amp; attack-path narrative</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">05</span>
+    <span class="eyebrow">Reachability</span>
+  </div>
+  <h2>Crown jewels &amp; attack-path narrative</h2>
+  <div class="rule-h"></div>
+
+  <h3>Designated crown jewels</h3>
+  <div class="cj-grid">
+    <div class="cj-card cr">
+      <div class="nm">Customer Database</div>
+      <div class="ds">PostgreSQL cluster holding cardholder + KYC records. Tagged <code>pii</code>, <code>pci</code>.</div>
+      <div class="rsk">Reachability risk: HIGH &mdash; end-to-end path constructed (see below)</div>
+    </div>
+    <div class="cj-card hi">
+      <div class="nm">Payment Gateway</div>
+      <div class="ds">Internal mTLS service brokering Visa/MC tokenization.</div>
+      <div class="rsk">Reachability risk: MEDIUM &mdash; partial path (Redis tokens replayable)</div>
+    </div>
+    <div class="cj-card md">
+      <div class="nm">Identity Provider</div>
+      <div class="ds">Single sign-on for all employee SaaS, including AWS console.</div>
+      <div class="rsk">Reachability risk: MEDIUM &mdash; helpdesk runbook leaked, social-engineering vector</div>
+    </div>
+    <div class="cj-card lo">
+      <div class="nm">Source-Code Repository</div>
+      <div class="ds">Self-hosted GitLab with all production application code.</div>
+      <div class="rsk">Reachability risk: LOW-MEDIUM &mdash; vulnerable build, but auth required</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:14px;">Constructed attack path &mdash; <i>Customer Database</i></h3>
+
+  <div class="path-wrap">
+    <!-- Inline SVG attack path diagram -->
+    <svg viewBox="0 0 720 200" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" aria-label="Attack path diagram">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#7c6af7"/>
+        </marker>
+      </defs>
+
+      <!-- Step boxes -->
+      <g font-family="Inter" font-size="10" fill="#14161f">
+        <!-- Internet -->
+        <rect x="10"  y="80" width="100" height="40" rx="6" fill="#fff" stroke="#6b7080" stroke-width="1"/>
+        <text x="60"  y="98"  text-anchor="middle" font-weight="700">Internet</text>
+        <text x="60"  y="112" text-anchor="middle" font-size="8" fill="#6b7080">attacker</text>
+
+        <!-- Jenkins -->
+        <rect x="140" y="80" width="120" height="40" rx="6" fill="#fff3f5" stroke="#f04f59" stroke-width="1.5"/>
+        <text x="200" y="98"  text-anchor="middle" font-weight="700">Jenkins :8080</text>
+        <text x="200" y="112" text-anchor="middle" font-size="8" fill="#7a2730">admin:admin accepted</text>
+
+        <!-- AWS keys -->
+        <rect x="290" y="80" width="120" height="40" rx="6" fill="#fff8e8" stroke="#f0853a" stroke-width="1.5"/>
+        <text x="350" y="98"  text-anchor="middle" font-weight="700">AWS keys</text>
+        <text x="350" y="112" text-anchor="middle" font-size="8" fill="#7a4a14">pipeline secret leak</text>
+
+        <!-- S3 -->
+        <rect x="440" y="20" width="120" height="40" rx="6" fill="#eaf8ef" stroke="#3dd68c" stroke-width="1.5"/>
+        <text x="500" y="38"  text-anchor="middle" font-weight="700">s3://backups</text>
+        <text x="500" y="52"  text-anchor="middle" font-size="8" fill="#1a6b3f">log + token disclosure</text>
+
+        <!-- Redis -->
+        <rect x="440" y="140" width="120" height="40" rx="6" fill="#efeaff" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="500" y="158" text-anchor="middle" font-weight="700">Redis cache</text>
+        <text x="500" y="172" text-anchor="middle" font-size="8" fill="#3e2d8c">session JWT replay</text>
+
+        <!-- API -->
+        <rect x="590" y="80" width="120" height="40" rx="6" fill="#fff" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="650" y="98"  text-anchor="middle" font-weight="700">Customer DB</text>
+        <text x="650" y="112" text-anchor="middle" font-size="8" fill="#3e2d8c">PostgreSQL (crown jewel)</text>
+      </g>
+
+      <!-- Arrows -->
+      <g stroke="#7c6af7" stroke-width="1.8" fill="none">
+        <line x1="112" y1="100" x2="138" y2="100" marker-end="url(#arrow)"/>
+        <line x1="262" y1="100" x2="288" y2="100" marker-end="url(#arrow)"/>
+        <line x1="412" y1="92"  x2="438" y2="50"  marker-end="url(#arrow)"/>
+        <line x1="412" y1="108" x2="438" y2="155" marker-end="url(#arrow)"/>
+        <line x1="562" y1="160" x2="610" y2="118" marker-end="url(#arrow)"/>
+        <line x1="562" y1="40"  x2="610" y2="85"  marker-end="url(#arrow)"/>
+      </g>
+    </svg>
+
+    <div class="path-steps">
+      <ol>
+        <li><b>Step 1.</b> External scan finds Jenkins exposed at <code>ci.northwind.example.net:8080</code> (finding <code>XRX-2026-0007</code>).</li>
+        <li><b>Step 2.</b> Default credentials <code>admin:admin</code> accepted &mdash; full Jenkins admin role granted in a single HTTP request.</li>
+        <li><b>Step 3.</b> Jenkins pipeline secret <code>deploy-prod-aws</code> leaks short-lived AWS keys (scoped <code>s3:*</code>, <code>kms:Decrypt</code>).</li>
+        <li><b>Step 4.</b> AWS keys grant read on <code>s3://northwind-prod-backups</code> &mdash; logs contain partial JWTs (finding <code>XRX-2026-0029</code>).</li>
+        <li><b>Step 5.</b> Adversary pivots to <code>cache-edge-02</code> via the unauthenticated Redis service (finding <code>XRX-2026-0014</code>) to enrich session tokens with valid signatures.</li>
+        <li><b>Step 6.</b> Replayed session JWT authenticates against the internal Customer DB read API. <b>Crown jewel reached.</b> Estimated time: 4&ndash;6 hours active work.</li>
+      </ol>
+    </div>
+  </div>
+
+  <p style="font-size:10pt;">
+    <b>Path collapse:</b> Closing any one of <code>XRX-2026-0007</code> (Jenkins) or <code>XRX-2026-0014</code> (Redis) breaks this end-to-end chain. Xarex strongly recommends both because alternative branches exist via the NetScaler finding (<code>XRX-2026-0021</code>) once an adversary has internal foothold.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">9</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 10 — COMPLIANCE SIGNAL
+     ============================================================ -->
+<section class="page" id="compliance">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 06 &middot; Compliance signal (advisory)</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">06</span>
+    <span class="eyebrow">Advisory &mdash; not an audit</span>
+  </div>
+  <h2>Compliance signal</h2>
+  <div class="rule-h"></div>
+
+  <p style="font-size:10pt;">
+    The mapping below correlates each top finding with widely-used control frameworks.
+    <b>This is advisory only.</b> Xarex is not a certified auditor; these mappings are intended to help your security and compliance teams prioritize remediation and prepare for upcoming surveillance audits. They do not constitute a pass/fail determination under any framework.
+  </p>
+
+  <table class="xtbl">
+    <thead>
+      <tr>
+        <th>Finding</th>
+        <th>OWASP Top 10 (2021)</th>
+        <th>PCI-DSS v4.0</th>
+        <th>NIST CSF 2.0</th>
+        <th>SOC 2 (CC)</th>
+        <th>ISO 27001:2022</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">XRX-2026-0014<br/>Redis</td>
+        <td>A05 &middot; Security misconfig</td>
+        <td>Req 2.2, 8.3</td>
+        <td>PR.AC-3, PR.DS-5</td>
+        <td>CC6.1, CC6.6</td>
+        <td>A.8.5, A.8.9</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0021<br/>NetScaler</td>
+        <td>A06 &middot; Vulnerable components</td>
+        <td>Req 6.3.3, 11.3.1</td>
+        <td>ID.RA-1, PR.IP-12</td>
+        <td>CC7.1</td>
+        <td>A.8.8, A.8.28</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0007<br/>Jenkins</td>
+        <td>A07 &middot; ID &amp; auth failures</td>
+        <td>Req 8.3, 8.6</td>
+        <td>PR.AC-1, PR.AC-7</td>
+        <td>CC6.1, CC6.2</td>
+        <td>A.8.2, A.8.5</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0033<br/>EternalBlue</td>
+        <td>A06 &middot; Vulnerable components</td>
+        <td>Req 6.3.3</td>
+        <td>PR.IP-12</td>
+        <td>CC7.1</td>
+        <td>A.8.8</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0029<br/>Public S3</td>
+        <td>A01 &middot; Broken access control</td>
+        <td>Req 3.4, 7.2</td>
+        <td>PR.AC-4, PR.DS-1</td>
+        <td>CC6.1, CC6.3</td>
+        <td>A.5.10, A.8.3</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0041<br/>GitLab</td>
+        <td>A06 &middot; Vulnerable components</td>
+        <td>Req 6.3.3</td>
+        <td>PR.IP-12</td>
+        <td>CC7.1</td>
+        <td>A.8.8</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0046<br/>OpenSSH</td>
+        <td>A06 &middot; Vulnerable components</td>
+        <td>Req 6.3.3</td>
+        <td>PR.IP-12, PR.AC-3</td>
+        <td>CC6.6, CC7.1</td>
+        <td>A.8.8, A.8.20</td>
+      </tr>
+      <tr>
+        <td class="mono">XRX-2026-0011<br/>Expired TLS</td>
+        <td>A02 &middot; Cryptographic failure</td>
+        <td>Req 4.2.1</td>
+        <td>PR.DS-2</td>
+        <td>CC6.7</td>
+        <td>A.8.24</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:9pt; color:var(--muted); margin-top:14px;">
+    <b>Footnote.</b> Framework references are paraphrased from publicly available official documents (PCI-SSC, ISO/IEC, NIST CSWP-29, AICPA TSC, OWASP). Always validate mappings with your auditor of record. Xarex does not certify any organization against any framework; reports of this type are commonly used as <i>evidence inputs</i> to a certified audit, not as the audit itself.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">10</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 11 — REMEDIATION PLAN
+     ============================================================ -->
+<section class="page" id="remediation">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 07 &middot; Remediation plan</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">07</span>
+    <span class="eyebrow">Prioritized actions</span>
+  </div>
+  <h2>Remediation plan</h2>
+  <div class="rule-h"></div>
+
+  <p style="font-size:10pt;">
+    Actions ordered by Xarex prioritization score (severity &times; reachability &times; exploit signal &times; ease of fix).
+    Suggested owners are placeholder roles; assign to specific named individuals before the next scan cycle (<b>2026-05-21</b>).
+  </p>
+
+  <table class="xtbl">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Action</th>
+        <th>Owner (suggested)</th>
+        <th>Effort</th>
+        <th>SLA</th>
+        <th>Closes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Remove public bind on <code class="mono">cache-edge-02</code> Redis. Restrict via SG and enable AUTH. Rotate cached session tokens.</td>
+        <td>Platform Team</td>
+        <td>15 min</td>
+        <td><span class="pill critical">24h</span></td>
+        <td class="mono">XRX-2026-0014</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Patch Citrix NetScaler ADC to 14.1-12.35 or later. Audit session tokens issued in last 60 days.</td>
+        <td>Network Eng</td>
+        <td>2 h + audit</td>
+        <td><span class="pill critical">24h</span></td>
+        <td class="mono">XRX-2026-0021</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Take Jenkins controller off public internet. Place behind identity-aware proxy. Rotate every pipeline secret.</td>
+        <td>DevOps / SRE</td>
+        <td>3-4 h</td>
+        <td><span class="pill critical">24h</span></td>
+        <td class="mono">XRX-2026-0007</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Decommission <code class="mono">legacy-relay</code> Windows host. Migrate workload or rebuild on supported OS.</td>
+        <td>IT Ops</td>
+        <td>1 day</td>
+        <td><span class="pill critical">48h</span></td>
+        <td class="mono">XRX-2026-0033</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Enable account-level S3 Block Public Access. Remove wildcard bucket policy. Engage privacy counsel.</td>
+        <td>Cloud Security</td>
+        <td>30 min + legal</td>
+        <td><span class="pill critical">48h</span></td>
+        <td class="mono">XRX-2026-0029</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Reissue wildcard cert on <code class="mono">api.example.com</code>. Wire renewal into ACM automation.</td>
+        <td>SRE</td>
+        <td>1 h</td>
+        <td><span class="pill high">24h</span></td>
+        <td class="mono">XRX-2026-0011</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Upgrade self-hosted GitLab to &ge; 16.7.4. Disable public sign-up. Audit repo file system for tampering.</td>
+        <td>DevOps</td>
+        <td>2 h</td>
+        <td><span class="pill high">72h</span></td>
+        <td class="mono">XRX-2026-0041</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Upgrade OpenSSH on <code class="mono">bastion-old</code> to &ge; 9.8p1 or replace with SSM Session Manager.</td>
+        <td>IT Ops</td>
+        <td>3 h</td>
+        <td><span class="pill high">72h</span></td>
+        <td class="mono">XRX-2026-0046</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Disable SMTP open relay on <code class="mono">mx02</code>. Add SPF/DKIM/DMARC enforcement.</td>
+        <td>IT Ops</td>
+        <td>2 h</td>
+        <td><span class="pill high">7d</span></td>
+        <td class="mono">XRX-2026-0017</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Decommission Apache 2.4.49 on <code class="mono">web-legacy</code> or upgrade to &ge; 2.4.59.</td>
+        <td>App Eng</td>
+        <td>4 h</td>
+        <td><span class="pill high">7d</span></td>
+        <td class="mono">XRX-2026-0019</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Require 2FA on WordPress admin. Restrict <code class="mono">/wp-admin</code> by IP or VPN.</td>
+        <td>Marketing IT</td>
+        <td>1 h</td>
+        <td><span class="pill medium">14d</span></td>
+        <td class="mono">XRX-2026-0035</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Apply remaining 18 medium and 11 low findings via standard backlog &mdash; details in appendix.</td>
+        <td>Per-team</td>
+        <td>varied</td>
+        <td><span class="pill medium">30d</span></td>
+        <td>see appendix</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:16px;">Projected posture after burndown</h3>
+  <div style="border:1px solid var(--rule); border-radius:8px; padding:14px; background:#fafbff; font-size:10pt;">
+    Completing actions <b>1&ndash;5</b> drops aggregate adversary exposure from <b>6.5 / 10</b> to a projected <b>3.8 / 10</b> (Moderate)
+    and removes the only end-to-end attack path to a designated crown jewel. Completing actions <b>1&ndash;8</b>
+    additionally moves the modeled critical count from <b>7</b> to <b>1</b>. The next scheduled scan cycle (<b>2026-05-21</b>) will
+    verify these projections automatically.
+  </div>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">11</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 12 — METHODOLOGY
+     ============================================================ -->
+<section class="page" id="methodology">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 08 &middot; Methodology</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">08</span>
+    <span class="eyebrow">How we scanned</span>
+  </div>
+  <h2>Methodology</h2>
+  <div class="rule-h"></div>
+
+  <p>
+    Xarex operates as a read-only, non-destructive autonomous scanner. No exploitation is attempted against
+    findings &mdash; vulnerability status is established via banner grabs, version fingerprinting, configuration
+    inspection, and default-credential probes only. Where credentials are tested, they are drawn from a list of
+    vendor defaults (e.g. <code class="mono">admin:admin</code>, <code class="mono">root:root</code>); no brute-force or
+    customer-specific password lists are used. Active denial-of-service tests are never executed.
+  </p>
+
+  <p>
+    The scan proceeds through six sequential phases, each composed of independent modules that emit structured
+    evidence consumed by the AI narrator (Claude Sonnet, hosted via Anthropic API; redacted prompts only).
+  </p>
+
+  <table class="xtbl">
+    <thead>
+      <tr>
+        <th style="width:50px;">Phase</th>
+        <th>Name</th>
+        <th>Purpose</th>
+        <th>Modules used in this scan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Host discovery</td><td>Identify live in-scope hosts and DNS surface</td><td><code class="mono">dns-enum</code>, <code class="mono">tcp-ping</code>, <code class="mono">cert-transparency</code></td></tr>
+      <tr><td>2</td><td>Port scan</td><td>Map open TCP/UDP ports per host</td><td><code class="mono">syn-scan</code>, <code class="mono">udp-top-100</code></td></tr>
+      <tr><td>3</td><td>Service fingerprint</td><td>Identify software, version, and banner</td><td><code class="mono">banner-grab</code>, <code class="mono">http-fp</code>, <code class="mono">tls-fp</code></td></tr>
+      <tr><td>4</td><td>Default-credential test</td><td>Single attempt per service with vendor-default creds</td><td><code class="mono">cred-probe</code> (admin/admin only)</td></tr>
+      <tr><td>5</td><td>Specialized checks</td><td>CVE confirmation, cloud misconfig, TLS hygiene</td><td><code class="mono">cve-match</code>, <code class="mono">s3-perms</code>, <code class="mono">tls-audit</code>, <code class="mono">smb-check</code></td></tr>
+      <tr><td>6</td><td>AI narration &amp; reporting</td><td>Cluster findings, narrate, map to TTPs, render</td><td><code class="mono">narrate</code>, <code class="mono">ttp-map</code>, <code class="mono">render-pdf</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:14px;">Scope and limitations</h3>
+  <ul style="font-size:10pt; padding-left:18px;">
+    <li><b>External-only.</b> This engagement covers internet-facing assets within the agreed scope. Internal network segments, employee endpoints, and SaaS tenants were not in scope.</li>
+    <li><b>No exploitation.</b> Findings reflect <i>credible vulnerability</i>, not <i>confirmed compromise</i>. CVE matches are derived from version fingerprinting; in a small number of cases a vendor-supplied patch may have been backported without changing the version string.</li>
+    <li><b>EPSS percentiles</b> are sourced from FIRST.org's published feeds at scan time. They represent global exploit-likelihood, not Northwind-specific targeting probability.</li>
+    <li><b>AI narration</b> is a generative summary of the structured findings; it is reviewed for factual consistency against the underlying evidence by an automated grounding check, but the rule-engine output is authoritative when the two disagree.</li>
+    <li><b>Threat actor mappings</b> are advisory and derived from public MITRE ATT&amp;CK group profiles; they describe TTP overlap, not actual targeting.</li>
+  </ul>
+
+  <h3 style="margin-top:14px;">Authorization</h3>
+  <p style="font-size:10pt;">
+    Engagement authorized under Master Services Agreement reference <code class="mono">NWF-XRX-MSA-2026-Q2</code>,
+    signed 2026-04-02 by the Northwind Fintech CISO. Scope documented in scope file
+    <code class="mono">xarex-scope-northwind-2026-05.yaml</code>. All scan activity is logged on the Xarex Cloud Brain
+    and available for evidence-of-test artifacts on request.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">12</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 13 — GLOSSARY & APPENDIX (full list)
+     ============================================================ -->
+<section class="page" id="appendix">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">Section 09 &middot; Glossary &amp; appendix</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">09</span>
+    <span class="eyebrow">Reference</span>
+  </div>
+  <h2>Glossary &amp; appendix</h2>
+  <div class="rule-h"></div>
+
+  <h3>Glossary</h3>
+  <div class="glossary-grid">
+    <div><b>CVE</b> Common Vulnerabilities &amp; Exposures &mdash; unique public ID for a software vulnerability.</div>
+    <div><b>CVSS</b> Common Vulnerability Scoring System v3.1 base score (0&ndash;10).</div>
+    <div><b>EPSS</b> Exploit Prediction Scoring System percentile (FIRST.org) &mdash; relative likelihood of exploitation.</div>
+    <div><b>KEV</b> CISA Known Exploited Vulnerabilities catalog inclusion flag.</div>
+    <div><b>TTP</b> Tactic, Technique, Procedure (MITRE ATT&amp;CK terminology).</div>
+    <div><b>RCE</b> Remote Code Execution.</div>
+    <div><b>PII</b> Personally Identifiable Information.</div>
+    <div><b>PAN</b> Primary Account Number (cardholder number, PCI-DSS).</div>
+    <div><b>WAF</b> Web Application Firewall.</div>
+    <div><b>IdP</b> Identity Provider (e.g., Okta, Entra ID, Auth0).</div>
+    <div><b>VPC</b> Virtual Private Cloud network segment.</div>
+    <div><b>SLA</b> Service Level Agreement &mdash; here, the recommended remediation window.</div>
+  </div>
+
+  <h3 style="margin-top:14px;">Full finding list (47 of 47)</h3>
+  <div class="full-finding-list">
+    <div class="row"><span class="id">XRX-2026-0001</span><span class="ttl">HTTP TRACE method enabled on edge web</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0002</span><span class="ttl">Server banner discloses exact nginx version</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0003</span><span class="ttl">Cookie missing SameSite attribute</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0004</span><span class="ttl">CSP header absent on /api</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0005</span><span class="ttl">TLS 1.0 still negotiable on legacy host</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0006</span><span class="ttl">DMARC policy set to p=none</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0007</span><span class="ttl">Jenkins default credentials</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0008</span><span class="ttl">Open .git directory on web-legacy</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0009</span><span class="ttl">phpinfo() page exposed</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0010</span><span class="ttl">Weak cipher (3DES) offered by load balancer</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0011</span><span class="ttl">Expired wildcard TLS cert on api</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0012</span><span class="ttl">Missing HSTS header on www</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0013</span><span class="ttl">Directory listing on /static</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0014</span><span class="ttl">Unauthenticated Redis on cache-edge-02</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0015</span><span class="ttl">DNS zone allows AXFR transfer</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0016</span><span class="ttl">Self-signed cert on internal admin portal</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0017</span><span class="ttl">SMTP open relay on mx02</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0018</span><span class="ttl">FTP service exposed (read-only)</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0019</span><span class="ttl">Apache 2.4.49 path traversal (CVE-2021-41773)</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0020</span><span class="ttl">SNMP public community string</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0021</span><span class="ttl">Citrix NetScaler CVE-2023-3519</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0022</span><span class="ttl">Robots.txt discloses /admin paths</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0023</span><span class="ttl">Kubernetes API exposed (auth required)</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0024</span><span class="ttl">Etcd metrics endpoint reachable</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0025</span><span class="ttl">Stale CNAME points to unclaimed S3 bucket</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0026</span><span class="ttl">Misconfigured CORS on api.example.com</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0027</span><span class="ttl">MongoDB unauthenticated buildInfo</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0028</span><span class="ttl">Outdated jQuery (1.x) with known XSS</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0029</span><span class="ttl">Public S3 bucket (prod-backups)</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0030</span><span class="ttl">SSL Labs grade C on legacy edge</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0031</span><span class="ttl">Tomcat manager exposed (auth required)</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0032</span><span class="ttl">Exposed Prometheus metrics endpoint</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0033</span><span class="ttl">MS17-010 (EternalBlue) on legacy-relay</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0034</span><span class="ttl">Outdated PHP 7.2 on www-old</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0035</span><span class="ttl">WordPress admin without 2FA</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0036</span><span class="ttl">SPF record allows softfail (~all)</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0037</span><span class="ttl">Reflected XSS on contact form</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0038</span><span class="ttl">Verbose error pages on staging</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0039</span><span class="ttl">Stale subdomain points to deprovisioned LB</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0040</span><span class="ttl">VPN gateway uses pre-shared key (PSK) only</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0041</span><span class="ttl">GitLab CVE-2024-0402 file write</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0042</span><span class="ttl">Grafana login page exposed publicly</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0043</span><span class="ttl">Outdated Node 14 on api-legacy</span><span class="sev m">M</span></div>
+    <div class="row"><span class="id">XRX-2026-0044</span><span class="ttl">Slack webhook URL leaked in JS bundle</span><span class="sev h">H</span></div>
+    <div class="row"><span class="id">XRX-2026-0045</span><span class="ttl">Internal RFC1918 IP referenced in HTML comment</span><span class="sev l">L</span></div>
+    <div class="row"><span class="id">XRX-2026-0046</span><span class="ttl">OpenSSH 7.4 (regreSSHion CVE-2024-6387)</span><span class="sev c">C</span></div>
+    <div class="row"><span class="id">XRX-2026-0047</span><span class="ttl">Mixed content on /signup landing page</span><span class="sev l">L</span></div>
+  </div>
+
+  <p style="font-size:9pt; color:var(--muted); margin-top:14px;">
+    Severity legend: <span style="color:var(--sev-critical); font-weight:700;">C</span> critical &middot;
+    <span style="color:var(--sev-high); font-weight:700;">H</span> high &middot;
+    <span style="color:#a17800; font-weight:700;">M</span> medium &middot;
+    <span style="color:#1a8ec0; font-weight:700;">L</span> low.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">13</span></span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     PAGE 14 — FINAL CTA
+     ============================================================ -->
+<section class="page" id="cta">
+  <div class="page-head">
+    <div class="mini-brand">
+      <span class="logo-sq"><svg viewBox="0 0 24 24"><path d="M5 4 L19 20 M19 4 L5 20" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+      <span>Xarex AI Report &middot; Northwind Fintech Inc.</span>
+    </div>
+    <div class="section-tag">End of report</div>
+  </div>
+
+  <div class="section-opener">
+    <span class="num">10</span>
+    <span class="eyebrow">Next steps</span>
+  </div>
+  <h2>End of report</h2>
+  <div class="rule-h"></div>
+
+  <p style="font-size:10.5pt;">
+    This sample report illustrates the structure, depth, and tone of a typical Xarex engagement deliverable.
+    A live engagement against your environment will produce a report of comparable structure but with findings,
+    evidence, and recommendations specific to your perimeter.
+  </p>
+
+  <h3 style="margin-top:14px;">What's included with every Xarex engagement</h3>
+  <ul style="font-size:10pt; padding-left:18px;">
+    <li>Continuous external scanning on a weekly or bi-weekly cadence</li>
+    <li>AI-narrated executive summaries reviewed for factual grounding against rule-engine output</li>
+    <li>Threat-actor exposure modeling across 11 tracked groups, refreshed quarterly</li>
+    <li>Crown-jewel reachability analysis with constructed attack-path diagrams</li>
+    <li>Advisory mapping to SOC 2, PCI-DSS v4.0, ISO 27001:2022, NIST CSF 2.0, and OWASP Top 10</li>
+    <li>API access, CSV / JSON / PDF exports, and Jira / Linear integration for remediation tracking</li>
+  </ul>
+
+  <div class="cta">
+    <h2>Want a real report for your environment?</h2>
+    <p>Start a free trial &mdash; first scan is on us. No credit card required.</p>
+    <span class="btn">xarex.io/signup</span>
+    <p style="margin-top:14px; font-size:9.5pt;">Or email <a style="color:#fff; text-decoration:underline;" href="mailto:hello@xarex.io">hello@xarex.io</a> for a guided demo.</p>
+  </div>
+
+  <p style="text-align:center; font-size:8.5pt; color:var(--muted); margin-top:24px;">
+    &copy; 2026 Xarex, Inc. &middot; Xarex Autonomous Engine v0.9.2 &middot; Report template r12 &middot; Generated 2026-05-14<br/>
+    This document is illustrative. It does not describe a real customer engagement and contains no real customer data.
+  </p>
+
+  <div class="page-footer">
+    <span class="confid">Confidential &mdash; Internal Use</span>
+    <span class="sample-tag">SAMPLE REPORT &mdash; Illustrative content. Not based on a real customer scan.</span>
+    <span>Page <span class="page-num">14</span></span>
+  </div>
+</section>
+
+</body>
+</html>

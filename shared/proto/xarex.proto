@@ -1,0 +1,184 @@
+syntax = "proto3";
+
+package xarex;
+option go_package = "github.com/xarex/probe/grpc/pb";
+
+// ─────────────────────────────────────────────
+//  Probe Registration & Heartbeat
+// ─────────────────────────────────────────────
+
+message ProbeInfo {
+  string probe_id       = 1;
+  string org_id         = 2;
+  string version        = 3;
+  repeated string capabilities = 4;
+  NetworkContext network_context = 5;
+}
+
+message NetworkContext {
+  repeated string subnets   = 1;
+  repeated string gateways  = 2;
+  string hostname           = 3;
+  string os                 = 4;
+}
+
+message HeartbeatResponse {
+  bool acknowledged         = 1;
+  repeated ScanTask pending_tasks = 2;
+  string message            = 3;
+}
+
+// ─────────────────────────────────────────────
+//  Scan Tasks (Cloud → Probe)
+// ─────────────────────────────────────────────
+
+message ScanTask {
+  string task_id   = 1;
+  string scan_id   = 2;
+  TaskType type    = 3;
+  map<string, string> params = 4;
+  int32 timeout_seconds = 5;
+
+  enum TaskType {
+    HOST_DISCOVERY        = 0;
+    PORT_SCAN             = 1;
+    SERVICE_FINGERPRINT   = 2;
+    VULN_CHECK            = 3;
+    DEFAULT_CRED_TEST     = 4;
+    SMB_RELAY_CHECK       = 5;
+    LLMNR_POISON_CHECK    = 6;
+    KERBEROAST_ENUM       = 7;
+    ACTIVE_DIRECTORY_ENUM = 8;
+    CUSTOM                = 9;
+    SSL_TLS_AUDIT         = 10;
+    HTTP_SECURITY_HEADERS = 11;
+    DNS_ZONE_TRANSFER     = 12;
+    EXPOSED_ADMIN_PANEL   = 13;
+    SNMP_COMMUNITY_STRING = 14;
+    RDP_SECURITY_CHECK    = 15;
+    WEB_APP_SCAN          = 16;
+    NUCLEI_SCAN           = 17;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Findings (Probe → Cloud)
+// ─────────────────────────────────────────────
+
+message Finding {
+  string finding_id       = 1;
+  string task_id          = 2;
+  string scan_id          = 3;
+  string host             = 4;
+  int32  port             = 5;
+  string protocol         = 6;
+  string service          = 7;
+  Severity severity       = 8;
+  string cve_id           = 9;
+  string title            = 10;
+  string description      = 11;
+  string evidence         = 12;
+  string remediation      = 13;
+  map<string, string> metadata = 14;
+  int64  timestamp        = 15;
+
+  enum Severity {
+    INFO     = 0;
+    LOW      = 1;
+    MEDIUM   = 2;
+    HIGH     = 3;
+    CRITICAL = 4;
+  }
+}
+
+message ScanResult {
+  string task_id          = 1;
+  string scan_id          = 2;
+  string probe_id         = 3;
+  bool   success          = 4;
+  string error            = 5;
+  repeated Finding findings = 6;
+  int64  duration_ms      = 7;
+  int64  timestamp        = 8;
+}
+
+// ─────────────────────────────────────────────
+//  Host Discovery Result
+// ─────────────────────────────────────────────
+
+message Host {
+  string ip               = 1;
+  string hostname         = 2;
+  string mac_address      = 3;
+  string os_guess         = 4;
+  repeated Port open_ports = 5;
+  bool   is_alive         = 6;
+}
+
+message Port {
+  int32  number           = 1;
+  string protocol         = 2;  // tcp/udp
+  string state            = 3;  // open/filtered/closed
+  string service          = 4;
+  string banner           = 5;
+  string version          = 6;
+}
+
+// ─────────────────────────────────────────────
+//  Attack Path
+// ─────────────────────────────────────────────
+
+message AttackPathNode {
+  string node_id          = 1;
+  string finding_id       = 2;
+  string host             = 3;
+  string technique        = 4;  // MITRE ATT&CK technique ID
+  string description      = 5;
+  repeated string next_node_ids = 6;
+}
+
+message AttackPath {
+  string path_id          = 1;
+  string scan_id          = 2;
+  repeated AttackPathNode nodes = 3;
+  float  risk_score       = 4;
+  string impact           = 5;
+  string entry_point      = 6;
+  string target           = 7;
+}
+
+// ─────────────────────────────────────────────
+//  Streaming Events (Cloud → Frontend via WS)
+// ─────────────────────────────────────────────
+
+message ScanEvent {
+  string scan_id          = 1;
+  EventType type          = 2;
+  string payload_json     = 3;
+  int64  timestamp        = 4;
+
+  enum EventType {
+    PROBE_CONNECTED    = 0;
+    TASK_STARTED       = 1;
+    TASK_COMPLETED     = 2;
+    FINDING_DISCOVERED = 3;
+    ATTACK_PATH_BUILT  = 4;
+    SCAN_COMPLETED     = 5;
+    ERROR              = 6;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  gRPC Service Definition
+// ─────────────────────────────────────────────
+
+service XarexService {
+  // Probe registers itself on startup
+  rpc Register(ProbeInfo) returns (HeartbeatResponse);
+
+  // Probe sends heartbeat every 30s, receives pending tasks
+  rpc Heartbeat(ProbeInfo) returns (HeartbeatResponse);
+
+  // Bidirectional stream: probe sends results, cloud sends tasks
+  rpc ScanStream(stream ScanResult) returns (stream ScanTask);
+}
